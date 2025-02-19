@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart City - Private Transport</title>
+    <title>Booking_vehicle</title>
     <script src="header.js"></script>
     <script src="logout.js"></script>
 </head>
@@ -16,8 +16,13 @@
     }
 
     .main{
-        height: 400px;
-        padding-left: 250px;
+        display: flex;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px; 
+        padding-left: 0;
+        margin-top: 150px;
     }
 
     .main1{
@@ -27,13 +32,14 @@
     .us{
         background-color: rgba(214, 55, 142, 0.549);
         padding: 20px 10px;
-        margin-bottom: 40px;
+        margin-bottom: 0px;
         margin-right: 30px;
-        height: 100px;
+        height: 200px;
         width: 300px;
         text-align: center;
         padding-top: 40px;
         border-radius: 30px;
+        text-align: center;
     }
 
     .us:hover{
@@ -49,44 +55,27 @@
 </style>
 <body>
     <div id="header-container"></div>
-    <div class="mainheading">
-        <p>PRIVATE TRANSPORTATION</p>
-    </div>
     <div class="main">
-    <div class="main1">
         <a href="cab.html">
             <div class="us1 us">
-                <h2>Book a Private Vehicle</h2>
+                <h1>Cab</h1>
             </div>
         </a>
-        <a href="">
+        <a href="bike.html">
             <div class="us2 us">
-                <h2>Rides with Pricing and ETA</h2>
+                <h1>Bike</h1>
             </div>
         </a>
-        <a href="">
+        <a href="auto.html">
+            <div class="us3 us">
+                <h1>Auto</h1>
+            </div>
+        </a>
+        <a href="car rental">
             <div class="us4 us">
-                <h2>Nearby Parking Spaces </h2>
+                <h1>Car Rental</h1>
             </div>
         </a>
     </div>
-    <div class="main1">
-        <a href="">
-            <div class="us5 us">
-                <h2>Nearby EV Chargin Stations </h2>
-            </div>
-        </a>
-        <a href="">
-            <div class="us6 us">
-                <h2>Nearby Fuel Stations </h2>
-            </div>
-        </a>
-        <a href="">
-            <div class="us7 us">
-                <h2>Compare Fares Across Platforms </h2>
-            </div>
-        </a>
-    </div>
-</div>
 </body>
 </html>
