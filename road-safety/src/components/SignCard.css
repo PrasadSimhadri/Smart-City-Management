@@ -1,0 +1,54 @@
+.sign-card {
+    height: 240px;
+    width: 200px;
+    margin-right: 30px;
+    border-radius: 30px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    perspective: 1000px;
+  }
+  
+  .inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .sign-card:hover .inner {
+    transform: rotateY(180deg);
+  }
+  
+  .front, .back {
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .sign-image {
+    height: 150px;
+    width: 140px;
+    border-radius: 20px;
+  }
+  
+  .back {
+    background: linear-gradient(95deg, #6acce7 , #ef51d2);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    transform: rotateY(180deg);
+    box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.2);
+    height: 200px;
+    width: 160px;
+  }
+  

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        font-family: 'Segoe UI';
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .header {
+        display: flex;
+        background-color: #6c584c;
+        margin: -8px;
+        padding-left: 20px;
+        font-size: 15px;
+        box-shadow: 0 0 0 2px #aba8a8;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .scm {
+        margin-right: 600px;
+    }
+
+    .headercontent {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+    h3 {
+        padding: 8px;
+        margin-right: 40px;
+        opacity: 0.6;
+        position: relative;
+    }
+
+    h3:hover {
+        opacity: 1;
+        cursor: pointer;
+        background-color: #a698dd;
+        border-radius: 6px;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 150px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        border-radius: 5px;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 10px 15px;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #f1f1f1;
+        border-radius: 5px;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+</style>
+<body>
+    <div class="header">
+        <div class="scm">
+            <a href="mainhome.html"><h2>Smart City Management</h2></a>
+        </div>
+        <div class="headercontent">
+            <div class="dropdown">
+                <a href="maineducation.html"><h3>Education</h3></a>
+                <div class="dropdown-content">
+                    <a href="maininstitutions.html">Recommending Institutions </a>
+                    <a href="mainonline.html">Online Learning </a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="maintransportation.html"><h3>Transportation</h3></a>
+                <div class="dropdown-content">
+                    <a href="mainpublic.html">Public Transport</a>
+                    <a href="mainprivate.html">Private Transport</a>
+                    <a href="mainroad.html">Traffic and Road Safety</a>
+                </div>
+            </div>
+            <a href="#"><h3>About</h3></a>
+            <a href="#"><h3>Profile</h3></a>
+            <a href="#" id="logout"><h3>Logout</h3></a>
+        </div>
+    </div>
+</body>
+</html>

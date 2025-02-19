@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart City - Home</title>
+    <script src="header.js"></script>
+    <script src="logout.js"></script>
+</head>
+<style>
+    
+    .main {
+        margin-top: 150px;
+        margin-left: 250px;
+        display: flex;
+    }
+
+    .transport, .education {
+        height: 400px;
+        width: 400px;
+        border-radius: 70px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.35);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .transport {
+        background-color: rgba(214, 55, 142, 0.549);
+        margin-right: 200px;
+    }
+
+    .education {
+        background-color: rgba(226, 55, 12, 0.856);
+    }
+
+    .transport h1, .education h1 {
+        color: black;
+        transition: color 0.4s;
+    }
+
+    .transport:hover, .education:hover {
+        background-color: rgba(39, 2, 74, 0.925);
+        cursor: pointer;
+        transition: background-color 0.4s;
+    }
+
+    .transport:hover h1, .education:hover h1 {
+        color: white;
+    }
+</style>
+<body>
+    <div id="header-container"></div>   
+    <div class="main">
+        <a href="maintransportation.html">
+            <div class="transport">
+                <h1>Transportation</h1>
+            </div>
+        </a>
+        <a href="maineducation.html">
+            <div class="education">
+                <h1>Education</h1>
+            </div>
+        </a>
+    </div>
+</body>
+</html>
