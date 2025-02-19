@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Transport Booking</title>
+    <script src="header.js"></script>
+    <script src="logout.js"></script>
+    
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 400px; 
+            margin: auto; 
+            padding: 20px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            background: #f9f9f9;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            width: 40%;
+            font-weight: bold;
+            text-align: left;
+        }
+        .form-group input, 
+        .form-group select {
+            width: 58%;
+            padding: 8px;
+        }
+        #datetime-container { display: none; }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            width: 48%;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .confirm-btn { background-color: blue; color: white; }
+        .cancel-btn { background-color: red; color: white; }
+        nav { background-color: #333; padding: 10px; color: white; text-align: center; }
+        nav button { background-color: red; color: white; padding: 5px 10px; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Book a Private Ride</h2>
+
+        <div class="form-group">
+            <label for="pickup">Pickup Location:</label>
+            <input type="text" id="pickup" placeholder="Enter pickup location" required>
+        </div>
+
+        <div class="form-group">
+            <label for="destination">Destination:</label>
+            <input type="text" id="destination" placeholder="Enter destination" required>
+        </div>
+
+        <div class="form-group">
+            <label>Ride Option:</label>
+            <select id="ride-option" onchange="toggleDateTime()">
+                <option value="now">Ride Now</option>
+                <option value="later">Ride Later</option>
+            </select>
+        </div>
+
+        <div id="datetime-container">
+            <div class="form-group">
+                <label for="ride-date">Date:</label>
+                <input type="date" id="ride-date">
+            </div>
+            <div class="form-group">
+                <label for="ride-time">Time:</label>
+                <input type="time" id="ride-time">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="vehicle">Select Vehicle Type:</label>
+            <select id="vehicle">
+                <option value="sedan">Sedan</option>
+                <option value="suv">SUV</option>
+                <option value="bike">Bike</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="payment">Payment Method:</label>
+            <select id="payment">
+                <option value="cash">Cash</option>
+                <option value="card">Credit/Debit Card</option>
+                <option value="wallet">E-Wallet</option>
+            </select>
+        </div>
+
+        <div class="buttons">
+            <button class="confirm-btn" onclick="confirmBooking()">Confirm Booking</button>
+            <button class="cancel-btn" onclick="cancelBooking()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleDateTime() {
+            let rideOption = document.getElementById("ride-option").value;
+            let datetimeContainer = document.getElementById("datetime-container");
+            datetimeContainer.style.display = rideOption === "later" ? "block" : "none";
+        }
+
+        function confirmBooking() {
+            let rideOption = document.getElementById("ride-option").value;
+            let currentTime = new Date().toLocaleString();
+            let rideTime = rideOption === "now" ? currentTime : document.getElementById("ride-date").value + " " + document.getElementById("ride-time").value;
+            alert("Booking Confirmed! Ride Time: " + rideTime);
+        }
+
+        function cancelBooking() {
+            alert("Booking Canceled!");
+        }
+    </script>
+</body>
+</html>
