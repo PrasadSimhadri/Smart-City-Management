@@ -6,20 +6,20 @@
     <title>Private Transport Booking</title>
     <script src="header.js"></script>
     <script src="logout.js"></script>
-    
+
     <style>
         body { 
             font-family: Arial, sans-serif; 
-            text-align: center; 
-            padding: 20px; 
+            text-align: center;
         }
         .container { 
-            max-width: 400px; 
+            max-width: 500px; 
             margin: auto; 
-            padding: 20px; 
+            padding: 40px; 
             border: 1px solid #ddd; 
             border-radius: 10px; 
             background: #f9f9f9;
+            margin-top: 100px;
         }
         .form-group {
             display: flex;
@@ -32,8 +32,8 @@
             font-weight: bold;
             text-align: left;
         }
-        .form-group input, 
-        .form-group select {
+        .form-group input,.form-group select 
+        {
             width: 58%;
             padding: 8px;
         }
@@ -48,14 +48,53 @@
             border: none;
             cursor: pointer;
             font-size: 16px;
+            border-radius: 10px;
         }
-        .confirm-btn { background-color: blue; color: white; }
-        .cancel-btn { background-color: red; color: white; }
-        nav { background-color: #333; padding: 10px; color: white; text-align: center; }
-        nav button { background-color: red; color: white; padding: 5px 10px; border: none; cursor: pointer; }
+
+        .confirm-btn 
+        { 
+        background-color: green;
+        color: white;
+        cursor: pointer;
+        
+        }
+
+        .cancel-btn 
+        {
+        background-color: red;
+        color: white; 
+        cursor: pointer;
+
+        }
+
+        nav 
+        { 
+        background-color: #333;
+        padding: 10px; 
+        color: white; 
+        text-align: center; 
+        }
+
+        nav button 
+        { 
+        background-color: red; 
+        color: white; 
+        padding: 5px 10px; 
+        border: none; 
+        cursor: pointer; 
+        }
+
+        .butt:hover
+        {
+            background-color: rgba(39, 2, 74, 0.925);
+            cursor: pointer;
+            transition: 0.4s;
+            color:white;
+        }
     </style>
 </head>
 <body>
+    <div id="header-container"></div>
     <div class="container">
         <h2>Book a Private Ride</h2>
 
@@ -69,6 +108,15 @@
             <input type="text" id="destination" placeholder="Enter destination" required>
         </div>
 
+        <div class="form-group">
+            <label for="ride-hailing">Ride-Hailing Service:</label>
+            <select id="ride-hailing">
+                <option value="uber">Uber</option>
+                <option value="ola">Ola</option>
+                <option value="redtaxi">RedTaxi</option>
+            </select>
+        </div>
+        
         <div class="form-group">
             <label>Ride Option:</label>
             <select id="ride-option" onchange="toggleDateTime()">
@@ -107,8 +155,8 @@
         </div>
 
         <div class="buttons">
-            <button class="confirm-btn" onclick="confirmBooking()">Confirm Booking</button>
-            <button class="cancel-btn" onclick="cancelBooking()">Cancel</button>
+            <button class="confirm-btn butt" onclick="confirmBooking()">Confirm Booking</button>
+            <button class="cancel-btn butt" onclick="cancelBooking()">Cancel</button>
         </div>
     </div>
 
@@ -120,11 +168,23 @@
         }
 
         function confirmBooking() {
-            let rideOption = document.getElementById("ride-option").value;
-            let currentTime = new Date().toLocaleString();
-            let rideTime = rideOption === "now" ? currentTime : document.getElementById("ride-date").value + " " + document.getElementById("ride-time").value;
-            alert("Booking Confirmed! Ride Time: " + rideTime);
-        }
+        let pickup = document.getElementById("pickup").value;
+        let destination = document.getElementById("destination").value;
+        let rideOption = document.getElementById("ride-option").value;
+        let rideHailing = document.getElementById("ride-hailing").value;
+        let vehicle = document.getElementById("vehicle").value;
+        let payment = document.getElementById("payment").value;
+        
+        let rideTime = rideOption === "now" ? new Date().toLocaleString() : 
+            document.getElementById("ride-date").value + " " + document.getElementById("ride-time").value;
+
+        // Redirect to booking-details.html with query parameters
+        let url = `booking.html?pickup=${encodeURIComponent(pickup)}&destination=${encodeURIComponent(destination)}&rideHailing=${rideHailing}&rideTime=${rideTime}&vehicle=${vehicle}&payment=${payment}`;
+        
+        window.location.href = url;
+}
+
+
 
         function cancelBooking() {
             alert("Booking Canceled!");
