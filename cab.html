@@ -180,9 +180,10 @@
             document.getElementById("ride-date").value + " " + document.getElementById("ride-time").value;
 
         // Redirect to booking-details.html with query parameters
-        let url = `booking.html?pickup=${encodeURIComponent(pickup)}&destination=${encodeURIComponent(destination)}&rideHailing=${rideHailing}&rideTime=${rideTime}&vehicle=${vehicle}&payment=${payment}`;
+        let url = `booking_vehicle.html?pickup=${encodeURIComponent(pickup)}&destination=${encodeURIComponent(destination)}&rideHailing=${rideHailing}&rideTime=${rideTime}&vehicle=${vehicle}&payment=${payment}`;
         
-        window.location.href = url;
+        window.location.href = `booking_vehicle.html?pickup=${encodeURIComponent(pickup)}&destination=${encodeURIComponent(destination)}&rideHailing=${rideHailing}&rideTime=${rideTime}&vehicle=${vehicle}&payment=${payment}`;
+
 }
 
 

@@ -4,117 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking Details</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
     <script src="header.js"></script>
     <script src="logout.js"></script>
+    
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        #map { height: 400px; width: 100%; margin-top: 20px; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        .details {
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+            font-size: 18px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        strong {
+            color: #333;
+        }
     </style>
 </head>
 <body>
     <div id="header-container"></div>
-    <h2>Your Ride Details</h2>
-    <p><strong>Pickup:</strong> <span id="pickup"></span></p>
-    <p><strong>Destination:</strong> <span id="destination"></span></p>
-    <p><strong>Service:</strong> <span id="rideHailing"></span></p>
-    <p><strong>Vehicle:</strong> <span id="vehicle"></span></p>
-    <p><strong>Payment:</strong> <span id="payment"></span></p>
-    <p><strong>Ride Time:</strong> <span id="rideTime"></span></p>
-    <p><strong>Estimated Arrival:</strong> <span id="eta"></span></p>
-    <p><strong>Estimated Travel Time:</strong> <span id="travelTime"></span></p>
-    
+    <h2>Booking Details</h2>
+
+    <div class="details">
+        <p><strong>Pickup Location:</strong> <span id="pickup"></span></p>
+        <p><strong>Destination:</strong> <span id="destination"></span></p>
+        <p><strong>Ride Service:</strong> <span id="rideHailing"></span></p>
+        <p><strong>Ride Time:</strong> <span id="rideTime"></span></p>
+        <p><strong>Vehicle Type:</strong> <span id="vehicle"></span></p>
+        <p><strong>Payment Method:</strong> <span id="payment"></span></p>
+        <p><strong>Estimated Travel Time:</strong> <span id="travelTime">Calculating...</span></p>
+    </div>
+
     <div id="map"></div>
 
     <script>
+        let pickup, destination;
+        let map, directionsService, directionsRenderer;
+
         function getQueryParams() {
             let params = new URLSearchParams(window.location.search);
-            return {
-                pickup: params.get("pickup"),
-                destination: params.get("destination"),
-                rideHailing: params.get("rideHailing"),
-                rideTime: params.get("rideTime"),
-                vehicle: params.get("vehicle"),
-                payment: params.get("payment"),
-            };
+            pickup = params.get("pickup") || "";
+            destination = params.get("destination") || "";
+
+
+            document.getElementById("pickup").innerText = params.get("pickup");
+            document.getElementById("destination").innerText = params.get("destination");
+            document.getElementById("rideHailing").innerText = params.get("rideHailing");
+            document.getElementById("rideTime").innerText = params.get("rideTime");
+            document.getElementById("vehicle").innerText = params.get("vehicle");
+            document.getElementById("payment").innerText = params.get("payment");
         }
 
-        function displayBookingDetails() {
-            let details = getQueryParams();
-            document.getElementById("pickup").innerText = details.pickup;
-            document.getElementById("destination").innerText = details.destination;
-            document.getElementById("rideHailing").innerText = details.rideHailing;
-            document.getElementById("rideTime").innerText = details.rideTime;
-            document.getElementById("vehicle").innerText = details.vehicle;
-            document.getElementById("payment").innerText = details.payment;
-
-            // Simulated cab location (Random coordinates near pickup)
-            let cabLocation = { lat: 12.9716, lng: 77.5946 }; // Example (Bangalore)
-            let pickupLocation;
-            let destinationLocation;
-
-            // Initialize Google Maps
-            let map = new google.maps.Map(document.getElementById("map"), {
-                center: cabLocation,
-                zoom: 12,
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 7,
+                center: { lat: 11.0168, lng: 76.9558 } // Centered at Coimbatore (default)
             });
 
-            // Place a marker for cab's current location
-            new google.maps.Marker({
-                position: cabLocation,
-                map: map,
-                title: "Cab Location",
-            });
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
 
-            // Convert Pickup & Destination addresses to coordinates
+            if (pickup && destination) {
+                geocodeAndCalculateRoute();
+            } else {
+                console.error("Pickup or Destination is missing!");
+                document.getElementById("travelTime").innerText = "Invalid locations";
+            }
+        }
+
+        function geocodeAndCalculateRoute() {
             let geocoder = new google.maps.Geocoder();
-            
-            geocoder.geocode({ address: details.pickup }, function(results, status) {
-                if (status === "OK") {
-                    pickupLocation = results[0].geometry.location;
-                    new google.maps.Marker({ position: pickupLocation, map: map, title: "Pickup" });
 
-                    geocoder.geocode({ address: details.destination }, function(results, status) {
-                        if (status === "OK") {
-                            destinationLocation = results[0].geometry.location;
-                            new google.maps.Marker({ position: destinationLocation, map: map, title: "Destination" });
+            if (!pickup || !destination) {
+                console.error("Invalid locations provided.");
+                document.getElementById("travelTime").innerText = "Invalid locations";
+                return;
+            }
 
-                            // Calculate Distance and ETA
-                            let service = new google.maps.DistanceMatrixService();
-                            service.getDistanceMatrix({
-                                origins: [cabLocation],
-                                destinations: [pickupLocation],
-                                travelMode: "DRIVING",
-                            }, function(response, status) {
-                                if (status === "OK") {
-                                    let eta = response.rows[0].elements[0].duration.text;
-                                    document.getElementById("eta").innerText = eta;
-                                }
-                            });
-
-                            // Calculate Travel Time to Destination
-                            service.getDistanceMatrix({
-                                origins: [pickupLocation],
-                                destinations: [destinationLocation],
-                                travelMode: "DRIVING",
-                            }, function(response, status) {
-                                if (status === "OK") {
-                                    let travelTime = response.rows[0].elements[0].duration.text;
-                                    document.getElementById("travelTime").innerText = travelTime;
-                                }
-                            });
-
-                        } else {
-                            console.log("Destination Geocode failed: " + status);
-                        }
-                    });
-                } else {
-                    console.log("Pickup Geocode failed: " + status);
+            geocoder.geocode({ address: pickup }, function (results1, status1) {
+                if (status1 !== "OK" || !results1[0]) {
+                    console.error("Geocode failed for pickup: " + status1);
+                    document.getElementById("travelTime").innerText = "Invalid pickup location";
+                    return;
                 }
+                let pickupLocation = results1[0].geometry.location;
+
+                geocoder.geocode({ address: destination }, function (results2, status2) {
+                    if (status2 !== "OK" || !results2[0]) {
+                        console.error("Geocode failed for destination: " + status2);
+                        document.getElementById("travelTime").innerText = "Invalid destination location";
+                        return;
+                    }
+                    let destinationLocation = results2[0].geometry.location;
+
+                    calculateRoute(pickupLocation, destinationLocation);
+                });
             });
         }
 
-        window.onload = displayBookingDetails;
+
+        function calculateRoute(pickupLocation, destinationLocation) {
+            directionsService.route(
+                {
+                    origin: pickupLocation,
+                    destination: destinationLocation,
+                    travelMode: google.maps.TravelMode.DRIVING
+                },
+                function (response, status) {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(response);
+                        let duration = response.routes[0].legs[0].duration.text;
+                        document.getElementById("travelTime").innerText = duration;
+                    } else {
+                        console.error("Directions request failed due to " + status);
+                        document.getElementById("travelTime").innerText = "Could not calculate";
+                    }
+                }
+            );
+        }
+
+        window.onload = function () {
+            getQueryParams();
+            setTimeout(() => initMap(), 1000);
+        };
     </script>
+
+    <!-- Replace YOUR_GOOGLE_MAPS_API_KEY with your actual API key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDWEBeCa7ShQhL72NhHBdwiTC8_FqyklNU&callback=initMap&libraries=places" async defer></script>
 </body>
 </html>
