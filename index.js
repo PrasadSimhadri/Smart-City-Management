@@ -83,6 +83,12 @@ app.get("/private_transport", (req, res) => {
 app.get("/road_safety", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "mainroad.html"));
 });
+app.get("/institutions", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "maininstitutions.html"));
+});
+app.get("/online_learning", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "mainonline.html"));
+});
 app.get("/contacts", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "emergency.html"));
 });
