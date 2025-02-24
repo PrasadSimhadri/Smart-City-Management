@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,61 +9,130 @@
     <script src="logout.js"></script>
 </head>
 <style>
-    
-    .main {
-        margin-top: 150px;
-        margin-left: 250px;
-        display: flex;
-    }
-
-    .transport, .education {
-        height: 400px;
-        width: 400px;
-        border-radius: 70px;
-        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.35);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    .mainheading {
+        margin-top: 50px;
         text-align: center;
+        font-size: 45px;
+        font-weight: 700;
     }
 
-    .transport {
-        background-color: rgba(214, 55, 142, 0.549);
-        margin-right: 200px;
+    .maininstitutions {
+        margin-left: 300px;
+        display: flex;
+        height: 200px;
     }
 
-    .education {
+    .institutions,
+    .learning {
+        border-radius: 30px;
         background-color: rgba(226, 55, 12, 0.856);
+        width: 400px;
+        height: 150px;
+        text-align: center;
+        margin-right: 60px;
     }
 
-    .transport h1, .education h1 {
-        color: black;
-        transition: color 0.4s;
-    }
-
-    .transport:hover, .education:hover {
+    .institutions:hover,
+    .learning:hover {
         background-color: rgba(39, 2, 74, 0.925);
         cursor: pointer;
-        transition: background-color 0.4s;
-    }
-
-    .transport:hover h1, .education:hover h1 {
+        transition: 0.4s;
         color: white;
     }
+
+    .institutions:hover h1,
+    .learning:hover h1 {
+        color: white;
+    }
+
+    .institutions h1,
+    .learning h1 {
+        padding-top: 50px;
+    }
+
+    .mainheading {
+        margin-top: 50px;
+        text-align: center;
+        font-size: 45px;
+        font-weight: 700;
+    }
+
+    .main {
+        margin-left: 120px;
+        display: flex;
+        height: 150px;
+    }
+
+    .public,
+    .private,
+    .road {
+        border-radius: 30px;
+        background-color: rgba(214, 55, 142, 0.549);
+        width: 400px;
+        height: 150px;
+        text-align: center;
+        margin-right: 60px;
+    }
+
+    .public:hover,
+    .private:hover,
+    .road:hover {
+        background-color: rgba(39, 2, 74, 0.925);
+        cursor: pointer;
+        transition: 0.4s;
+        color: white;
+    }
+
+    .public:hover h1,
+    .private:hover h1,
+    .road:hover h1 {
+        color: white;
+    }
+
+    .public h1,
+    .private h1,
+    .road h1 {
+        padding-top: 50px;
+    }
 </style>
+
 <body>
-    <div id="header-container"></div>   
-    <div class="main">
-        <a href="/transportation">
-            <div class="transport">
-                <h1>Transportation</h1>
+    <div id="header-container"></div>
+    <div class="mainheading">
+        <p>EDUCATION</p>
+    </div>
+    <div class="maininstitutions">
+        <a href="maininstitutions.html">
+            <div class="institutions">
+                <h1>Recommend Institutions</h1>
             </div>
         </a>
-        <a href="/education">
-            <div class="education">
-                <h1>Education</h1>
+        <a href="mainonline.html">
+            <div class="learning">
+                <h1>Online Learning Platform</h1>
+            </div>
+        </a>
+    </div>
+    <div class="mainheading">
+        <p>TRANSPORTATION</p>
+    </div>
+    <div class="main">
+        <a href="/public_transport">
+            <div class="public">
+                <h1>Public Transportation</h1>
+            </div>
+        </a>
+        <a href="/private_transport">
+            <div class="private">
+                <h1>Private Transportation</h1>
+            </div>
+        </a>
+        <a href="/road_safety">
+            <div class="road">
+                <h1>Traffic and Road Safety</h1>
             </div>
         </a>
     </div>
 </body>
+
 </html>
