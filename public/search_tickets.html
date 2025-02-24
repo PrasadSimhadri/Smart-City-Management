@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Search Tickets</title>
     <!-- Font Awesome CDN for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="header.js"></script>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f4f4f9;
             margin: 0;
             padding: 20px;
@@ -199,23 +199,36 @@
                     badge.textContent = "Hurry Up!";
                     card.appendChild(badge);
                 }
+                // Handle date formatting for MongoDB stored dates
+                let dateStr = "";
+                if (booking.date && typeof booking.date === "object" && booking.date.$date) {
+                    dateStr = new Date(booking.date.$date).toLocaleDateString();
+                } else if (booking.date) {
+                    const dateObj = new Date(booking.date);
+                    if (!isNaN(dateObj)) {
+                        dateStr = dateObj.toLocaleDateString();
+                    } else {
+                        dateStr = booking.date;
+                    }
+                }
+
                 card.innerHTML += `
-          <h3>${getVehicleIcon(booking.vehicleType)} ${booking.vehicleType} Ticket</h3>
-          <p><strong>From:</strong> ${booking.source}</p>
-          <p><strong>To:</strong> ${booking.destination}</p>
-          <p><strong>Date:</strong> ${booking.date}</p>
-          <p><strong>Price:</strong> ₹${booking.price}</p>
-          <p class="available">Available Seats: ${availableSeats}</p>
-          <button class="book-btn" onclick="bookTicket('${booking._id}')">Book Now</button>
-        `;
+      <h3>${getVehicleIcon(booking.vehicleType)} ${booking.vehicleType} Ticket</h3>
+      <p><strong>From:</strong> ${booking.source}</p>
+      <p><strong>To:</strong> ${booking.destination}</p>
+      <p><strong>Date:</strong> ${dateStr}</p>
+      <p><strong>Price:</strong> ₹${booking.price}</p>
+      <p class="available">Available Seats: ${availableSeats}</p>
+      <button class="book-btn" onclick="bookTicket('${booking._id}')">Book Now</button>
+    `;
                 container.appendChild(card);
             });
         }
 
+
+
         // Redirect to payment page with ticket id and other details in query parameters
         function bookTicket(ticketId) {
-            // For simplicity, assume we redirect with the ticket ID.
-            // In practice, you might include more details in the query string.
             window.location.href = `payment.html?ticketId=${ticketId}`;
         }
     </script>

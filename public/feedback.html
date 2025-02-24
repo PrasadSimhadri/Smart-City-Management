@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,7 +67,8 @@
             font-weight: bold;
         }
 
-        select, textarea {
+        select,
+        textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
@@ -119,11 +121,12 @@
             color: white;
             padding: 15px;
             border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             display: none;
         }
     </style>
 </head>
+
 <body>
     <header>
         <a href="./website2.html" class="back-button">
@@ -175,7 +178,7 @@
     <script>
         let selectedRating = 0;
         let currentTransportType = '';
-        
+
         const vehicles = {
             bus: {
                 "TN-22-B-1234": { start: "Koyambedu", end: "Tambaram" },
@@ -204,13 +207,13 @@
         };
 
         // Initialize page when loaded
-        window.onload = function() {
+        window.onload = function () {
             const urlParams = new URLSearchParams(window.location.search);
             const transportType = urlParams.get('type');
-            
+
             if (transportType && vehicles[transportType]) {
                 currentTransportType = transportType;
-                
+
                 // Set transport icon and title
                 const iconMap = {
                     bus: 'fa-bus',
@@ -218,17 +221,17 @@
                     metro: 'fa-subway',
                     tram: 'fa-tram'
                 };
-                
+
                 document.getElementById('transport-icon').className = `fas ${iconMap[transportType]}`;
-                document.getElementById('transport-title').textContent = 
+                document.getElementById('transport-title').textContent =
                     transportType.charAt(0).toUpperCase() + transportType.slice(1) + ' Feedback';
-                
+
                 // Populate start locations
                 const startLocations = new Set();
                 Object.values(vehicles[transportType]).forEach(route => {
                     startLocations.add(route.start);
                 });
-                
+
                 const startSelect = document.getElementById('start-location');
                 startLocations.forEach(location => {
                     const option = document.createElement('option');
@@ -242,17 +245,17 @@
         };
 
         // Update end locations when start location changes
-        document.getElementById('start-location').addEventListener('change', function() {
+        document.getElementById('start-location').addEventListener('change', function () {
             const startLocation = this.value;
             const endSelect = document.getElementById('end-location');
             const routeSelect = document.getElementById('route');
-            
+
             // Reset end location and route selections
             endSelect.innerHTML = '<option value="">-- Select End Location --</option>';
             routeSelect.innerHTML = '<option value="">-- Select a vehicle --</option>';
-            
+
             if (!startLocation) return;
-            
+
             // Find all possible end locations for the selected start location
             const endLocations = new Set();
             Object.values(vehicles[currentTransportType]).forEach(route => {
@@ -260,7 +263,7 @@
                     endLocations.add(route.end);
                 }
             });
-            
+
             endLocations.forEach(location => {
                 const option = document.createElement('option');
                 option.value = location;
@@ -270,15 +273,15 @@
         });
 
         // Update vehicle options when end location changes
-        document.getElementById('end-location').addEventListener('change', function() {
+        document.getElementById('end-location').addEventListener('change', function () {
             const startLocation = document.getElementById('start-location').value;
             const endLocation = this.value;
             const routeSelect = document.getElementById('route');
-            
+
             routeSelect.innerHTML = '<option value="">-- Select a vehicle --</option>';
-            
+
             if (!startLocation || !endLocation) return;
-            
+
             Object.entries(vehicles[currentTransportType]).forEach(([vehicleId, route]) => {
                 if (route.start === startLocation && route.end === endLocation) {
                     const option = document.createElement('option');
@@ -318,8 +321,6 @@
 
             const feedbackData = {
                 transportType: currentTransportType,
-                startLocation,
-                endLocation,
                 vehicleId,
                 rating: selectedRating,
                 comment,
@@ -330,8 +331,6 @@
             showSuccessMessage();
 
             // Reset form
-            document.getElementById('start-location').value = '';
-            document.getElementById('end-location').value = '';
             document.getElementById('route').value = '';
             document.getElementById('comment').value = '';
             selectedRating = 0;
@@ -344,4 +343,5 @@
         }
     </script>
 </body>
+
 </html>
