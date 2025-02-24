@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Public Transport Feedback</title>
     <script src="header.js"></script>
+    <script src="footer.js"></script>
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -28,6 +30,7 @@
             background: linear-gradient(135deg, #d8d8db, #a698dd);
             border-radius: 8px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            margin-bottom: 51px;
         }
 
         #feedbackForm {
@@ -148,6 +151,8 @@
             <button type="submit">Submit Feedback</button>
         </form>
     </div>
+    <div id="footer-container"></div>
+
     <script>
         // Update hidden rating input when a star is selected
         const ratingInputs = document.getElementsByName("ratingStars");

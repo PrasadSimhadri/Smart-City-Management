@@ -3,11 +3,12 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Search Tickets</title>
     <!-- Font Awesome CDN for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="header.js"></script>
+    <script src="footer.js"></script>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -199,7 +200,7 @@
                     badge.textContent = "Hurry Up!";
                     card.appendChild(badge);
                 }
-                // Handle date formatting for MongoDB stored dates
+                // Handle date formatting
                 let dateStr = "";
                 if (booking.date && typeof booking.date === "object" && booking.date.$date) {
                     dateStr = new Date(booking.date.$date).toLocaleDateString();
@@ -211,21 +212,18 @@
                         dateStr = booking.date;
                     }
                 }
-
                 card.innerHTML += `
-      <h3>${getVehicleIcon(booking.vehicleType)} ${booking.vehicleType} Ticket</h3>
-      <p><strong>From:</strong> ${booking.source}</p>
-      <p><strong>To:</strong> ${booking.destination}</p>
-      <p><strong>Date:</strong> ${dateStr}</p>
-      <p><strong>Price:</strong> ₹${booking.price}</p>
-      <p class="available">Available Seats: ${availableSeats}</p>
-      <button class="book-btn" onclick="bookTicket('${booking._id}')">Book Now</button>
-    `;
+          <h3>${getVehicleIcon(booking.vehicleType)} ${booking.vehicleType} Ticket</h3>
+          <p><strong>From:</strong> ${booking.source}</p>
+          <p><strong>To:</strong> ${booking.destination}</p>
+          <p><strong>Date:</strong> ${dateStr}</p>
+          <p><strong>Price:</strong> ₹${booking.price}</p>
+          <p class="available">Available Seats: ${availableSeats}</p>
+          <button class="book-btn" onclick="bookTicket('${booking._id}')">Book Now</button>
+        `;
                 container.appendChild(card);
             });
         }
-
-
 
         // Redirect to payment page with ticket id and other details in query parameters
         function bookTicket(ticketId) {

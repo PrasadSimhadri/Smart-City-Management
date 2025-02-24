@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Institution Alumni Reviews</title>
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5069d8;
+            margin-bottom: 20px;
+        }
+
+        .institutions-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .institution-item {
+            background: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .institution-item:hover {
+            background: #e9efff;
+        }
+
+        .institution-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .institution-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .institution-rank {
+            font-size: 16px;
+            color: #777;
+        }
+
+        .reviews-section {
+            display: none;
+            margin-top: 15px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        .review-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-item p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .toggle-btn {
+            font-size: 14px;
+            color: #5069d8;
+            text-decoration: underline;
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <h1>INSTITUTIONS AND REVIEWS</h1>
+    <div class="institutions-list" id="institutionsList">
+        <!-- Institution items will be populated here -->
+    </div>
+    <div id="footer-container"></div>
+
+
+    <script>
+        // 1. Fetch all institutions + reviews from a single endpoint /api/allInstitutionReviews
+        async function fetchInstitutionsAndReviews() {
+            try {
+                const response = await fetch("http://localhost:3000/api/allInstitutionReviews");
+                const data = await response.json();
+                console.log("Data received:", data);
+                if (!Array.isArray(data)) {
+                    throw new Error("Data is not an array");
+                }
+                displayInstitutions(data);
+            } catch (error) {
+                console.error("Error fetching institutions/reviews:", error);
+                document.getElementById("institutionsList").innerHTML = "<p>Error loading data.</p>";
+            }
+        }
+
+        function displayInstitutions(institutions) {
+            const container = document.getElementById("institutionsList");
+            container.innerHTML = "";
+            institutions.forEach(inst => {
+                // Build the reviews HTML upfront
+                let reviewsHTML = "";
+                if (!inst.reviews || inst.reviews.length === 0) {
+                    reviewsHTML = "<p>No reviews available for this institution.</p>";
+                } else {
+                    reviewsHTML = inst.reviews.map(review => `
+            <div class="review-item">
+              <p><strong>${review.category} Review by ${review.reviewerName}</strong> (${new Date(review.reviewDate).toLocaleDateString()})</p>
+              <p>${review.reviewText}</p>
+              <p><strong>Rating:</strong> ${review.rating}/5</p>
+            </div>
+          `).join("");
+                }
+
+                const div = document.createElement("div");
+                div.className = "institution-item";
+
+                // Unique ID for the reviews section
+                const reviewsId = "reviews-" + encodeURIComponent(inst.institution);
+
+                div.innerHTML = `
+          <div class="institution-header" onclick="toggleReviews('${reviewsId}')">
+            <span class="institution-name">${inst.institution}</span>
+            <span class="institution-rank">World Rank: ${inst.world_rank || "N/A"}</span>
+          </div>
+          <div class="reviews-section" id="${reviewsId}">
+            ${reviewsHTML}
+          </div>
+        `;
+
+                container.appendChild(div);
+            });
+        }
+
+        function toggleReviews(reviewsId) {
+            const reviewsDiv = document.getElementById(reviewsId);
+            if (reviewsDiv.style.display === "block") {
+                reviewsDiv.style.display = "none";
+            } else {
+                reviewsDiv.style.display = "block";
+            }
+        }
+
+        // Initialize the page
+        fetchInstitutionsAndReviews();
+    </script>
+</body>
+
+</html>

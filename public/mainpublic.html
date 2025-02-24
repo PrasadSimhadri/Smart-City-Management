@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart City - Public Transportation</title>
     <script src="header.js"></script>
     <script src="logout.js"></script>
+    <script src="footer.js"></script>
+
 </head>
 <style>
-    .mainheading{
+    .mainheading {
         margin-top: 50px;
         text-align: center;
         font-size: 45px;
         font-weight: 700;
     }
 
-    .main{
+    .main {
         height: 400px;
         padding-left: 100px;
         margin-top: 100px;
+        margin-bottom: -53px;
     }
 
-    .main1{
+    .main1 {
         display: flex;
     }
 
-    .us{
+    .us {
         background-color: rgba(214, 55, 142, 0.549);
         padding: 20px 10px;
         margin-bottom: 40px;
@@ -37,45 +41,49 @@
         border-radius: 30px;
     }
 
-    .us:hover{
+    .us:hover {
         background-color: rgba(39, 2, 74, 0.925);
         cursor: pointer;
         transition: 0.4s;
-        color:white;
+        color: white;
     }
 
-    .us h2{
+    .us h2 {
         font-size: 20px;
     }
 </style>
+
 <body>
     <div id="header-container"></div>
     <div class="mainheading">
         <p>PUBLIC TRANSPORTATION</p>
     </div>
     <div class="main">
-    <div class="main1">
-        <a href="/feedback_publictransport">
-            <div class="us1 us">
-                <h2>Provide Feedback on your Trip</h2>
-            </div>
-        </a>
-        <a href="">
-            <div class="us1 us">
-                <h2>View Public Transport Schedule</h2>
-            </div>
-        </a>
-        <a href="/pre_booking">
-            <div class="us2 us">
-                <h2>Pre Booking</h2>
-            </div>
-        </a>
-        <a href="">
-            <div class="us3 us">
-                <h2>Report Lost Item</h2>
-            </div>
-        </a>
+        <div class="main1">
+            <a href="/feedback_publictransport">
+                <div class="us1 us">
+                    <h2>Provide Feedback on your Trip</h2>
+                </div>
+            </a>
+            <a href="">
+                <div class="us1 us">
+                    <h2>View Public Transport Schedule</h2>
+                </div>
+            </a>
+            <a href="/pre_booking">
+                <div class="us2 us">
+                    <h2>Pre Booking</h2>
+                </div>
+            </a>
+            <a href="">
+                <div class="us3 us">
+                    <h2>Report Lost Item</h2>
+                </div>
+            </a>
+        </div>
     </div>
-    </div>
+    <div id="footer-container"></div>
+
 </body>
+
 </html>

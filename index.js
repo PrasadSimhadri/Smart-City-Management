@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const fs = require("fs");
-const session = require("express-session");
 const nodemailer = require("nodemailer");
+const session = require("express-session");
+const mongoose = require("mongoose");
 
 const app = express();
 app.use(cors());
@@ -11,31 +11,6 @@ app.use(express.json());
 
 // Serve static files from the public folder
 app.use(express.static(path.join(__dirname, "public")));
-
-const dataFilePath = path.join(__dirname, "public", "data.json");
-let jsonData = {};
-if (fs.existsSync(dataFilePath)) {
-  try {
-    const fileContents = fs.readFileSync(dataFilePath, "utf8");
-    jsonData = JSON.parse(fileContents);
-    console.log("Loaded data.json from public folder.");
-  } catch (err) {
-    console.error("Error reading data.json:", err);
-  }
-} else {
-  console.error("data.json not found in public folder. Using empty data objects.");
-  jsonData = {
-    accidents: [],
-    bookings: [],
-    driver_reviews: [],
-    drivers_privaterides: [],
-    emergency_contacts: [],
-    login_details: [],
-    tickets: [],
-    institutions: []
-  };
-}
-
 
 app.use(
   session({
@@ -46,15 +21,120 @@ app.use(
   })
 );
 
+// Connect to MongoDB
+mongoose.connect("mongodb://localhost:27017/smart_city", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+});
+mongoose.connection.on("error", err => console.error("Connection error:", err));
+mongoose.connection.once("open", () => console.log("Connected to MongoDB"));
+
+// ----------------- Models -----------------
+
+// Login Details Model
+const loginSchema = new mongoose.Schema({
+  username: String,
+  email: String,
+  password: String
+});
+const Login = mongoose.model("Login", loginSchema, "login_details");
+
+// Emergency Contacts Model
+const contactSchema = new mongoose.Schema({
+  service: String,
+  contact_number: String,
+  area: String
+});
+const Contact = mongoose.model("Contact", contactSchema, "emergency_contacts");
+
+// Accident Model
+const accidentSchema = new mongoose.Schema({
+  streetNumber: Number,
+  area: String,
+  problem: String
+});
+const Accident = mongoose.model("Accident", accidentSchema, "accidents");
+
+// Tickets Model
+const ticketSchema = new mongoose.Schema({
+  ticketid: String,
+  vehicleType: String,
+  rating: { type: Number, default: null },
+  description: { type: String, default: "" }
+});
+const Ticket = mongoose.model("Ticket", ticketSchema, "tickets");
+
+// Booking Model
+const bookingSchema = new mongoose.Schema({
+  route_id: String,
+  source: String,
+  destination: String,
+  vehicleType: String,
+  price: Number,
+  seats: Number,
+  bookedSeats: Number,
+  date: Date
+});
+const Booking = mongoose.model("Booking", bookingSchema, "bookings");
+
+// Driver Model
+const driverSchema = new mongoose.Schema({
+  driverName: String,
+  rating: Number,
+  phoneNumber: String
+});
+const Driver = mongoose.model("Driver", driverSchema, "drivers_privaterides");
+
+// Driver Reviews Model
+const DriverReviewSchema = new mongoose.Schema({
+  driverId: mongoose.Schema.Types.ObjectId,
+  reviewerName: String,
+  rating: Number,
+  comment: String,
+  date: Date
+});
+const DriverReview = mongoose.model("DriverReview", DriverReviewSchema, "driver_reviews");
+
+// Institution Model
+const institutionSchema = new mongoose.Schema({
+  institution: String,
+  world_rank: Number,
+  country: String,
+  national_rank: Number,
+  quality_of_education: Number,
+  alumni_employment: Number,
+  quality_of_faculty: Number,
+  publications: Number,
+  influence: Number,
+  citations: Number,
+  patents: Number,
+  score: Number,
+  year: Number,
+  specialization: String
+});
+const Institution = mongoose.model("Institution", institutionSchema, "institutions");
+
+// Institution Reviews Model
+const institutionReviewSchema = new mongoose.Schema({
+  institute: String, // Must match the 'institution' field in Institution
+  reviewerName: String,
+  category: String,
+  reviewText: String,
+  rating: Number,
+  reviewDate: Date
+});
+const InstitutionReview = mongoose.model("InstitutionReview", institutionReviewSchema, "institution_reviews");
+
+// ----------------- Routes -----------------
 
 app.get("/logout", (req, res) => {
   if (req.session) {
-    req.session.destroy((err) => {
+    req.session.destroy(err => {
       if (err) {
         console.error("Session destruction error:", err);
         return res.status(500).send("Error logging out");
       }
-      // Use location.replace on the client so back button doesn't work
       res.redirect("/login.html?message=logged_out");
     });
   } else {
@@ -83,12 +163,6 @@ app.get("/private_transport", (req, res) => {
 app.get("/road_safety", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "mainroad.html"));
 });
-app.get("/institutions", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "maininstitutions.html"));
-});
-app.get("/online_learning", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "mainonline.html"));
-});
 app.get("/contacts", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "emergency.html"));
 });
@@ -110,22 +184,36 @@ app.get("/thank_you", (req, res) => {
 app.get("/pre_booking", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "search_tickets.html"));
 });
+app.get("/institutions", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "institutions.html"));
+});
+app.get("/online_learning", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "mainonline.html"));
+});
+app.get("/main_institutions", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "maininstitutions.html"));
+});
+app.get("/public_exams", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "exams.html"));
+});
+app.get("/alumni_reviews", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "alumni_reviews.html"));
+});
 
+// ----------------- Authentication Endpoints -----------------
 
-app.post("/api/login", (req, res) => {
+app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password are required" });
     }
 
-    // Find user in login_details array
-    const user = jsonData.login_details.find(
-      (u) => u.email === email.trim() && u.password === password.trim()
-    );
+    const user = await Login.findOne({ email: email.trim(), password: password.trim() });
     if (!user) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
+
     console.log("User authenticated:", user);
     res.json({ message: "Logged in successfully", user });
   } catch (err) {
@@ -134,25 +222,20 @@ app.post("/api/login", (req, res) => {
   }
 });
 
-app.post("/api/register", (req, res) => {
+app.post("/api/register", async (req, res) => {
   try {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const existingUser = jsonData.login_details.find(
-      (u) => u.email === email.trim()
-    );
+    const existingUser = await Login.findOne({ email: email.trim() });
     if (existingUser) {
       return res.status(409).json({ error: "Email already registered" });
     }
 
-    const newUser = { username, email, password };
-    jsonData.login_details.push(newUser);
-
-    // Optionally persist changes back to data.json
-    fs.writeFileSync(dataFilePath, JSON.stringify(jsonData, null, 2));
+    const newUser = new Login({ username, email, password });
+    await newUser.save();
 
     console.log("User registered:", newUser);
     res.status(201).json({ message: "User registered successfully", user: newUser });
@@ -162,95 +245,83 @@ app.post("/api/register", (req, res) => {
   }
 });
 
+// ----------------- API Endpoints for Data -----------------
 
-app.get("/api/contacts", (req, res) => {
+app.get("/api/contacts", async (req, res) => {
   try {
-    res.json(jsonData.emergency_contacts || []);
+    const contacts = await Contact.find();
+    res.json(contacts);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching data" });
+    res.status(500).json({ error: "Error fetching contacts data" });
   }
 });
 
-app.get("/api/accidents", (req, res) => {
+app.get("/api/accidents", async (req, res) => {
   try {
-    res.json(jsonData.accidents || []);
+    const accidents = await Accident.find();
+    res.json(accidents);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Single accident by "index" or "id"? 
-// If you need an ID system, you'll have to store `_id` in the JSON or handle indexing
-app.get("/api/accidents/:id", (req, res) => {
+app.get("/api/accidents/:id", async (req, res) => {
   try {
-    const index = parseInt(req.params.id, 10);
-    if (isNaN(index) || index < 0 || index >= jsonData.accidents.length) {
+    const accident = await Accident.findById(req.params.id);
+    if (!accident) {
       return res.status(404).json({ error: "Accident not found" });
     }
-    res.json(jsonData.accidents[index]);
+    res.json(accident);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.post("/api/accidents", (req, res) => {
+app.post("/api/accidents", async (req, res) => {
   try {
     const { streetNumber, area, problem } = req.body;
-    const newAccident = { streetNumber, area, problem };
-    jsonData.accidents.push(newAccident);
-
-    fs.writeFileSync(dataFilePath, JSON.stringify(jsonData, null, 2));
-
-    res.status(201).json(newAccident);
+    const accident = new Accident({ streetNumber, area, problem });
+    await accident.save();
+    res.status(201).json(accident);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.get("/api/institutions", (req, res) => {
-  try {
-    if (jsonData.institutions && jsonData.institutions.length > 0) {
-      return res.json(jsonData.institutions);
-    }
-    res.json([]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.put("/api/accidents/:id", (req, res) => {
+app.put("/api/accidents/:id", async (req, res) => {
   try {
     const { streetNumber, area, problem } = req.body;
-    const index = parseInt(req.params.id, 10);
-    if (isNaN(index) || index < 0 || index >= jsonData.accidents.length) {
+    const accident = await Accident.findByIdAndUpdate(
+      req.params.id,
+      { streetNumber, area, problem },
+      { new: true }
+    );
+    if (!accident) {
       return res.status(404).json({ error: "Accident not found" });
     }
-    jsonData.accidents[index] = { streetNumber, area, problem };
-    fs.writeFileSync(dataFilePath, JSON.stringify(jsonData, null, 2));
-    res.json(jsonData.accidents[index]);
+    res.json(accident);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.delete("/api/accidents/:id", (req, res) => {
+app.delete("/api/accidents/:id", async (req, res) => {
   try {
-    const index = parseInt(req.params.id, 10);
-    if (isNaN(index) || index < 0 || index >= jsonData.accidents.length) {
+    const accident = await Accident.findByIdAndDelete(req.params.id);
+    if (!accident) {
       return res.status(404).json({ error: "Accident not found" });
     }
-    jsonData.accidents.splice(index, 1);
-    fs.writeFileSync(dataFilePath, JSON.stringify(jsonData, null, 2));
     res.json({ message: "Accident deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
+// ----------------- Driver & Reviews Endpoints -----------------
 
-app.get("/api/randomDriver", (req, res) => {
+app.get("/api/randomDriver", async (req, res) => {
   try {
-    const drivers = jsonData.drivers_privaterides || [];
+    const drivers = await Driver.find();
     if (drivers.length === 0) {
       return res.status(404).json({ error: "No drivers available" });
     }
@@ -261,16 +332,17 @@ app.get("/api/randomDriver", (req, res) => {
   }
 });
 
-app.get("/api/driverReviews", (req, res) => {
+
+app.get("/api/driverReviews", async (req, res) => {
   try {
     const { id } = req.query;
     if (!id) {
       return res.status(400).json({ error: "Driver ID is required" });
     }
-    // We assume driverId in JSON is a number or something
-    const allReviews = jsonData.driver_reviews || [];
-    const reviews = allReviews.filter((rev) => rev.driverId === parseInt(id, 10));
-    // Return only up to 5
+
+    // Fetch reviews and convert driverId to string for comparison
+    const allReviews = await DriverReview.find().lean();
+    const reviews = allReviews.filter((rev) => rev.driverId.toString() === id.toString());
     res.json(reviews.slice(0, 5));
   } catch (error) {
     res.status(500).json({ error: "Server error" });
@@ -278,20 +350,19 @@ app.get("/api/driverReviews", (req, res) => {
 });
 
 
-// If you store user tickets in data.json
-// e.g., array named "tickets" with {ticketid, vehicleType, rating, description}
 
-app.get("/api/validateTicket", (req, res) => {
+// ----------------- Ticket & Booking Endpoints -----------------
+
+app.get("/api/validateTicket", async (req, res) => {
   try {
     let { ticketid, vehicleType } = req.query;
     if (!ticketid || !vehicleType) {
       return res.status(400).json({ exists: false, error: "ticketid and vehicleType required" });
     }
-    const t = jsonData.tickets.find(
-      (tk) =>
-        tk.ticketid === ticketid.trim() &&
-        tk.vehicleType.toLowerCase() === vehicleType.trim().toLowerCase()
-    );
+    const t = await Ticket.findOne({
+      ticketid: ticketid.trim(),
+      vehicleType: { $regex: new RegExp("^" + vehicleType + "$", "i") }
+    });
     if (t) {
       res.json({ exists: true });
     } else {
@@ -303,84 +374,136 @@ app.get("/api/validateTicket", (req, res) => {
   }
 });
 
-app.put("/api/updateFeedback/:ticketid", (req, res) => {
+app.put("/api/updateFeedback/:ticketid", async (req, res) => {
   try {
     const { rating, description } = req.body;
     const numericRating = parseFloat(rating);
     const ticketid = req.params.ticketid.trim();
 
-    // Find ticket in data.json
-    const idx = jsonData.tickets.findIndex((t) => t.ticketid === ticketid);
-    if (idx === -1) {
+    const ticket = await Ticket.findOneAndUpdate(
+      { ticketid },
+      { rating: numericRating, description },
+      { new: true }
+    );
+    if (!ticket) {
       return res.status(404).json({ error: "Ticket not found" });
     }
-
-    jsonData.tickets[idx].rating = numericRating;
-    jsonData.tickets[idx].description = description;
-
-    fs.writeFileSync(dataFilePath, JSON.stringify(jsonData, null, 2));
-
-    res.json(jsonData.tickets[idx]);
+    res.json(ticket);
   } catch (err) {
     console.error("Error updating ticket feedback:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-
-app.get("/api/searchTickets", (req, res) => {
+app.get("/api/searchTickets", async (req, res) => {
   try {
     const { source, destination } = req.query;
     console.log("Searching for bookings with:", { source, destination });
 
-    const allBookings = jsonData.bookings || [];
-    const filtered = allBookings.filter(
-      (b) =>
-        b.source.toLowerCase() === source.trim().toLowerCase() &&
-        b.destination.toLowerCase() === destination.trim().toLowerCase()
-    );
+    const bookings = await Booking.find({
+      source: { $regex: new RegExp("^" + source.trim() + "$", "i") },
+      destination: { $regex: new RegExp("^" + destination.trim() + "$", "i") }
+    });
 
-    console.log("Found bookings from JSON:", filtered);
-    res.json(filtered);
+    console.log("Found bookings:", bookings);
+    res.json(bookings);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.post("/api/processPayment", (req, res) => {
+// ----------------- Payment Processing -----------------
+
+app.post("/api/processPayment", async (req, res) => {
   try {
-    // In JSON approach, you'd find booking by index or some unique ID
-    // then update seats, etc. For brevity, we simulate success
-    const { ticketId, paymentMethod, email } = req.body;
+    const { ticketId, paymentMethod, email, cardNumber, cardExpiry, cardCVV, upiId } = req.body;
+
     if (!ticketId || !paymentMethod || !email) {
       return res.status(400).json({ error: "Missing required information (ticketId, paymentMethod, email)" });
     }
-    // Update seat count in JSON if needed...
-    // Then send an email (nodemailer)...
 
-    // Example nodemailer usage
+    console.log("Received ticketId:", ticketId);
+    // Find the booking by matching route_id with the provided ticketId
+    const ticket = await Booking.findById(ticketId);
+    if (!ticket) {
+      console.error("Ticket not found for ticketId:", ticketId);
+      return res.status(404).json({ error: "Ticket not found" });
+    }
+
+    if (ticket.bookedSeats >= ticket.seats) {
+      return res.status(400).json({ error: "No seats available" });
+    }
+
+    // Process payment simulation
+    if (paymentMethod === "card") {
+      if (!cardNumber || !cardExpiry || !cardCVV) {
+        return res.status(400).json({ error: "Incomplete card details" });
+      }
+      console.log("Processing card payment...");
+      // Here, you would integrate with a real payment gateway.
+    } else if (paymentMethod === "upi") {
+      if (!upiId) {
+        return res.status(400).json({ error: "UPI ID is required" });
+      }
+      console.log("Processing UPI payment...");
+      // Here, integrate with a UPI payment gateway.
+    } else {
+      return res.status(400).json({ error: "Invalid payment method" });
+    }
+
+    // Update seat count (simulate booking 1 seat)
+    ticket.bookedSeats += 1;
+    await ticket.save();
+
+    // Configure nodemailer transporter
     let transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "saisimhadri2207@gmail.com", // Replace with your email
-        pass: "kght pxda coha ghra"        // Replace with your password or app password
-      },
+        user: process.env.EMAIL_USER || "saisimhadri2207@gmail.com",
+        pass: process.env.EMAIL_PASS || "kght pxda coha ghra"
+      }
     });
+
+    const formattedDate = ticket.date.toISOString().split("T")[0];
 
     let mailOptions = {
       from: '"Smart City Booking" <saisimhadri2207@gmail.com>',
       to: email,
-      subject: "Booking Confirmation - JSON Mode",
-      text: `Your booking with ID ${ticketId} has been processed via ${paymentMethod}.`,
+      subject: "Booking Confirmation - Your Journey Details",
+      text: `Dear Customer,
+
+Your booking for ticket ${ticket.route_id} has been confirmed!
+
+Journey Details:
+  - Route: ${ticket.source} to ${ticket.destination}
+  - Date: ${formattedDate}
+  - Vehicle Type: ${ticket.vehicleType}
+  - Price: ₹${ticket.price}
+
+Thank you for choosing our service!
+
+Regards,
+Smart City Booking Team`,
+      html: `<p>Dear Customer,</p>
+             <p>Your booking for ticket <strong>${ticket.route_id}</strong> has been confirmed!</p>
+             <h3>Journey Details:</h3>
+             <ul>
+               <li><strong>Route:</strong> ${ticket.source} to ${ticket.destination}</li>
+               <li><strong>Date:</strong> ${formattedDate}</li>
+               <li><strong>Vehicle Type:</strong> ${ticket.vehicleType}</li>
+               <li><strong>Price:</strong> ₹${ticket.price}</li>
+             </ul>
+             <p>Thank you for choosing <strong>Smart City Booking</strong>. We wish you a safe and pleasant journey!</p>
+             <p>Regards,<br>Smart City Booking Team</p>`
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error("Error sending email:", error);
-        return res.status(500).json({ error: "Booking confirmed, but email failed" });
+        return res.status(500).json({ error: "Booking confirmed, but failed to send confirmation email" });
       }
       console.log("Email sent: " + info.response);
-      res.json({ message: "Payment processed and confirmation email sent" });
+      res.json({ message: "Payment processed and confirmation email sent", ticketId: ticket.route_id });
     });
   } catch (err) {
     console.error("Error processing payment:", err);

@@ -187,38 +187,40 @@
                 if (!response.ok) throw new Error("Network error");
 
                 const driver = await response.json();
+                console.log("Fetched driver object:", driver); // Check this output
 
-                currentDriverId = driver._id; // Store the driver ID
+                currentDriverId = driver._id ? driver._id.toString() : undefined;
+                console.log("Current Driver ID:", currentDriverId);
 
                 const driverDetailsDiv = document.getElementById("driverDetails");
                 const rating = parseFloat(driver.rating);
                 const ratingPercentage = (rating / 5) * 100;
 
                 driverDetailsDiv.innerHTML = `
-                <h2>Your Driver</h2>
-                <p><strong>Name:</strong> ${driver.driverName}</p>
-                <p><strong>Phone Number:</strong> ${driver.phoneNumber}</p>
-                <p>
-                    <strong>Rating:</strong>
-                    <span class="rating-container">
-                        <span class="rating-value">${rating.toFixed(1)}/5</span>
-                        <span class="rating-bar-container">
-                            <span class="rating-bar" style="width: ${ratingPercentage}%"></span>
-                        </span>
+            <h2>Your Driver</h2>
+            <p><strong>Name:</strong> ${driver.driverName}</p>
+            <p><strong>Phone Number:</strong> ${driver.phoneNumber}</p>
+            <p>
+                <strong>Rating:</strong>
+                <span class="rating-container">
+                    <span class="rating-value">${rating.toFixed(1)}/5</span>
+                    <span class="rating-bar-container">
+                        <span class="rating-bar" style="width: ${ratingPercentage}%"></span>
                     </span>
-                </p>
-                <p>
-                    <a href="#" onclick="showDriverReviews()" style="color: #5069d8; text-decoration: underline;">
-                        Click here to view recent reviews
-                    </a>
-                </p>
-            `;
-
+                </span>
+            </p>
+            <p>
+                <a href="#" onclick="showDriverReviews()" style="color: #5069d8; text-decoration: underline;">
+                    Click here to view recent reviews
+                </a>
+            </p>
+        `;
             } catch (error) {
                 console.error("Error fetching driver:", error);
                 document.getElementById("driverDetails").innerHTML = "<p>Error loading driver details.</p>";
             }
         }
+
 
         async function showDriverReviews() {
             if (!currentDriverId) {
