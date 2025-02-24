@@ -1,6 +1,3 @@
-/***********************************************
- * index.js
- ***********************************************/
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -15,9 +12,6 @@ app.use(express.json());
 // Serve static files from the public folder
 app.use(express.static(path.join(__dirname, "public")));
 
-/************************************************
- * Load data from data.json in public folder
- ************************************************/
 const dataFilePath = path.join(__dirname, "public", "data.json");
 let jsonData = {};
 if (fs.existsSync(dataFilePath)) {
@@ -68,7 +62,9 @@ app.get("/logout", (req, res) => {
   }
 });
 
-
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "about.html"));
+});
 app.get("/home", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "mainhome.html"));
 });
