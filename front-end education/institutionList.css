@@ -1,116 +1,269 @@
-/* General Page Styling */
+/* Main Container */
 .container {
-    max-width: 100%;
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
-    text-align: center;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 50px 20px;
 }
 
-/* Title & Subtitle */
-.title {
-    font-size: 2rem;
+/* Institution Card */
+.institution-card {
+    width: 80%;
+    max-width: 600px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    cursor: pointer;
+}
+
+.institution-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Header */
+.card-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* University Name */
+.university-name {
+    flex-grow: 1;
+    text-align: center;
     font-weight: bold;
+}
+
+/* Favorite Button */
+.favorite-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #ff4757;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin-left: 10px;
+}
+
+.favorite-btn:hover {
+    transform: scale(1.2);
+}
+
+/* Card Body */
+.card-body {
+    padding: 20px;
+    font-size: 1.5rem;
     color: #333;
 }
 
-.subtitle {
-    font-size: 1.5rem;
-    color: gray;
+/* Rating */
+.rating {
+    font-size: 1.1rem;
+    color: #ffcc00;
     margin-bottom: 20px;
 }
 
-/* Search Box */
+/* Apply Button */
+.apply-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.apply-btn:hover {
+    background-color: #218838;
+    transform: scale(1.1);
+}
+
+/* Institution List Grid */
+.institution-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+/* Content Section */
+.content {
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+/* Search and Sort */
+.search-sort-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
 .search-box {
-    width: 60%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    width: 300px;
+    transition: border-color 0.3s ease;
+}
+
+.search-box:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
 .search-btn {
-    padding: 10px 15px;
-    margin-left: 10px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 .search-btn:hover {
     background-color: #0056b3;
 }
 
-/* Sorting Buttons */
-.sort-buttons {
-    margin-top: 15px;
+/* Dashboard Styles */
+.dashboard {
+    width: 100%;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
 }
 
-.sort-btn {
-    padding: 10px 15px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
+.dashboard-title {
+    font-size: 5rem;
+    font-weight: bold;
+    color: black;
+}
+
+.dashboard-subtitle {
+    font-size: 2rem;
+    color: black;
+    margin-bottom: 20px;
+}
+
+/* Institution Page */
+.institution-page {
+    padding: 50px 20px;
+    background-color: #f4f4f4;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.pagination button {
     background-color: #007bff;
     color: white;
-}
-
-.rank-asc {
-    background-color: #28a745;
-}
-
-.rank-desc {
-    background-color: #dc3545;
-}
-
-.sort-btn:hover {
-    opacity: 0.8;
-}
-
-/* Institution List */
-.institution-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-/* Institution Card */
-.institution-card {
-    width: 300px;
-    background: #f9f9f9;
-    margin: 15px;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-decoration: none;
-    color: black;
-    transition: transform 0.3s ease-in-out;
-}
-
-.institution-card:hover {
-    transform: scale(1.05);
-}
-
-/* Institution Image */
-.institution-img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
     border-radius: 8px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-/* No Results Message */
-.no-results {
-    font-size: 18px;
-    color: red;
-    margin-top: 20px;
+.pagination button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+    }
+
+    .institution-card {
+        width: 100%;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .dashboard-title {
+        font-size: 3rem;
+    }
+
+    .dashboard-subtitle {
+        font-size: 1.5rem;
+    }
+
+    .content {
+        padding: 20px;
+    }
+}
+/* Auth buttons */
+.auth-nav {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+.auth-btn {
+    padding: 10px 20px;
+    border: 2px solid #fff;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.auth-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.login-btn {
+    background-color: #0073e6;
+    border-color: #0073e6;
+}
+
+.login-btn:hover {
+    background-color: #005bb5;
+}
+.sort-dropdown {
+    padding: 8px 12px;
+    margin-left: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
 }

@@ -2,96 +2,158 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/styles.css";
-import dashboardBg from "../assets/dashboard-bg.jpg";  // ✅ Import the background image
+import dashboardBg from "../assets/dashboard-bg.jpg";
+import "./InstitutionList.css";
 
 const InstitutionList = () => {
     const [institutions, setInstitutions] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [sortedInstitutions, setSortedInstitutions] = useState([]);
+    const [favorites, setFavorites] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [sortOption, setSortOption] = useState("A-Z");
 
     useEffect(() => {
-        fetch("http://localhost:5001/institutions")
-            .then((response) => response.json())
-            .then((data) => {
-                const institutionsWithRating = data.map(inst => ({
-                    ...inst,
-                    rating: inst.rating || 4, // Default rating if not present
-                }));
-                setInstitutions(institutionsWithRating);
-                setSortedInstitutions(institutionsWithRating);
-            })
-            .catch((error) => console.error("Error fetching data:", error));
+        const fetchInstitutions = async () => {
+            try {
+                const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/institutions`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch institutions");
+                }
+                const data = await response.json();
+                setInstitutions(data || []);
+                setSortedInstitutions(data || []);
+            } catch (err) {
+                console.error("Error fetching data:", err.message);
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchInstitutions();
     }, []);
 
     useEffect(() => {
-        const filtered = institutions.filter((inst) =>
-            inst.institution.toLowerCase().includes(searchQuery.toLowerCase())
+        let filtered = institutions.filter((inst) =>
+            inst?.institution?.toLowerCase().includes(searchQuery.toLowerCase())
         );
+
+        switch (sortOption) {
+            case "A-Z":
+                filtered.sort((a, b) => a.institution.localeCompare(b.institution));
+                break;
+            case "Z-A":
+                filtered.sort((a, b) => b.institution.localeCompare(a.institution));
+                break;
+            case "Ranking Asc":
+                filtered.sort((a, b) => (a.world_rank || 9999) - (b.world_rank || 9999));
+                break;
+            case "Ranking Desc":
+                filtered.sort((a, b) => (b.world_rank || 9999) - (a.world_rank || 9999));
+                break;
+            default:
+                break;
+        }
+
         setSortedInstitutions(filtered);
-    }, [searchQuery, institutions]);
+    }, [searchQuery, sortOption, institutions]);
+
+    const toggleFavorite = (id) => {
+        setFavorites((prevFavorites) =>
+            prevFavorites.includes(id)
+                ? prevFavorites.filter((favId) => favId !== id)
+                : [...prevFavorites, id]
+        );
+    };
+
+    if (loading) {
+        return <div className="text-center mt-5">Loading institutions...</div>;
+    }
+
+    if (error) {
+        return <div className="text-center text-danger mt-5">Error: {error}</div>;
+    }
 
     return (
         <div className="institution-page">
-            {/* ✅ Dashboard Section with Background Image Fix */}
-            <div 
+            <div
                 className="dashboard"
                 style={{
                     backgroundImage: `url(${dashboardBg})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     width: "100vw",
-                    height: "700px"
-                    
+                    height: "700px",
+                    position: "relative"
                 }}
             >
-                <h1 style={{ fontSize: "5rem", color: "black" }}>INSTITUTION DASHBOARD</h1>
-
-                <h2 style ={{fontSize: "2rem", color: "black" }} >Find The Best Institutions Based On Your Interest.</h2>
+                <nav className="auth-nav">
+                    <Link to="/signup" className="auth-btn">Sign Up</Link>
+                    <Link to="/login" className="auth-btn login-btn">Login</Link>
+                </nav>
+                <h1 className="dashboard-title">INSTITUTION DASHBOARD</h1>
+                <h2 className="dashboard-subtitle">Find The Best Institutions Based On Your Interest</h2>
             </div>
 
-            {/* Main Content */}
             <div className="container">
                 <h1 className="text-center fw-bold">Education Web App</h1>
                 <h2 className="text-center mb-4">Institution List</h2>
 
                 <div className="search-sort-container">
-                    <div className="search-bar">
-                        <input
-                            type="text"
-                            placeholder="Search Institutions..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="search-input"
-                        />
-                        <button className="btn-primary">Search</button>
-                    </div>
-
-                    <div className="sort-buttons">
-                        <button className="sort-btn" onClick={() => setSortedInstitutions([...sortedInstitutions].sort((a, b) => a.institution.localeCompare(b.institution)))}>Sort A-Z</button>
-                        <button className="sort-btn" onClick={() => setSortedInstitutions([...sortedInstitutions].sort((a, b) => b.institution.localeCompare(a.institution)))}>Sort Z-A</button>
-                        <button className="sort-btn" onClick={() => setSortedInstitutions([...sortedInstitutions].sort((a, b) => a.world_rank - b.world_rank))}>Sort by Rank ↑</button>
-                        <button className="sort-btn" onClick={() => setSortedInstitutions([...sortedInstitutions].sort((a, b) => b.world_rank - a.world_rank))}>Sort by Rank ↓</button>
-                    </div>
+                    <input
+                        type="text"
+                        placeholder="Search Institutions..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="search-box"
+                    />
+                    <select
+                        value={sortOption}
+                        onChange={(e) => setSortOption(e.target.value)}
+                        className="sort-dropdown"
+                    >
+                        <option value="A-Z">Sort by A-Z</option>
+                        <option value="Z-A">Sort by Z-A</option>
+                        <option value="Ranking Asc">Sort by Ranking (Asc)</option>
+                        <option value="Ranking Desc">Sort by Ranking (Desc)</option>
+                    </select>
+                    <button className="search-btn" onClick={() => console.log("Search clicked!")}>
+                        Search
+                    </button>
                 </div>
 
-                {/* Institution List */}
                 <div className="institution-list">
-                    {sortedInstitutions.map((inst) => (
-                        <div key={inst._id} className="institution-item">
-                            <Link to={`/institution/${inst._id}`} className="text-decoration-none">
-                                <h3>{inst.institution}</h3>
-                                <p>Ranking: <strong>{inst.world_rank}</strong></p>
-                                <p>Rating: <strong>{inst.rating} ⭐</strong></p>
-                            </Link>
+                    {sortedInstitutions.length > 0 ? (
+                        sortedInstitutions.map((inst) => (
+                            <div key={inst?._id || Math.random()} className="institution-card">
+                                <button
+                                    className="favorite-btn"
+                                    onClick={() => toggleFavorite(inst._id)}
+                                >
+                                    {favorites.includes(inst._id) ? "❤️" : "🤍"}
+                                </button>
+                                <Link to={`/institution/${inst._id}`} className="institution-link">
+                                    <div className="card-header">
+                                        {inst?.institution || "Unnamed Institution"}
+                                    </div>
+                                    <div className="card-body">
+                                        <p>World Rank: <strong>{inst?.world_rank || "4"}</strong></p>
+                                        <p className="rating">Rating: {inst?.rating || "4"} ⭐</p>
+                                    </div>
+                                </Link>
+                                <Link to={`/apply/${inst._id}`}>
+                                    <button className="apply-btn">Apply Now</button>
+                                </Link>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="alert alert-warning text-center mt-3">
+                            No institutions found matching your search.
                         </div>
-                    ))}
+                    )}
                 </div>
-
-                {sortedInstitutions.length === 0 && (
-                    <div className="alert alert-warning text-center mt-3">
-                        No institutions found matching your search.
-                    </div>
-                )}
             </div>
         </div>
     );
