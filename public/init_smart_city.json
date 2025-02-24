@@ -1,0 +1,442 @@
+{
+    "accidents": [
+        {
+            "_id": "67b8d9cff66d98d140f344fe",
+            "streetNumber": "202",
+            "area": "Bandra",
+            "problem": "Rear-end collision",
+            "__v": ""
+        },
+        {
+            "_id": "67b8d9cff66d98d140f344ff",
+            "streetNumber": "303",
+            "area": "Connaught Place",
+            "problem": "Pedestrian hit by car",
+            "__v": ""
+        },
+        {
+            "_id": "67b8d9cff66d98d140f34502",
+            "streetNumber": "606",
+            "area": "Viman Nagar",
+            "problem": "Skid due to rain",
+            "__v": ""
+        },
+        {
+            "_id": "67b8d9cff66d98d140f34503",
+            "streetNumber": "707",
+            "area": "Indiranagar",
+            "problem": "Hit and run incident",
+            "__v": ""
+        },
+        {
+            "_id": "67b8d9cff66d98d140f34504",
+            "streetNumber": "808",
+            "area": "Park Street",
+            "problem": "Minor collision",
+            "__v": ""
+        },
+        {
+            "_id": "67b8d9cff66d98d140f34505",
+            "streetNumber": "909",
+            "area": "Marathahalli",
+            "problem": "Accident due to slippery road",
+            "__v": ""
+        },
+        {
+            "_id": "67b8d9cff66d98d140f34506",
+            "streetNumber": "1010",
+            "area": "Andheri",
+            "problem": "Rear-end collision",
+            "__v": ""
+        },
+        {
+            "_id": "67b8d9eb6eb91abdaadcfdbb",
+            "streetNumber": "1234",
+            "area": "Coimbatore",
+            "problem": "Truck Car Crash",
+            "__v": "0"
+        },
+        {
+            "_id": "67b8dcb4f41af5dc0f5a2fd6",
+            "streetNumber": "101",
+            "area": "Ganshipuram",
+            "problem": "4 vehicle collision\n",
+            "__v": "0"
+        },
+        {
+            "_id": "67b8df6af41af5dc0f5a2fe2",
+            "streetNumber": "456",
+            "area": "Kukatpally",
+            "problem": "Bike Car Crash",
+            "__v": "0"
+        }
+    ],
+    "bookings": [
+        {
+            "_id": "67b9d8110e861ecfedc8073a",
+            "route_id": "R001",
+            "source": "Coimbatore",
+            "destination": "Chennai",
+            "vehicleType": "Bus",
+            "price": 500,
+            "seats": 40,
+            "bookedSeats": 39,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8073b",
+            "route_id": "R002",
+            "source": "Coimbatore",
+            "destination": "Chennai",
+            "vehicleType": "Bus",
+            "price": 500,
+            "seats": 40,
+            "bookedSeats": 38,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8073c",
+            "route_id": "R003",
+            "source": "Coimbatore",
+            "destination": "Chennai",
+            "vehicleType": "Train",
+            "price": 750,
+            "seats": 100,
+            "bookedSeats": 92,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8073d",
+            "route_id": "R004",
+            "source": "Coimbatore",
+            "destination": "Chennai",
+            "vehicleType": "Train",
+            "price": 750,
+            "seats": 100,
+            "bookedSeats": 88,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8073e",
+            "route_id": "R005",
+            "source": "Coimbatore",
+            "destination": "Chennai",
+            "vehicleType": "Flight",
+            "price": 2500,
+            "seats": 150,
+            "bookedSeats": 146,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8073f",
+            "route_id": "R006",
+            "source": "Coimbatore",
+            "destination": "Chennai",
+            "vehicleType": "Flight",
+            "price": 2500,
+            "seats": 150,
+            "bookedSeats": 141,
+            "date": "2025-03-01T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80740",
+            "route_id": "R007",
+            "source": "Coimbatore",
+            "destination": "Bangalore",
+            "vehicleType": "Bus",
+            "price": 400,
+            "seats": 40,
+            "bookedSeats": 10,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80741",
+            "route_id": "R008",
+            "source": "Coimbatore",
+            "destination": "Bangalore",
+            "vehicleType": "Bus",
+            "price": 400,
+            "seats": 40,
+            "bookedSeats": 12,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80742",
+            "route_id": "R009",
+            "source": "Coimbatore",
+            "destination": "Bangalore",
+            "vehicleType": "Train",
+            "price": 600,
+            "seats": 100,
+            "bookedSeats": 60,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80743",
+            "route_id": "R010",
+            "source": "Coimbatore",
+            "destination": "Bangalore",
+            "vehicleType": "Train",
+            "price": 600,
+            "seats": 100,
+            "bookedSeats": 55,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80744",
+            "route_id": "R011",
+            "source": "Coimbatore",
+            "destination": "Bangalore",
+            "vehicleType": "Flight",
+            "price": 2000,
+            "seats": 150,
+            "bookedSeats": 130,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80745",
+            "route_id": "R012",
+            "source": "Coimbatore",
+            "destination": "Bangalore",
+            "vehicleType": "Flight",
+            "price": 2000,
+            "seats": 150,
+            "bookedSeats": 125,
+            "date": "2025-03-01T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80746",
+            "route_id": "R013",
+            "source": "Chennai",
+            "destination": "Bangalore",
+            "vehicleType": "Bus",
+            "price": 450,
+            "seats": 40,
+            "bookedSeats": 35,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80747",
+            "route_id": "R014",
+            "source": "Chennai",
+            "destination": "Bangalore",
+            "vehicleType": "Bus",
+            "price": 450,
+            "seats": 40,
+            "bookedSeats": 33,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80748",
+            "route_id": "R015",
+            "source": "Chennai",
+            "destination": "Bangalore",
+            "vehicleType": "Train",
+            "price": 650,
+            "seats": 100,
+            "bookedSeats": 50,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80749",
+            "route_id": "R016",
+            "source": "Chennai",
+            "destination": "Bangalore",
+            "vehicleType": "Train",
+            "price": 650,
+            "seats": 100,
+            "bookedSeats": 55,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8074a",
+            "route_id": "R017",
+            "source": "Chennai",
+            "destination": "Bangalore",
+            "vehicleType": "Flight",
+            "price": 2200,
+            "seats": 150,
+            "bookedSeats": 100,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8074b",
+            "route_id": "R018",
+            "source": "Chennai",
+            "destination": "Bangalore",
+            "vehicleType": "Flight",
+            "price": 2200,
+            "seats": 150,
+            "bookedSeats": 95,
+            "date": "2025-03-01T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8074c",
+            "route_id": "R019",
+            "source": "Mumbai",
+            "destination": "Chennai",
+            "vehicleType": "Bus",
+            "price": 800,
+            "seats": 40,
+            "bookedSeats": 22,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8074d",
+            "route_id": "R020",
+            "source": "Mumbai",
+            "destination": "Chennai",
+            "vehicleType": "Bus",
+            "price": 800,
+            "seats": 40,
+            "bookedSeats": 18,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8074e",
+            "route_id": "R021",
+            "source": "Mumbai",
+            "destination": "Chennai",
+            "vehicleType": "Train",
+            "price": 1200,
+            "seats": 100,
+            "bookedSeats": 80,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8074f",
+            "route_id": "R022",
+            "source": "Mumbai",
+            "destination": "Chennai",
+            "vehicleType": "Train",
+            "price": 1200,
+            "seats": 100,
+            "bookedSeats": 78,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80750",
+            "route_id": "R023",
+            "source": "Mumbai",
+            "destination": "Chennai",
+            "vehicleType": "Flight",
+            "price": 3500,
+            "seats": 150,
+            "bookedSeats": 141,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80751",
+            "route_id": "R024",
+            "source": "Mumbai",
+            "destination": "Chennai",
+            "vehicleType": "Flight",
+            "price": 3500,
+            "seats": 150,
+            "bookedSeats": 138,
+            "date": "2025-03-01T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80752",
+            "route_id": "R025",
+            "source": "Mumbai",
+            "destination": "Delhi",
+            "vehicleType": "Bus",
+            "price": 900,
+            "seats": 40,
+            "bookedSeats": 38,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80753",
+            "route_id": "R026",
+            "source": "Mumbai",
+            "destination": "Delhi",
+            "vehicleType": "Bus",
+            "price": 900,
+            "seats": 40,
+            "bookedSeats": 37,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80754",
+            "route_id": "R027",
+            "source": "Mumbai",
+            "destination": "Delhi",
+            "vehicleType": "Train",
+            "price": 1500,
+            "seats": 100,
+            "bookedSeats": 90,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80755",
+            "route_id": "R028",
+            "source": "Mumbai",
+            "destination": "Delhi",
+            "vehicleType": "Train",
+            "price": 1500,
+            "seats": 100,
+            "bookedSeats": 88,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80756",
+            "route_id": "R029",
+            "source": "Mumbai",
+            "destination": "Delhi",
+            "vehicleType": "Flight",
+            "price": 4500,
+            "seats": 150,
+            "bookedSeats": 145,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80757",
+            "route_id": "R030",
+            "source": "Mumbai",
+            "destination": "Delhi",
+            "vehicleType": "Flight",
+            "price": 4500,
+            "seats": 150,
+            "bookedSeats": 142,
+            "date": "2025-03-01T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80758",
+            "route_id": "R031",
+            "source": "Delhi",
+            "destination": "Chennai",
+            "vehicleType": "Bus",
+            "price": 950,
+            "seats": 40,
+            "bookedSeats": 10,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc80759",
+            "route_id": "R032",
+            "source": "Delhi",
+            "destination": "Chennai",
+            "vehicleType": "Bus",
+            "price": 950,
+            "seats": 40,
+            "bookedSeats": 12,
+            "date": "2025-02-28T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8075a",
+            "route_id": "R033",
+            "source": "Delhi",
+            "destination": "Chennai",
+            "vehicleType": "Train",
+            "price": 1400,
+            "seats": 100,
+            "bookedSeats": 50,
+            "date": "2025-02-27T00:00:00.000Z"
+        },
+        {
+            "_id": "67b9d8110e861ecfedc8075b",
+            "route_id": "R034",
+            "source": "Delhi",
+            "destination": "Chennai",

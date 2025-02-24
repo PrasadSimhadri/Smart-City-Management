@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Guide on Traffic Rules</title>
+  <script src="header.js"></script>
+  <style>
+    body,
+    html {
+      font-family: 'Segoe UI';
+      width: 100%;
+      height: 100%;
+    }
+
+    .mainbody {
+      margin-top: -25px;
+    }
+
+    .pageheading {
+      margin-left: 3%;
+      line-height: 125%;
+      font-size: 150%;
+      margin-top: 40px;
+    }
+
+    .mainsection {
+      margin-left: 200px;
+      height: 1000px;
+    }
+
+    .mainrow {
+      display: flex;
+      /* Removed margin-left: 100px; to avoid horizontal shift */
+      margin-top: 20px;
+    }
+
+    img {
+      height: 150px;
+      width: 200px;
+      background-color: brown;
+      margin-top: 10px;
+      border-radius: 30px;
+    }
+
+    .sign1,
+    .sign2,
+    .sign3,
+    .sign4,
+    .sign5 {
+      height: 240px;
+      width: 200px;
+      margin-right: 50px;
+      border-radius: 30px;
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+      perspective: 1000px;
+    }
+
+    .sign1 .inner,
+    .sign2 .inner,
+    .sign3 .inner,
+    .sign4 .inner,
+    .sign5 .inner {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sign1:hover .inner,
+    .sign2:hover .inner,
+    .sign3:hover .inner,
+    .sign4:hover .inner,
+    .sign5:hover .inner {
+      transform: rotateY(180deg);
+    }
+
+    .front,
+    .back {
+      position: absolute;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 30px;
+    }
+
+    .back {
+      background: linear-gradient(95deg, #6acce7, #ef51d2);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      transform: rotateY(180deg);
+      box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.2);
+      height: 200px;
+      width: 180px;
+    }
+
+    .heading {
+      line-height: 125%;
+      background: linear-gradient(180deg, #5aa9d9, #a6ceda, #ffffff);
+      height: 200px;
+      padding: 30px;
+      /* Removed margin so that content starts right below header */
+    }
+
+    .page-heading {
+      color: rgb(19, 3, 59);
+      font-size: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="header-container"></div>
+  <div class="mainbody">
+    <div class="heading">
+      <div class="pageheading" style="color:rgb(19, 3, 59);">
+        <h1>Know the Rules,</h1>
+        <h1>Drive with Confidence!</h1>
+      </div>
+    </div>
+    <div class="mainsection">
+      <div class="mainrow">
+        <div class="sign1">
+          <div class="inner">
+            <div class="front">
+              <img src="images/stop.jpg" style="height: 170px; width: 140px;">
+            </div>
+            <div class="back">
+              <h4>STOP - Must come to a complete stop</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign2">
+          <div class="inner">
+            <div class="front">
+              <img src="images/noentry.jpg" style="height: 120px; width: 120px;">
+            </div>
+            <div class="back">
+              <h4>NO ENTRY - Do not proceed beyond this point.</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign3">
+          <div class="inner">
+            <div class="front">
+              <img src="images/noparking.jpg" style="height: 130px; width: 120px;">
+            </div>
+            <div class="back">
+              <h4>NO PARKING - Stopping or parking here is prohibited.</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign4">
+          <div class="inner">
+            <div class="front">
+              <img src="images/nouturn.jpg" style="height: 130px; width: 120px;">
+            </div>
+            <div class="back">
+              <h4>NO U-TURN - Making a U-turn is prohibited</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign5">
+          <div class="inner">
+            <div class="front">
+              <img src="images/speedlimit.jpg" style="height: 140px; width: 140px;">
+            </div>
+            <div class="back">
+              <h4>SPEED LIMIT - Do not exceed the maximum speed indicated on the sign</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mainrow">
+        <div class="sign1">
+          <div class="inner">
+            <div class="front">
+              <img src="images/nohorn.jpg" style="height: 130px; width: 150px;">
+            </div>
+            <div class="back">
+              <h4>NO HORN - Honking is prohibited in this area. Maintain a quiet zone</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign2">
+          <div class="inner">
+            <div class="front">
+              <img src="images/trafficsignalahead.jpg" style="height: 110px; width: 140px;">
+            </div>
+            <div class="back">
+              <h4>TRAFFIC SIGNAL AHEAD - Be prepared to stop or proceed as per the traffic light signals</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign3">
+          <div class="inner">
+            <div class="front">
+              <img src="images/norightturn.jpg" style="height: 120px; width: 110px;">
+            </div>
+            <div class="back">
+              <h4>NO RIGHT TURN - Turning right is prohibited at this location</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign4">
+          <div class="inner">
+            <div class="front">
+              <img src="images/noleftturn.jpg" style="height: 140px; width: 130px;">
+            </div>
+            <div class="back">
+              <h4>NO LEFT TURN - Turning left is prohibited at this location</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign5">
+          <div class="inner">
+            <div class="front">
+              <img src="images/nostraight.jpg" style="height: 140px; width: 130px;">
+            </div>
+            <div class="back">
+              <h4>NO STRAIGHT - Going straight is prohibited beyond this point</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mainrow">
+        <div class="sign1">
+          <div class="inner">
+            <div class="front">
+              <img src="images/noovertake.jpg" style="height: 150px; width: 140px;">
+            </div>
+            <div class="back">
+              <h4>NO OVERTAKE - Overtaking other vehicles is prohibited in this zone</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign2">
+          <div class="inner">
+            <div class="front">
+              <img src="images/traintrack.png" style="height: 180px; width: 180px;">
+            </div>
+            <div class="back">
+              <h4>TRAIN TRACK AHEAD - Caution! Railway crossing ahead. Slow down and be prepared to stop</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign3">
+          <div class="inner">
+            <div class="front">
+              <img src="images/pedestrain.png" style="height: 160px; width: 160px;">
+            </div>
+            <div class="back">
+              <h4>PEDESTRIAN CROSSING - Watch for pedestrians. Slow down and give way to people crossing the road</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign4">
+          <div class="inner">
+            <div class="front">
+              <img src="images/narrowroad.jpg" style="height: 150px; width: 140px;">
+            </div>
+            <div class="back">
+              <h4>NARROW ROAD AHEAD - Road ahead becomes narrower. Drive cautiously and be prepared to adjust your speed
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign5">
+          <div class="inner">
+            <div class="front">
+              <img src="images/nohorn.jpg" style="height: 135px; width: 145px;">
+            </div>
+            <div class="back">
+              <h4>NO HORN - Silent zone, avoid honking</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mainrow">
+        <div class="sign1">
+          <div class="inner">
+            <div class="front">
+              <img src="images/cyclecrossing.png" style="height: 170px; width: 160px;">
+            </div>
+            <div class="back">
+              <h4>CYCLE CROSSING - Cyclists may be crossing the road ahead. Slow down and give way when necessary</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign2">
+          <div class="inner">
+            <div class="front">
+              <img src="images/menatwork.png" style="height: 160px; width: 160px;">
+            </div>
+            <div class="back">
+              <h4>MEN AT WORK - Roadwork ahead. Drive cautiously and be prepared for possible detours or obstructions
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign3">
+          <div class="inner">
+            <div class="front">
+              <img src="images/rightreversebend.jpg" style="height: 180px; width: 160px;">
+            </div>
+            <div class="back">
+              <h4>REVERSE BEND - The road curves sharply to the right and then to the left. Reduce speed and proceed
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign4">
+          <div class="inner">
+            <div class="front">
+              <img src="images/oneway.jpg" style="height: 110px; width: 110px;">
+            </div>
+            <div class="back">
+              <h4>ONE WAY - Do not enter. Traffic flows only in the opposite direction</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign5">
+          <div class="inner">
+            <div class="front">
+              <img src="images/seatbelt.jpg" style="height: 110px; width: 110px;">
+            </div>
+            <div class="back">
+              <h4>SEATBELT - Buckle up for safety. It’s the law and protects lives</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mainrow">
+        <div class="sign1">
+          <div class="inner">
+            <div class="front">
+              <img src="images/rightpinbend.jpg" style="height: 120px; width: 120px;">
+            </div>
+            <div class="back">
+              <h4>RIGHT PIN BEND - Sharp right turn ahead. Reduce speed and navigate carefully</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign2">
+          <div class="inner">
+            <div class="front">
+              <img src="images/leftpinbend.jpg" style="height: 120px; width: 120px;">
+            </div>
+            <div class="back">
+              <h4>LEFT PIN BEND - Sharp left turn ahead. Reduce speed and navigate carefully</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign3">
+          <div class="inner">
+            <div class="front">
+              <img src="images/allvehiclesprohibited.jpg" style="height: 130px; width: 120px;">
+            </div>
+            <div class="back">
+              <h4>ALL VEHICLES PROHIBITED - No entry for any type of vehicle beyond this point</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign4">
+          <div class="inner">
+            <div class="front">
+              <img src="images/roundabout.png" style="height: 170px; width: 140px;">
+            </div>
+            <div class="back">
+              <h4>ROUNDABOUT AHEAD - Reduce speed and keep moving in a circular direction</h4>
+            </div>
+          </div>
+        </div>
+        <div class="sign5">
+          <div class="inner">
+            <div class="front">
+              <img src="images/narrowbridge.jpg" style="height: 130px; width: 120px;">
+            </div>
+            <div class="back">
+              <h4>NARROW BRIDGE AHEAD - Slow down and proceed with caution</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

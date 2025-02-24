@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart City - Transportation</title>
+    <script src="header.js"></script>
+    <script src="logout.js"></script>
+</head>
+<style>
+    .mainheading{
+        margin-top: 50px;
+        text-align: center;
+        font-size: 45px;
+        font-weight: 700;
+    }
+
+    .main{
+        margin-left: 300px;
+        display: flex;
+        height: 400px;
+    }
+
+    .institutions, .learning{
+        border-radius: 30px;
+        background-color: rgba(226, 55, 12, 0.856);
+        width: 400px;
+        height: 400px;
+        text-align: center;
+        margin-right: 60px;
+    }
+
+    .institutions:hover, .learning:hover{
+        background-color: rgba(39, 2, 74, 0.925);
+        cursor: pointer;
+        transition: 0.4s;
+        color:white;
+    }
+
+    .institutions:hover h1, .learning:hover h1{
+        color:white;
+    }
+
+    .institutions h1, .learning h1{
+        padding-top: 160px;
+    }
+</style>
+<body>
+    <div id="header-container"></div> 
+    <div class="mainheading">
+        <p>EDUCATION</p>
+    </div>
+    <div class="main">
+        <a href="maininstitutions.html">
+            <div class="institutions">
+                <h1>Recommend Institutions</h1>
+            </div>
+        </a>
+        <a href="mainonline.html">
+            <div class="learning">
+                <h1>Online Learning Platform</h1>
+            </div>
+        </a>
+    </div>
+
+</body>
+</html>

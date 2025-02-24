@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart City - Transportation</title>
+    <script src="header.js"></script>
+    <script src="logout.js"></script>
+</head>
+<style>
+    .mainheading{
+        margin-top: 50px;
+        text-align: center;
+        font-size: 45px;
+        font-weight: 700;
+    }
+
+    .main{
+        margin-left: 120px;
+        display: flex;
+        height: 400px;
+    }
+
+    .public, .private, .road{
+        border-radius: 30px;
+        background-color: rgba(214, 55, 142, 0.549);
+        width: 400px;
+        height: 400px;
+        text-align: center;
+        margin-right: 60px;
+    }
+
+    .public:hover, .private:hover, .road:hover{
+        background-color: rgba(39, 2, 74, 0.925);
+        cursor: pointer;
+        transition: 0.4s;
+        color:white;
+    }
+
+    .public:hover h1, .private:hover h1, .road:hover h1{
+        color:white;
+    }
+
+    .public h1, .private h1, .road h1{
+        padding-top: 160px;
+    }
+</style>
+<body>
+    <div id="header-container"></div> 
+    <div class="mainheading">
+        <p>TRANSPORTATION</p>
+    </div>
+    <div class="main">
+        <a href="/public_transport">
+            <div class="public">
+                <h1>Public Transportation</h1>
+            </div>
+        </a>
+        <a href="/private_transport">
+            <div class="private">
+                <h1>Private Transportation</h1>
+            </div>
+        </a>
+        <a href="/road_safety">
+            <div class="road">
+                <h1>Traffic and Road Safety</h1>
+            </div>
+        </a>
+    </div>
+
+</body>
+</html>

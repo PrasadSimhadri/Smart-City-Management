@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Public Transport Feedback</title>
+    <script src="header.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5069d8;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            width: 650px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #d8d8db, #a698dd);
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        #feedbackForm {
+            padding-right: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        button {
+            background: #5069d8;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #3b4fa3;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <h1>PUBLIC TRANSPORT FEEDBACK</h1>
+    <div class="form-container">
+        <form id="feedbackForm">
+            <div class="form-group">
+                <label for="ticketid">Ticket ID:</label>
+                <input type="text" id="ticketid" name="ticketid" placeholder="Enter your ticket ID" required>
+            </div>
+            <div class="form-group">
+                <label for="vehicleType">Vehicle Type:</label>
+                <select id="vehicleType" name="vehicleType" required>
+                    <option value="">Select Vehicle Type</option>
+                    <option value="bus">Bus</option>
+                    <option value="train">Train</option>
+                    <option value="metro">Metro</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="rating">Rating (1-5):</label>
+                <select id="rating" name="rating" required>
+                    <option value="">Select Rating</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Feedback Description:</label>
+                <textarea id="description" name="description" placeholder="Enter your feedback"></textarea>
+            </div>
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("feedbackForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            // Collect form data and trim spaces
+            const ticketid = document.getElementById("ticketid").value.trim();
+            const vehicleType = document.getElementById("vehicleType").value.trim();
+            const rating = document.getElementById("rating").value;
+            const description = document.getElementById("description").value.trim();
+
+            // First, validate the ticket data against the existing dataset
+            try {
+                const validateResponse = await fetch(`http://localhost:3000/api/validateTicket?ticketid=${encodeURIComponent(ticketid)}&vehicleType=${encodeURIComponent(vehicleType)}`);
+                const validateData = await validateResponse.json();
+
+                if (!validateData.exists) {
+                    alert("Ticket details do not match our records. Please check your inputs.");
+                    return;
+                }
+            } catch (error) {
+                console.error("Error validating ticket:", error);
+                alert("Error validating ticket. Please try again later.");
+                return;
+            }
+
+            // Build payload to update feedback
+            const payload = {
+                rating, // backend will convert to number
+                description
+            };
+
+            try {
+                const updateResponse = await fetch(`http://localhost:3000/api/updateFeedback/${encodeURIComponent(ticketid)}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const result = await updateResponse.json();
+                if (updateResponse.ok) {
+                    alert("Thank you for your feedback!");
+                    window.location.href = "/thank_you";
+                } else {
+                    alert("Error: " + result.error);
+                }
+            } catch (error) {
+                console.error("Error updating feedback:", error);
+                alert("Error updating feedback. Please try again.");
+            }
+        });
+    </script>
+</body>
+
+</html>

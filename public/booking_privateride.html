@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Private Ride Booking</title>
+    <script src="header.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, sans-serif;
+            background: #f4f4f9;
+            padding: 20px;
+            margin: 0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5069d8;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #d8d8db, #a698dd);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            color: rgb(30, 10, 97);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        button {
+            background: #fff;
+            color: #5069d8;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease, transform 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #7787de;
+            transform: translateY(-2px);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <h1>BOOK YOUR RIDE</h1>
+    <div class="form-container">
+        <form id="bookingForm">
+            <!-- Always shown fields -->
+            <div class="form-group">
+                <label for="pickup">Pickup Location:</label>
+                <input type="text" id="pickup" name="pickup" placeholder="Enter pickup location" required>
+            </div>
+            <div class="form-group">
+                <label for="drop">Drop Location:</label>
+                <input type="text" id="drop" name="drop" placeholder="Enter drop location" required>
+            </div>
+            <div class="form-group">
+                <label for="vehicleType">Vehicle Type:</label>
+                <select id="vehicleType" name="vehicleType" required>
+                    <option value="">Select Vehicle</option>
+                    <option value="car">Car</option>
+                    <option value="bike">Bike</option>
+                    <option value="auto">Auto</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="rideTiming">Ride Now or Later:</label>
+                <select id="rideTiming" name="rideTiming" required>
+                    <option value="">Select Ride Now or Later</option>
+                    <option value="now">Ride Now</option>
+                    <option value="later">Ride Later</option>
+                </select>
+            </div>
+            <!-- Ride Later option -->
+            <div id="rideLaterOptions" class="hidden">
+                <div class="form-group">
+                    <label for="rideTime">Select Time (after current time):</label>
+                    <input type="time" id="rideTime" name="rideTime">
+                </div>
+            </div>
+            <!-- Options for Car -->
+            <div id="carOptions" class="hidden">
+                <div class="form-group">
+                    <label for="carType">Car Type:</label>
+                    <select id="carType" name="carType">
+                        <option value="">Select Car Type</option>
+                        <option value="sedan">Sedan</option>
+                        <option value="suv">SUV</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="rideServiceCar">Ride Hailing Service:</label>
+                    <select id="rideServiceCar" name="rideServiceCar">
+                        <option value="">Select Service</option>
+                        <option value="ola">Ola</option>
+                        <option value="uber">Uber</option>
+                        <option value="redtaxi">RedTaxi</option>
+                        <option value="rapido">Rapido</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethodCar">Payment Method:</label>
+                    <select id="paymentMethodCar" name="paymentMethodCar">
+                        <option value="">Select Payment Method</option>
+                        <option value="cash">Cash</option>
+                        <option value="card">Card</option>
+                        <option value="wallet">UPI</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Options for Bike -->
+            <div id="bikeOptions" class="hidden">
+                <div class="form-group">
+                    <label for="rideServiceBike">Ride Hailing Service:</label>
+                    <select id="rideServiceBike" name="rideServiceBike">
+                        <option value="">Select Service</option>
+                        <option value="ola">Ola</option>
+                        <option value="uber">Uber</option>
+                        <option value="redtaxi">RedTaxi</option>
+                        <option value="rapido">Rapido</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethodBike">Payment Method:</label>
+                    <select id="paymentMethodBike" name="paymentMethodBike">
+                        <option value="">Select Payment Method</option>
+                        <option value="cash">Cash</option>
+                        <option value="card">Card</option>
+                        <option value="wallet">UPI</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Options for Auto -->
+            <div id="autoOptions" class="hidden">
+                <div class="form-group">
+                    <label for="rideServiceAuto">Ride Hailing Service:</label>
+                    <select id="rideServiceAuto" name="rideServiceAuto">
+                        <option value="">Select Service</option>
+                        <option value="ola">Ola</option>
+                        <option value="uber">Uber</option>
+                        <option value="redtaxi">RedTaxi</option>
+                        <option value="rapido">Rapido</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethodAuto">Payment Method:</label>
+                    <select id="paymentMethodAuto" name="paymentMethodAuto">
+                        <option value="">Select Payment Method</option>
+                        <option value="cash">Cash</option>
+                        <option value="card">Card</option>
+                        <option value="wallet">UPI</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Book Ride</button>
+        </form>
+    </div>
+
+    <script>
+        // Show ride later options if "later" is selected
+        const rideTimingSelect = document.getElementById("rideTiming");
+        const rideLaterOptions = document.getElementById("rideLaterOptions");
+
+        rideTimingSelect.addEventListener("change", function () {
+            if (this.value === "later") {
+                rideLaterOptions.classList.remove("hidden");
+                document.getElementById("rideTime").setAttribute("required", "required");
+            } else {
+                rideLaterOptions.classList.add("hidden");
+                document.getElementById("rideTime").removeAttribute("required");
+            }
+        });
+
+        // Show additional options based on vehicle type
+        const vehicleTypeSelect = document.getElementById("vehicleType");
+        const carOptions = document.getElementById("carOptions");
+        const bikeOptions = document.getElementById("bikeOptions");
+        const autoOptions = document.getElementById("autoOptions");
+
+        vehicleTypeSelect.addEventListener("change", function () {
+            // Hide all vehicle-specific options first
+            carOptions.classList.add("hidden");
+            bikeOptions.classList.add("hidden");
+            autoOptions.classList.add("hidden");
+
+            if (this.value === "car") {
+                carOptions.classList.remove("hidden");
+            } else if (this.value === "bike") {
+                bikeOptions.classList.remove("hidden");
+            } else if (this.value === "auto") {
+                autoOptions.classList.remove("hidden");
+            }
+        });
+
+        // Handle form submission
+        document.getElementById("bookingForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const pickup = document.getElementById("pickup").value;
+            const drop = document.getElementById("drop").value;
+            const vehicleType = document.getElementById("vehicleType").value;
+            const rideTiming = document.getElementById("rideTiming").value;
+
+            // Validate ride time if Ride Later is selected
+            let rideTime = "";
+            if (rideTiming === "later") {
+                rideTime = document.getElementById("rideTime").value;
+                const now = new Date();
+                const selectedTime = new Date();
+                // Assuming rideTime is in HH:MM format (today's date with that time)
+                const [hours, minutes] = rideTime.split(":");
+                selectedTime.setHours(hours, minutes, 0, 0);
+                if (selectedTime <= now) {
+                    alert("Please select a time after the current time for Ride Later.");
+                    return;
+                }
+            }
+
+            let additionalData = {};
+            if (vehicleType === "car") {
+                additionalData = {
+                    carType: document.getElementById("carType").value,
+                    rideService: document.getElementById("rideServiceCar").value,
+                    paymentMethod: document.getElementById("paymentMethodCar").value
+                };
+            } else if (vehicleType === "bike") {
+                additionalData = {
+                    rideService: document.getElementById("rideServiceBike").value,
+                    paymentMethod: document.getElementById("paymentMethodBike").value
+                };
+            } else if (vehicleType === "auto") {
+                additionalData = {
+                    rideService: document.getElementById("rideServiceAuto").value,
+                    paymentMethod: document.getElementById("paymentMethodAuto").value
+                };
+            }
+
+            // Build query parameters to pass to confirmation page
+            const queryParams = new URLSearchParams({
+                pickup,
+                drop,
+                vehicleType,
+                rideTiming,
+                rideTime,
+                ...additionalData
+            });
+
+            // Redirect to confirmation page
+            window.location.href = `booking_confirmation.html?${queryParams.toString()}`;
+        });
+    </script>
+</body>
+
+</html>

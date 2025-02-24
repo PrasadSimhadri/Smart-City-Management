@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ride Confirmation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, sans-serif;
+            background: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #5069d8;
+        }
+
+        /* Card-like styling for details */
+        .card {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #d8d8db, #a698dd);
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            color: rgb(30, 10, 97);
+        }
+
+        .card p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        /* Inline rating bar styling */
+        .rating-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            vertical-align: middle;
+        }
+
+        .rating-bar-container {
+            width: 120px;
+            height: 14px;
+            background: #eee;
+            border-radius: 7px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            position: relative;
+        }
+
+        .rating-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #f39c12, #f1c40f);
+            transition: width 0.5s ease;
+        }
+
+        .rating-value {
+            font-weight: bold;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: white;
+            width: 80%;
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .review-item {
+            margin: 10px 0;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        #externalMapsContainer button:hover {
+            background: #4054b2;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Driver Reviews</h2>
+            <div id="reviewsList"></div>
+        </div>
+    </div>
+    <h1>RIDE CONFIRMATION</h1>
+    <div class="card" id="rideDetails">
+        <!-- Ride details will be populated here -->
+    </div>
+    <div class="card" id="driverDetails">
+        <!-- Driver details will be populated here -->
+    </div>
+    <div id="externalMapsContainer" style="text-align: center; margin: 20px 0;">
+        <button onclick="openGoogleMapsDirections()" style="
+          background: #5069d8;
+          color: white;
+          border: none;
+          padding: 12px 24px;
+          border-radius: 25px;
+          cursor: pointer;
+          font-size: 16px;
+          transition: background 0.3s ease;
+        ">
+            Open Directions in Google Maps
+        </button>
+    </div>
+
+    <script>
+        // Function to get query parameters
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                pickup: params.get("pickup") || "",
+                drop: params.get("drop") || "",
+                vehicleType: params.get("vehicleType") || "",
+                rideTiming: params.get("rideTiming") || "",
+                rideTime: params.get("rideTime") || "",
+                carType: params.get("carType") || "",
+                rideService: params.get("rideService") || "",
+                paymentMethod: params.get("paymentMethod") || ""
+            };
+        }
+
+        const rideData = getQueryParams();
+        const rideDetailsDiv = document.getElementById("rideDetails");
+        rideDetailsDiv.innerHTML = `
+      <h2>Ride Details</h2>
+      <p><strong>Pickup Location:</strong> ${rideData.pickup}</p>
+      <p><strong>Drop Location:</strong> ${rideData.drop}</p>
+      <p><strong>Vehicle Type:</strong> ${rideData.vehicleType}</p>
+      <p><strong>Ride Timing:</strong> ${rideData.rideTiming}${rideData.rideTiming === "later" ? ` at ${rideData.rideTime}` : ""}</p>
+      ${rideData.vehicleType === "car" ? `<p><strong>Car Type:</strong> ${rideData.carType}</p>` : ""}
+      ${(rideData.vehicleType === "car" || rideData.vehicleType === "bike" || rideData.vehicleType === "auto") ? `
+        <p><strong>Ride Service:</strong> ${rideData.rideService}</p>
+        <p><strong>Payment Method:</strong> ${rideData.paymentMethod}</p>` : ""}
+    `;
+        let currentDriverId;
+
+        async function fetchRandomDriver() {
+            try {
+                const response = await fetch("http://localhost:3000/api/randomDriver");
+                if (!response.ok) throw new Error("Network error");
+
+                const driver = await response.json();
+
+                currentDriverId = driver._id; // Store the driver ID
+
+                const driverDetailsDiv = document.getElementById("driverDetails");
+                const rating = parseFloat(driver.rating);
+                const ratingPercentage = (rating / 5) * 100;
+
+                driverDetailsDiv.innerHTML = `
+                <h2>Your Driver</h2>
+                <p><strong>Name:</strong> ${driver.driverName}</p>
+                <p><strong>Phone Number:</strong> ${driver.phoneNumber}</p>
+                <p>
+                    <strong>Rating:</strong>
+                    <span class="rating-container">
+                        <span class="rating-value">${rating.toFixed(1)}/5</span>
+                        <span class="rating-bar-container">
+                            <span class="rating-bar" style="width: ${ratingPercentage}%"></span>
+                        </span>
+                    </span>
+                </p>
+                <p>
+                    <a href="#" onclick="showDriverReviews()" style="color: #5069d8; text-decoration: underline;">
+                        Click here to view recent reviews
+                    </a>
+                </p>
+            `;
+
+            } catch (error) {
+                console.error("Error fetching driver:", error);
+                document.getElementById("driverDetails").innerHTML = "<p>Error loading driver details.</p>";
+            }
+        }
+
+        async function showDriverReviews() {
+            if (!currentDriverId) {
+                alert("No driver selected.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/driverReviews?id=${currentDriverId}`);
+                if (!response.ok) throw new Error("Failed to fetch reviews");
+
+                const reviews = await response.json();
+                const reviewsList = document.getElementById("reviewsList");
+                reviewsList.innerHTML = reviews.length > 0
+                    ? reviews.map(review => `
+                    <div class="review-item">
+                        <div class="review-header">
+                            <strong>${review.reviewerName}</strong>
+                            <span>${new Date(review.date).toLocaleDateString()}</span>
+                        </div>
+                        <div>Rating: ${review.rating}/5</div>
+                        <p>${review.comment}</p>
+                    </div>
+                `).join('')
+                    : "<p>No reviews available for this driver.</p>";
+
+                document.getElementById("reviewModal").style.display = "block";
+
+            } catch (error) {
+                console.error("Error fetching reviews:", error);
+                document.getElementById("reviewsList").innerHTML = "<p>Error loading reviews.</p>";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById("reviewModal").style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            const modal = document.getElementById("reviewModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        fetchRandomDriver();
+
+        function openGoogleMapsDirections() {
+            const rideData = getQueryParams();
+            const encodedPickup = encodeURIComponent(rideData.pickup);
+            const encodedDrop = encodeURIComponent(rideData.drop);
+
+            const mapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodedPickup}&destination=${encodedDrop}&travelmode=driving`;
+            window.open(mapsUrl, '_blank');
+        }
+    </script>
+
+</body>
+
+</html>

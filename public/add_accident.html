@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Accident Report</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: rgb(41, 39, 39);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: linear-gradient(to right, #01000248, #0000002a);
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      color: rgb(30, 10, 97);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 32px;
+      color: #fff;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin: 10px 0 5px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: left;
+      color: #fff;
+    }
+
+    input,
+    textarea {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      outline: none;
+      /* Ensure input text is dark for contrast */
+      color: #333;
+    }
+
+    button {
+      padding: 12px;
+      font-size: 16px;
+      background: #fff;
+      color: #5069d8;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background: #7787de;
+      transform: translateY(-2px);
+      color: white;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        margin: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>ADD ACCIDENT REPORT</h2>
+    <form id="addAccidentForm">
+      <label for="streetNumber">Street Number:</label>
+      <input type="text" id="streetNumber" name="streetNumber" required>
+
+      <label for="area">Area:</label>
+      <input type="text" id="area" name="area" required>
+
+      <label for="problem">Problem Description:</label>
+      <textarea id="problem" name="problem" rows="4" required></textarea>
+
+      <button type="submit">Submit Report</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("addAccidentForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const streetNumber = document.getElementById("streetNumber").value;
+      const area = document.getElementById("area").value;
+      const problem = document.getElementById("problem").value;
+
+      try {
+        const response = await fetch("/api/accidents", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ streetNumber, area, problem })
+        });
+        const result = await response.json();
+        if (response.ok) {
+          alert("Accident report added successfully!");
+          window.location.href = "/accidents"; // Redirect back to accidents page
+        } else {
+          alert("Error: " + result.error);
+        }
+      } catch (error) {
+        console.error("Error adding accident:", error);
+      }
+    });
+  </script>
+</body>
+
+</html>

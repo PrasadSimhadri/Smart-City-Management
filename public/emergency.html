@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emergency Contacts</title>
+  <script src="header.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1e1e1e;
+      color: #ccc;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #fff;
+    }
+
+    /* Search form styling */
+    .search-container {
+      max-width: 500px;
+      margin: 0 auto 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-container input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #444;
+      border-radius: 5px;
+      background: #333;
+      color: #ccc;
+    }
+
+    .search-container button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #0d6efd;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .search-container button:hover {
+      background: #0a58ca;
+    }
+
+    /* Search heading styling */
+    .searchcontainer h2 {
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    /* Grid container for list items: 2 per row */
+    .list-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      background: #2b2b2b;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .list-item:hover {
+      background: #3a3a3a;
+      transform: translateY(-3px);
+    }
+
+    .icon {
+      flex: 0 0 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #0d6efd;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 20px;
+      margin-right: 20px;
+    }
+
+    .details {
+      text-align: left;
+    }
+
+    .details p {
+      margin: 4px 0;
+      font-size: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .list-container {
+        grid-template-columns: 1fr;
+      }
+
+      .icon {
+        margin-right: 10px;
+      }
+
+      .details p {
+        font-size: 14px;
+      }
+    }
+
+    .searchcontainer h2{
+      margin-left: 520px;
+      opacity: 0.8;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="header-container"></div>
+  <h1>EMERGENCY CONTACTS</h1>
+
+  <div class="searchcontainer">
+    <h2>Search for Emergency Contacts for Help!</h2>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search by Service" />
+      <button class="button" onclick="searchContacts()">Search</button>
+    </div>
+  </div>
+
+  <div class="list-container" id="contacts-container">
+    <!-- List items will be inserted here -->
+  </div>
+
+  <script>
+    let allContacts = [];
+
+    async function fetchContacts() {
+      try {
+        const response = await fetch("http://localhost:3000/api/contacts");
+        allContacts = await response.json();
+        displayContacts(allContacts);
+      } catch (error) {
+        console.error("Error fetching contacts:", error);
+        document.getElementById("contacts-container").innerHTML = "<p>Error loading contacts.</p>";
+      }
+    }
+
+    function displayContacts(contacts) {
+      const container = document.getElementById("contacts-container");
+      container.innerHTML = "";
+      contacts.forEach(contact => {
+        const item = document.createElement("div");
+        item.className = "list-item";
+        // Use the first letter of the service as icon
+        let iconLetter = contact.service.charAt(0).toUpperCase();
+        item.innerHTML = `
+          <div class="icon">${iconLetter}</div>
+          <div class="details">
+            <p><strong>Service:</strong> ${contact.service}</p>
+            <p><strong>Contact:</strong> ${contact.contact_number}</p>
+            <p><strong>Area:</strong> ${contact.area}</p>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function searchContacts() {
+      const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
+      if (searchTerm === "") {
+        displayContacts(allContacts);
+        return;
+      }
+      const filtered = allContacts.filter(contact =>
+        contact.service.toLowerCase().includes(searchTerm)
+      );
+      displayContacts(filtered);
+    }
+
+    fetchContacts();
+  </script>
+</body>
+
+</html>

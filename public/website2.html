@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Public Transport Feedback</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="header.js"></script>
+    <style>
+        /* Ensure html and body take full width and hide overflow */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit;
+        }
+
+        /* Adjust container styling */
+        #hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: #0056b3;
+            color: white;
+        }
+
+        #transport-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .transport-card {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .transport-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .transport-card i {
+            font-size: 48px;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #007bff;
+            color: white;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <section id="hero">
+        <h1>Rate Your Public Transport Experience</h1>
+        <p>Help us improve by providing your valuable feedback.</p>
+    </section>
+    <section id="transport-selection">
+        <div class="transport-card" onclick="goToFeedback('bus')">
+            <i class="fas fa-bus"></i>
+            <h3>Bus</h3>
+        </div>
+        <div class="transport-card" onclick="goToFeedback('train')">
+            <i class="fas fa-train"></i>
+            <h3>Train</h3>
+        </div>
+        <div class="transport-card" onclick="goToFeedback('metro')">
+            <i class="fas fa-subway"></i>
+            <h3>Metro</h3>
+        </div>
+        <div class="transport-card" onclick="goToFeedback('tram')">
+            <i class="fas fa-tram"></i>
+            <h3>Tram</h3>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2025 Public Transport Feedback. All rights reserved.</p>
+    </footer>
+    <script>
+        function goToFeedback(type) {
+            window.location.href = `feedback.html?type=${type}`;
+        }
+    </script>
+</body>
+
+</html>
