@@ -115,16 +115,53 @@ const institutionSchema = new mongoose.Schema({
 });
 const Institution = mongoose.model("Institution", institutionSchema, "institutions");
 
-// Institution Reviews Model
+app.get("/api/institutions", async (req, res) => {
+  try {
+    const institutions = await Institution.find().lean();
+    res.json(institutions);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching institutions data" });
+  }
+});
+
 const institutionReviewSchema = new mongoose.Schema({
-  institute: String, // Must match the 'institution' field in Institution
+  institute: String, // Must match the 'institute' field in the review documents
   reviewerName: String,
   category: String,
   reviewText: String,
   rating: Number,
   reviewDate: Date
 });
+
 const InstitutionReview = mongoose.model("InstitutionReview", institutionReviewSchema, "institution_reviews");
+
+app.get("/api/allInstitutionReviews", async (req, res) => {
+  try {
+    const allInstitutions = await Institution.find().lean();
+    const allReviews = await InstitutionReview.find().lean();
+
+    // Group reviews by institute name (the field name in reviews is "institute")
+    const reviewsByInstitute = {};
+    allReviews.forEach(review => {
+      const key = review.institute;
+      if (!reviewsByInstitute[key]) {
+        reviewsByInstitute[key] = [];
+      }
+      reviewsByInstitute[key].push(review);
+    });
+
+    // Attach reviews to each institution object (matching by institution name)
+    const combinedData = allInstitutions.map(inst => ({
+      ...inst,
+      reviews: reviewsByInstitute[inst.institution] || []
+    }));
+
+    res.json(combinedData);
+  } catch (err) {
+    console.error("Error in /api/allInstitutionReviews:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // ----------------- Routes -----------------
 

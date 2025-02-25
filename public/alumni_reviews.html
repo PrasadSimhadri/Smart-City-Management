@@ -33,6 +33,7 @@
             margin: 10px 0;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
             transition: background 0.3s ease;
         }
 
@@ -97,9 +98,8 @@
     </div>
     <div id="footer-container"></div>
 
-
     <script>
-        // 1. Fetch all institutions + reviews from a single endpoint /api/allInstitutionReviews
+        // Fetch institutions with reviews from backend endpoint /api/allInstitutionReviews
         async function fetchInstitutionsAndReviews() {
             try {
                 const response = await fetch("http://localhost:3000/api/allInstitutionReviews");
@@ -136,7 +136,7 @@
                 const div = document.createElement("div");
                 div.className = "institution-item";
 
-                // Unique ID for the reviews section
+                // Use a unique ID for the reviews section based on institute name
                 const reviewsId = "reviews-" + encodeURIComponent(inst.institution);
 
                 div.innerHTML = `
@@ -144,11 +144,11 @@
             <span class="institution-name">${inst.institution}</span>
             <span class="institution-rank">World Rank: ${inst.world_rank || "N/A"}</span>
           </div>
+          <span class="toggle-btn" onclick="toggleReviews('${reviewsId}'); event.stopPropagation();">Show Reviews</span>
           <div class="reviews-section" id="${reviewsId}">
             ${reviewsHTML}
           </div>
         `;
-
                 container.appendChild(div);
             });
         }
