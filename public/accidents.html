@@ -8,13 +8,12 @@
   <script src="header.js"></script>
   <script src="footer.js"></script>
   <style>
-    body {
+    body {  
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #f4f4f4;
       color: #ccc;
       margin: 20px;
       padding-bottom: 40px;
-      text-align: center;
     }
 
     h1 {
@@ -64,7 +63,7 @@
       border: 1px solid #444;
       border-radius: 5px;
       background: #f4f4f4;
-      color: #ccc;
+      color: black;
     }
 
     .search-container button {
@@ -152,18 +151,23 @@
       font-weight: bold;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
     }
+
+    .text_center{
+      text-align: center;
+    }
+    
   </style>
 </head>
 
 <body>
   <div id="header-container"></div>
-  <h1>ACCIDENT REPORTS</h1>
+  <h1 class="text_center">ACCIDENT REPORTS</h1>
   <div class="top-buttons">
     <button class="button" onclick="location.href='add_accident.html'">Add Accident</button>
   </div>
 
   <!-- Search form -->
-  <h2 class="searchheading">Search for Accidents near your Area!</h2>
+  <h2 class="searchheading text_center">Search for Accidents near your Area!</h2>
   <div class="search-container">
     <input type="text" id="searchInput" placeholder="Search by Area" />
     <button class="button" onclick="searchAccidents()">Search</button>
@@ -172,7 +176,7 @@
   <div class="accident-container" id="accident-container">
     <!-- Accident cards will be populated here -->
   </div>
-  <div id="footer-container"></div>
+  <!-- <div id="footer-container"></div> -->
 
 
   <script>

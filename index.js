@@ -78,23 +78,6 @@ const bookingSchema = new mongoose.Schema({
 });
 const Booking = mongoose.model("Booking", bookingSchema, "bookings");
 
-// Driver Model
-const driverSchema = new mongoose.Schema({
-  driverName: String,
-  rating: Number,
-  phoneNumber: String
-});
-const Driver = mongoose.model("Driver", driverSchema, "drivers_privaterides");
-
-// Driver Reviews Model
-const DriverReviewSchema = new mongoose.Schema({
-  driverId: mongoose.Schema.Types.ObjectId,
-  reviewerName: String,
-  rating: Number,
-  comment: String,
-  date: Date
-});
-const DriverReview = mongoose.model("DriverReview", DriverReviewSchema, "driver_reviews");
 
 // Institution Model
 const institutionSchema = new mongoose.Schema({
@@ -356,12 +339,32 @@ app.delete("/api/accidents/:id", async (req, res) => {
 
 // ----------------- Driver & Reviews Endpoints -----------------
 
+// Driver Model
+const driverSchema = new mongoose.Schema({
+  driverName: String,
+  rating: Number,
+  phoneNumber: String
+});
+const Driver = mongoose.model("Driver", driverSchema, "drivers_privaterides");
+
+// Schema and Model for driver reviews
+const DriverReviewSchema = new mongoose.Schema({
+  driverId: String, // Store as string for simplicity, or convert ObjectId to string when saving
+  reviewerName: String,
+  rating: Number,
+  comment: String,
+  date: Date
+});
+const DriverReview = mongoose.model("DriverReview", DriverReviewSchema, "driver_reviews");
+
+
 app.get("/api/randomDriver", async (req, res) => {
   try {
-    const drivers = await Driver.find();
+    const drivers = await Driver.find().lean();
     if (drivers.length === 0) {
       return res.status(404).json({ error: "No drivers available" });
     }
+    console.log(drivers);
     const randomIndex = Math.floor(Math.random() * drivers.length);
     res.json(drivers[randomIndex]);
   } catch (err) {
@@ -376,8 +379,7 @@ app.get("/api/driverReviews", async (req, res) => {
     if (!id) {
       return res.status(400).json({ error: "Driver ID is required" });
     }
-
-    // Fetch reviews and convert driverId to string for comparison
+    // Fetch reviews and compare driverId as strings
     const allReviews = await DriverReview.find().lean();
     const reviews = allReviews.filter((rev) => rev.driverId.toString() === id.toString());
     res.json(reviews.slice(0, 5));
@@ -385,8 +387,6 @@ app.get("/api/driverReviews", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
-
 
 // ----------------- Ticket & Booking Endpoints -----------------
 

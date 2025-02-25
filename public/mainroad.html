@@ -29,15 +29,21 @@
     }
 
     .us {
-        background-color: rgba(214, 55, 142, 0.549);
+        position: relative;
+        background-color: rgba(226, 55, 12, 0.856);
         padding: 20px 10px;
-        margin-bottom: 40px;
         margin-right: 30px;
         height: 100px;
         width: 300px;
         text-align: center;
         padding-top: 40px;
         border-radius: 30px;
+        transition: background-color 0.4s;
+        margin-bottom: 20px;
+    }
+
+    .us1 {
+        opacity: 0.4;
     }
 
     .us:hover {
@@ -49,6 +55,20 @@
 
     .us h2 {
         font-size: 20px;
+    }
+
+    /* Watermark styling: centered in the card with larger font size */
+    .us1::before {
+        content: "Not Covered";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-15deg);
+        font-size: 32px;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 0.3);
+        z-index: 1;
+        pointer-events: none;
     }
 </style>
 
@@ -65,39 +85,39 @@
                 </div>
             </a>
             <a href="">
-                <div class="us2 us">
+                <div class="us1 us">
                     <h2>Roads in Bad Condition</h2>
                 </div>
             </a>
             <a href="/accidents">
-                <div class="us3 us">
+                <div class="us">
                     <h2>Report Accidents</h2>
                 </div>
             </a>
             <a href="/contacts">
-                <div class="us4 us">
+                <div class="us">
                     <h2>Emergency Contacts for Help</h2>
                 </div>
             </a>
         </div>
         <div class="main1">
             <a href="/roadsafety">
-                <div class="us5 us">
+                <div class="us">
                     <h2>Simple Guide on Traffic Rules</h2>
                 </div>
             </a>
             <a href="">
-                <div class="us6 us">
+                <div class="us1 us">
                     <h2>Report Non-Working Traffic Signals</h2>
                 </div>
             </a>
             <a href="">
-                <div class="us7 us">
+                <div class="us1 us">
                     <h2>Risks of Drunk and Drive</h2>
                 </div>
             </a>
             <a href="">
-                <div class="us8 us">
+                <div class="us1 us">
                     <h2>Peak Pedestrian Hours </h2>
                 </div>
             </a>

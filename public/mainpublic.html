@@ -30,15 +30,20 @@
     }
 
     .us {
-        background-color: rgba(214, 55, 142, 0.549);
+        position: relative;
+        background-color: rgba(214, 55, 142, 0.7);
         padding: 20px 10px;
-        margin-bottom: 40px;
         margin-right: 30px;
         height: 100px;
         width: 300px;
         text-align: center;
         padding-top: 40px;
         border-radius: 30px;
+        transition: background-color 0.4s;
+    }
+
+    .us1 {
+        opacity: 0.4;
     }
 
     .us:hover {
@@ -51,6 +56,20 @@
     .us h2 {
         font-size: 20px;
     }
+
+    /* Watermark styling: centered in the card with larger font size */
+    .us1::before {
+        content: "Not Covered";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-15deg);
+        font-size: 32px;
+        font-weight: bold;
+        color: rgba(255, 255, 255, 0.3);
+        z-index: 1;
+        pointer-events: none;
+    }
 </style>
 
 <body>
@@ -61,22 +80,22 @@
     <div class="main">
         <div class="main1">
             <a href="/feedback_publictransport">
-                <div class="us1 us">
+                <div class="us">
                     <h2>Provide Feedback on your Trip</h2>
                 </div>
             </a>
             <a href="">
-                <div class="us1 us">
+                <div class="us us1">
                     <h2>View Public Transport Schedule</h2>
                 </div>
             </a>
             <a href="/pre_booking">
-                <div class="us2 us">
+                <div class="us">
                     <h2>Pre Booking</h2>
                 </div>
             </a>
             <a href="">
-                <div class="us3 us">
+                <div class="us us1">
                     <h2>Report Lost Item</h2>
                 </div>
             </a>
