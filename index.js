@@ -219,6 +219,18 @@ app.get("/public_exams", (req, res) => {
 app.get("/alumni_reviews", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "alumni_reviews.html"));
 });
+app.get("/drunk_driving", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "drunk_driving.html"));
+});
+app.get("/pedestrian_hours", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "pedestrian_hours.html"));
+});
+app.get("/road_conditions", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "road_conditions.html"));
+});
+app.get("/public_schedule", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "public_schedule.html"));
+});
 
 // ----------------- Authentication Endpoints -----------------
 
@@ -544,6 +556,121 @@ Smart City Booking Team`,
     });
   } catch (err) {
     console.error("Error processing payment:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+const drunkDrivingSchema = new mongoose.Schema({
+  Year: Number,
+  City: String,
+  Total_Accident_Deaths: Number,
+  Drunk_Driving_Deaths: Number,
+  Percentage: Number
+});
+
+const DrunkDriving = mongoose.model("drunk_and_drives", drunkDrivingSchema);
+
+app.get("/api/drunk_driving", async (req, res) => {
+  try {
+    const data = await DrunkDriving.find({});
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching data" });
+  }
+});
+
+
+// Schema
+const PedestrianSchema = new mongoose.Schema({
+  Year: Number,
+  City: String,
+  Location: String,
+  Peak_Morning_Hours: String,
+  Peak_Evening_Hours: String,
+  Category: String
+});
+
+const PedestrianHours = mongoose.model("pedestrian_hours", PedestrianSchema);
+
+// API Route
+app.get("/api/pedestrian_hours", async (req, res) => {
+  try {
+    const data = await PedestrianHours.find();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+const RoadConditionSchema = new mongoose.Schema({
+  Year: Number,
+  City: String,
+  Location: String,
+  Condition: String,
+  Severity: String,
+  Reported_By: String,
+  Date_Reported: String,
+  Status: String
+});
+
+const RoadCondition = mongoose.model("road_conditions", RoadConditionSchema);
+
+app.get("/api/road_conditions", async (req, res) => {
+  try {
+    const data = await RoadCondition.find();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.post("/api/road_conditions", async (req, res) => {
+  try {
+    const newReport = new RoadCondition(req.body);
+    await newReport.save();
+    res.status(201).json(newReport);
+  } catch (error) {
+    res.status(500).json({ error: "Error saving report" });
+  }
+});
+
+// Public Transports Model (Updated: intermediate_stops and timings as arrays)
+const transportSchema = new mongoose.Schema({
+  transport_type: String,
+  route_no: String,
+  source: String,
+  destination: String,
+  intermediate_stops: [String],
+  timings: [String]
+});
+const Transport = mongoose.model("Transport", transportSchema, "public_transports");
+
+// Public Transports
+app.get("/api/public_transport", async (req, res) => {
+  try {
+    const transports = await Transport.find();
+    res.json(transports);
+  } catch (err) {
+    res.status(500).json({ error: "Error fetching transport data" });
+  }
+});
+
+// Search Public Transports
+app.get("/api/search_transport", async (req, res) => {
+  try {
+    const { source, destination, intermediate } = req.query;
+    const query = {
+      source: { $regex: new RegExp("^" + source.trim() + "$", "i") },
+      destination: { $regex: new RegExp("^" + destination.trim() + "$", "i") }
+    };
+    if (intermediate) {
+      // Check if any element in the intermediate_stops array matches the regex
+      query.intermediate_stops = { $in: [new RegExp(intermediate.trim(), "i")] };
+    }
+    const transports = await Transport.find(query);
+    res.json(transports);
+  } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });

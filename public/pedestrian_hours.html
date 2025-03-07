@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peak Pedestrian Hours</title>
+    <script src="header.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin-left: 170px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5069d8;
+            font-size: 26px;
+            padding-top: 20px;
+        }
+
+        .table-container,
+        .safety-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 22px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border: 1px solid #ddd;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        th {
+            background: #d9534f;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tr:hover {
+            background: #f1f1f1;
+        }
+
+        td {
+            color: #444;
+        }
+
+        .safety-container {
+            padding: 20px;
+        }
+
+        .safety-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .safety-container li {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            font-size: 16px;
+            border-left: 5px solid #d9534f;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <div class="container">
+        <h1>PEAK PEDESTRIAN HOURS IN COIMBATOR</h1>
+
+        <div class="table-container">
+            <table id="pedestrianTable">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>City</th>
+                        <th>Location</th>
+                        <th>Peak Morning Hours</th>
+                        <th>Peak Evening Hours</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be inserted dynamically -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="safety-container">
+            <h2>General Safety Tips for Driving in Pedestrian-Heavy Areas</h2>
+            <ul>
+                <li>Always reduce speed near schools, markets, and busy intersections.</li>
+                <li>Be extra cautious when turning at pedestrian crossings.</li>
+                <li>Avoid using mobile phones or distractions while driving.</li>
+                <li>Maintain a safe distance from pedestrians and slow-moving traffic.</li>
+                <li>Follow traffic signals and pedestrian crossings strictly.</li>
+                <li>Use headlights in dimly lit areas for better visibility.</li>
+                <li>Be alert for unexpected pedestrian movement, especially children and elderly individuals.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch("http://localhost:3000/api/pedestrian_hours");
+                const data = await response.json();
+                populateTable(data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        function populateTable(data) {
+            const tableBody = document.querySelector("#pedestrianTable tbody");
+            tableBody.innerHTML = "";
+
+            data.forEach(entry => {
+                const row = `
+                    <tr>
+                        <td>${entry.Year}</td>
+                        <td>${entry.City}</td>
+                        <td>${entry.Location}</td>
+                        <td>${entry.Peak_Morning_Hours}</td>
+                        <td>${entry.Peak_Evening_Hours}</td>
+                        <td>${entry.Category}</td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+
+        fetchData();
+    </script>
+</body>
+
+</html>

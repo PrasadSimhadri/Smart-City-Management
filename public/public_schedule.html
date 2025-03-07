@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Public Transport Schedule - Coimbatore</title>
+    <script src="header.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            margin: 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 50px;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .search-container .search-btn {
+            background: #007bff;
+            color: white;
+        }
+
+        .search-container .search-btn:hover {
+            background: #0056b3;
+        }
+
+        .search-container .reset-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .search-container .reset-btn:hover {
+            background: #b52a3a;
+        }
+
+        .schedule-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+        }
+
+        .schedule-card {
+            flex: 1 1 25%;
+            padding: 15px;
+            box-sizing: border-box;
+            min-width: 250px;
+            /* Remove right border if last in row */
+            border-right: 1px solid #ddd;
+            margin-top: 20px;
+        }
+
+        .schedule-card:last-child {
+            border-right: none;
+        }
+
+        .schedule-card h3 {
+            margin: 0;
+            color: #007bff;
+            font-size: 18px;
+        }
+
+        .schedule-card p {
+            margin: 6px 0;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .timings-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .timing-box {
+            background: #7aa6d5;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11.5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="source" placeholder="Enter Source">
+            <input type="text" id="destination" placeholder="Enter Destination">
+            <input type="text" id="intermediate" placeholder="Enter Intermediate Stop (Optional)">
+            <button class="search-btn" onclick="searchTransport()">Search</button>
+            <button class="reset-btn" onclick="resetSearch()">Reset</button>
+        </div>
+
+        <div class="schedule-container" id="scheduleGrid">
+            <!-- Schedule cards will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        async function fetchSchedule() {
+            try {
+                const response = await fetch("/api/public_transport");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                displaySchedule(data);
+            } catch (error) {
+                console.error("Error fetching schedule:", error);
+            }
+        }
+
+        function displaySchedule(data) {
+            const gridContainer = document.getElementById("scheduleGrid");
+            gridContainer.innerHTML = ""; // Clear previous data
+
+            data.forEach((item) => {
+                const stops = Array.isArray(item.intermediate_stops)
+                    ? item.intermediate_stops.join(", ")
+                    : item.intermediate_stops || "N/A";
+                const timings = Array.isArray(item.timings)
+                    ? item.timings.map(time => `<span class="timing-box">${time}</span>`).join("")
+                    : item.timings || "N/A";
+
+                const card = `<div class="schedule-card">
+            <h3>${item.transport_type} - Route ${item.route_no}</h3>
+            <p><strong>From:</strong> ${item.source}</p>
+            <p><strong>To:</strong> ${item.destination}</p>
+            <p><strong>Stops:</strong> ${stops}</p>
+            <div class="timings-container">${timings}</div>
+        </div>`;
+
+                gridContainer.innerHTML += card;
+            });
+        }
+
+        async function searchTransport() {
+            const source = document.getElementById("source").value.toLowerCase();
+            const destination = document.getElementById("destination").value.toLowerCase();
+            const intermediate = document.getElementById("intermediate").value.toLowerCase();
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/search_transport?source=${source}&destination=${destination}&intermediate=${intermediate}`);
+                const data = await response.json();
+                displaySchedule(data);
+            } catch (error) {
+                console.error("Error searching transport:", error);
+            }
+        }
+
+        function resetSearch() {
+            document.getElementById("source").value = "";
+            document.getElementById("destination").value = "";
+            document.getElementById("intermediate").value = "";
+            fetchSchedule();
+        }
+
+        fetchSchedule();
+    </script>
+</body>
+
+</html>
