@@ -231,6 +231,12 @@ app.get("/road_conditions", (req, res) => {
 app.get("/public_schedule", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "public_schedule.html"));
 });
+app.get("/lost_items", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "lost_items.html"));
+});
+app.get("/multimodal_journey", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "multimodal_journey.html"));
+});
 
 // ----------------- Authentication Endpoints -----------------
 
@@ -670,6 +676,162 @@ app.get("/api/search_transport", async (req, res) => {
     }
     const transports = await Transport.find(query);
     res.json(transports);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+// Lost Items Model
+const lostItemSchema = new mongoose.Schema({
+  lost_id: { type: String, unique: true },
+  email: String,
+  user: String,
+  contact_info: String,
+  transport_type: String,
+  route_no: String,
+  lost_date: Date,
+  item: String,
+  description: String,
+  status: { type: String, default: "Reported" }
+});
+const LostItem = mongoose.model("LostItem", lostItemSchema, "lost_items");
+
+// Utility function to generate a random Lost ID (e.g., L1234)
+function generateLostId() {
+  return "L" + Math.floor(1000 + Math.random() * 9000).toString();
+}
+
+// API endpoint to create a lost item report and send confirmation email
+app.post("/api/lost_items", async (req, res) => {
+  try {
+    const { email, user, contact_info, transport_type, route_no, lost_date, item, description } = req.body;
+    if (!email || !user || !contact_info || !transport_type || !route_no || !lost_date || !item || !description) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const newLostId = generateLostId();
+    const newLostItem = new LostItem({
+      lost_id: newLostId,
+      email,
+      user,
+      contact_info,
+      transport_type,
+      route_no,
+      lost_date: new Date(lost_date),
+      item,
+      description,
+      status: "Reported"
+    });
+    await newLostItem.save();
+
+    // Configure nodemailer transporter
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER || "saisimhadri2207@gmail.com", // Replace with your email
+        pass: process.env.EMAIL_PASS || "kght pxda coha ghra" // Replace with your email password or app-specific password
+      }
+    });
+
+    // Compose confirmation email
+    let mailOptions = {
+      from: '"Smart City Lost & Found" <saisimhadri2207@gmail.com>',
+      to: email,
+      subject: "Lost Item Report Confirmation",
+      text: `Dear ${user},
+
+Your lost item report (ID: ${newLostId}) has been submitted successfully.
+
+Item: ${item}
+Transport Type: ${transport_type} (Route ${route_no})
+Date Reported: ${new Date(lost_date).toLocaleDateString()}
+
+We will update you once your item is found.
+
+Regards,
+Smart City Lost & Found Team`,
+      html: `<p>Dear ${user},</p>
+             <p>Your lost item report (ID: <strong>${newLostId}</strong>) has been submitted successfully.</p>
+             <p><strong>Item:</strong> ${item}<br>
+             <strong>Transport Type:</strong> ${transport_type} (Route ${route_no})<br>
+             <strong>Date Reported:</strong> ${new Date(lost_date).toLocaleDateString()}</p>
+             <p>We will update you once your item is found.</p>
+             <p>Regards,<br>Smart City Management - Lost & Found Team</p>`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+        // Even if email fails, report the lost item as successful.
+        return res.status(500).json({ error: "Report saved, but failed to send confirmation email" });
+      }
+      console.log("Email sent: " + info.response);
+      res.status(201).json({ message: "Lost item report submitted successfully", lostItem: newLostItem });
+    });
+  } catch (err) {
+    console.error("Error creating lost item report:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// API endpoint to fetch lost items (with optional filtering by lost_id)
+app.get("/api/lost_items", async (req, res) => {
+  try {
+    const { lost_id } = req.query;
+    let query = {};
+    if (lost_id) {
+      query.lost_id = lost_id;
+    }
+    const lostItems = await LostItem.find(query);
+    res.json(lostItems);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Multimodal Routes Model for combined journey suggestions
+const multimodalRouteSchema = new mongoose.Schema({
+  route_id: String,
+  segments: [
+    {
+      from: String,
+      to: String,
+      transport_mode: String,
+      cost: Number,
+      timings: String
+    }
+  ],
+  total_cost: Number
+});
+const MultimodalRoute = mongoose.model("MultimodalRoute", multimodalRouteSchema, "multimodal_routes");
+
+// API endpoint to search for multimodal routes
+// It returns routes where the first segment's "from" equals origin (case-insensitive)
+// and the last segment's "to" equals destination (case-insensitive)
+app.get("/api/search_multimodal", async (req, res) => {
+  try {
+    const { origin, destination } = req.query;
+    if (!origin || !destination) {
+      return res.status(400).json({ error: "Origin and Destination are required" });
+    }
+    // Build a query: compare first segment's "from" and last segment's "to"
+    // Using aggregation pipeline to match based on array fields:
+    const routes = await MultimodalRoute.aggregate([
+      {
+        $addFields: {
+          firstFrom: { $arrayElemAt: ["$segments.from", 0] },
+          lastTo: { $arrayElemAt: ["$segments.to", -1] }
+        }
+      },
+      {
+        $match: {
+          firstFrom: { $regex: new RegExp("^" + origin.trim() + "$", "i") },
+          lastTo: { $regex: new RegExp("^" + destination.trim() + "$", "i") }
+        }
+      }
+    ]);
+    res.json(routes);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
