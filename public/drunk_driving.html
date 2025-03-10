@@ -1,214 +1,214 @@
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Drunk Driving Statistics</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="header.js"></script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
-            justify-content: space-between;
-        }
-
-        .mainbody {
-            display: flex;
-            margin-top: 50px;
-            margin-bottom: 30px;
-            margin-left: 20px;
-        }
-
-        .left-container {
-            width: 48%;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .chart-container {
-            width: 100%;
-            padding: 10px;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        .chart-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        canvas {
-            width: 100%;
-            height: 300px;
-        }
-
-        .right-container {
-            width: 45%;
-            margin-right: 20px;
-            height: fit-content;
-            position: fixed;
-            right: 0;
-        }
-
-        .right_content{
-            background: linear-gradient(135deg, #d8d8db, #a698dd);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-        .consequences-title {
-            color: #d9534f;
-            font-size: 24px;
-            text-align: center;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .consequence-item {
-            background: #ffe6e6;
-            border-left: 5px solid #d9534f;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 5px;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        .left_bottom {
-            display: flex;
-        }
-
-        .left1 {
-            margin-left: 10px;
-            margin-right: -20px;
-        }
-
-        .left2 {
-            width: 650px;
-        }
-
-        .left2 canvas {
-            margin-top: 80px;
-        }
-
-        .small_title{
-            text-align: center;
-            color: #5069d8;
-        }
-    </style>
-</head>
-
-<body>
-    <div id="header-container"></div>
-    <div class="mainbody">
-        <div class="left-container">
-            <h2 class="small_title">DRUNK DRIVING STATISTICS (2019 - 2024)</h2>
-            <div class="chart-container">
-                <div class="chart-title">Total Road Accident Deaths</div>
-                <canvas id="totalDeathsChart"></canvas>
-            </div>
-            <div class="left_bottom">
-                <div class="chart-container left2">
-                    <div class="chart-title">Drunk Driving Death Percentage</div>
-                    <canvas id="drunkDrivingChart"></canvas>
-                </div>
-                <div class="chart-container left1">
-                    <div class="chart-title">Drunk Driving Deaths</div>
-                    <canvas id="percentageChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="right-container">
-            <h2 class="consequences-title small_title">CONSEQUENCES OF DRUNK DRIVING</h2>
-            <div class="right_content">
-                <div class="consequence-item">🚔 <b>Legal Penalties:</b> Heavy fines, license suspension, or
-                    imprisonment.
-                </div>
-                <div class="consequence-item">💔 <b>Fatal Accidents:</b> Risk of severe injuries or death.</div>
-                <div class="consequence-item">📉 <b>Financial Loss:</b> Increased insurance costs, legal fees, and job
-                    loss.
-                </div>
-                <div class="consequence-item">🛑 <b>Criminal Record:</b> Affects employment and travel opportunities.
-                </div>
-                <div class="consequence-item">😞 <b>Emotional Trauma:</b> Guilt and distress from causing harm.</div>
-                <div class="consequence-item">🚑 <b>Medical Costs:</b> Expensive hospital and rehab expenses.</div>
-                <div class="consequence-item">👮 <b>License Revocation:</b> Losing driving privileges.</div>
-                <div class="consequence-item">🚘 <b>Vehicle Damage:</b> Expensive repairs or total loss.</div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        async function fetchData() {
-            try {
-                const response = await fetch("http://localhost:3000/api/drunk_driving");
-                const data = await response.json();
-                processChartData(data);
-            } catch (error) {
-                console.error("Error fetching data:", error);
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Drunk Driving Statistics</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="header.js"></script>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: #f0f2f5;
+                justify-content: space-between;
             }
-        }
 
-        function processChartData(data) {
-            const cities = [...new Set(data.map(d => d.City))];
-            const years = [...new Set(data.map(d => d.Year))].sort();
+            .mainbody {
+                display: flex;
+                margin-top: 50px;
+                margin-bottom: 30px;
+                margin-left: 20px;
+            }
 
-            const totalDeathsDatasets = cities.map(city => ({
-                label: city,
-                data: years.map(year => {
-                    const entry = data.find(d => d.City === city && d.Year === year);
-                    return entry ? entry.Total_Accident_Deaths : 0;
-                }),
-                backgroundColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
-            }));
+            .left-container {
+                width: 48%;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
 
-            const drunkDeathsDatasets = cities.map(city => ({
-                label: city,
-                data: years.map(year => {
-                    const entry = data.find(d => d.City === city && d.Year === year);
-                    return entry ? entry.Drunk_Driving_Deaths : 0;
-                }),
-                borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
-                fill: false,
-                tension: 0.4,
-            }));
+            .chart-container {
+                width: 100%;
+                padding: 10px;
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                text-align: center;
+            }
 
-            const percentageData = years.map(year =>
-                data.reduce((sum, entry) => entry.Year === year ? sum + entry.Percentage : sum, 0) / cities.length
-            );
+            .chart-title {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 8px;
+            }
 
-            const pieColors = cities.map(() => `hsl(${Math.random() * 360}, 70%, 50%)`);
+            canvas {
+                width: 100%;
+                height: 300px;
+            }
 
-            createChart("totalDeathsChart", "bar", years, totalDeathsDatasets);
-            createChart("drunkDrivingChart", "line", years, drunkDeathsDatasets);
-            createPieChart("percentageChart", "Drunk Driving Death Percentage", years, percentageData, pieColors);
-        }
+            .right-container {
+                width: 45%;
+                margin-right: 20px;
+                height: fit-content;
+                position: fixed;
+                right: 0;
+            }
 
-        function createChart(canvasId, type, labels, datasets) {
-            new Chart(document.getElementById(canvasId), {
-                type: type,
-                data: { labels: labels, datasets: datasets },
-                options: { responsive: true, scales: { y: { beginAtZero: true } } }
-            });
-        }
+            .right_content{
+                background: linear-gradient(135deg, #d8d8db, #a698dd);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+            .consequences-title {
+                color: #d9534f;
+                font-size: 24px;
+                text-align: center;
+                font-weight: bold;
+                margin-bottom: 15px;
+            }
 
-        function createPieChart(canvasId, title, labels, data, colors) {
-            new Chart(document.getElementById(canvasId), {
-                type: "pie",
-                data: { labels: labels, datasets: [{ data: data, backgroundColor: colors }] },
-                options: { responsive: true, plugins: { title: { display: true, text: title } } }
-            });
-        }
+            .consequence-item {
+                background: #ffe6e6;
+                border-left: 5px solid #d9534f;
+                padding: 12px;
+                margin: 8px 0;
+                border-radius: 5px;
+                font-size: 16px;
+                line-height: 1.5;
+            }
 
-        fetchData();
-    </script>
-</body>
+            .left_bottom {
+                display: flex;
+            }
 
-</html>
+            .left1 {
+                margin-left: 10px;
+                margin-right: -20px;
+            }
+
+            .left2 {
+                width: 650px;
+            }
+
+            .left2 canvas {
+                margin-top: 80px;
+            }
+
+            .small_title{
+                text-align: center;
+                color: #5069d8;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="header-container"></div>
+        <div class="mainbody">
+            <div class="left-container">
+                <h2 class="small_title">DRUNK DRIVING STATISTICS (2019 - 2024)</h2>
+                <div class="chart-container">
+                    <div class="chart-title">Total Road Accident Deaths</div>
+                    <canvas id="totalDeathsChart"></canvas>
+                </div>
+                <div class="left_bottom">
+                    <div class="chart-container left2">
+                        <div class="chart-title">Drunk Driving Death Percentage</div>
+                        <canvas id="drunkDrivingChart"></canvas>
+                    </div>
+                    <div class="chart-container left1">
+                        <div class="chart-title">Drunk Driving Deaths</div>
+                        <canvas id="percentageChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-container">
+                <h2 class="consequences-title small_title">CONSEQUENCES OF DRUNK DRIVING</h2>
+                <div class="right_content">
+                    <div class="consequence-item">🚔 <b>Legal Penalties:</b> Heavy fines, license suspension, or
+                        imprisonment.
+                    </div>
+                    <div class="consequence-item">💔 <b>Fatal Accidents:</b> Risk of severe injuries or death.</div>
+                    <div class="consequence-item">📉 <b>Financial Loss:</b> Increased insurance costs, legal fees, and job
+                        loss.
+                    </div>
+                    <div class="consequence-item">🛑 <b>Criminal Record:</b> Affects employment and travel opportunities.
+                    </div>
+                    <div class="consequence-item">😞 <b>Emotional Trauma:</b> Guilt and distress from causing harm.</div>
+                    <div class="consequence-item">🚑 <b>Medical Costs:</b> Expensive hospital and rehab expenses.</div>
+                    <div class="consequence-item">👮 <b>License Revocation:</b> Losing driving privileges.</div>
+                    <div class="consequence-item">🚘 <b>Vehicle Damage:</b> Expensive repairs or total loss.</div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            async function fetchData() {
+                try {
+                    const response = await fetch("http://localhost:3000/api/drunk_driving");
+                    const data = await response.json();
+                    processChartData(data);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            }
+
+            function processChartData(data) {
+                const cities = [...new Set(data.map(d => d.City))];
+                const years = [...new Set(data.map(d => d.Year))].sort();
+
+                const totalDeathsDatasets = cities.map(city => ({
+                    label: city,
+                    data: years.map(year => {
+                        const entry = data.find(d => d.City === city && d.Year === year);
+                        return entry ? entry.Total_Accident_Deaths : 0;
+                    }),
+                    backgroundColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                }));
+
+                const drunkDeathsDatasets = cities.map(city => ({
+                    label: city,
+                    data: years.map(year => {
+                        const entry = data.find(d => d.City === city && d.Year === year);
+                        return entry ? entry.Drunk_Driving_Deaths : 0;
+                    }),
+                    borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                    fill: false,
+                    tension: 0.4,
+                }));
+
+                const percentageData = years.map(year =>
+                    data.reduce((sum, entry) => entry.Year === year ? sum + entry.Percentage : sum, 0) / cities.length
+                );
+
+                const pieColors = cities.map(() => `hsl(${Math.random() * 360}, 70%, 50%)`);
+
+                createChart("totalDeathsChart", "bar", years, totalDeathsDatasets);
+                createChart("drunkDrivingChart", "line", years, drunkDeathsDatasets);
+                createPieChart("percentageChart", "Drunk Driving Death Percentage", years, percentageData, pieColors);
+            }
+
+            function createChart(canvasId, type, labels, datasets) {
+                new Chart(document.getElementById(canvasId), {
+                    type: type,
+                    data: { labels: labels, datasets: datasets },
+                    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            function createPieChart(canvasId, title, labels, data, colors) {
+                new Chart(document.getElementById(canvasId), {
+                    type: "pie",
+                    data: { labels: labels, datasets: [{ data: data, backgroundColor: colors }] },
+                    options: { responsive: true, plugins: { title: { display: true, text: title } } }
+                });
+            }
+
+            fetchData();
+        </script>
+    </body>
+
+    </html>
