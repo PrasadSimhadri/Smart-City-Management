@@ -222,21 +222,6 @@
       displayAccidents(filtered);
     }
 
-    async function deleteAccident(id) {
-      if (confirm("Are you sure you want to delete this accident report?")) {
-        try {
-          const response = await fetch(`/api/accidents/${id}`, {
-            method: "DELETE"
-          });
-          const result = await response.json();
-          alert(result.message);
-          fetchAccidents(); // Refresh data
-        } catch (error) {
-          console.error("Error deleting accident:", error);
-        }
-      }
-    }
-
     // Load accident data on page load
     fetchAccidents();
   </script>

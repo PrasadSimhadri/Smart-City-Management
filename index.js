@@ -162,6 +162,9 @@ app.get("/logout", (req, res) => {
   }
 });
 
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "login.html"));
+});
 app.get("/about", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "about.html"));
 });
@@ -237,6 +240,16 @@ app.get("/lost_items", (req, res) => {
 app.get("/multimodal_journey", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "multimodal_journey.html"));
 });
+app.get("/nearbyparking", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "nearbyparking.html"));
+});
+app.get("/nearbyevstations", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "nearbyevstations.html"));
+});
+app.get("/nearbyfuels", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "nearbyfuels.html"));
+});
+
 
 // ----------------- Authentication Endpoints -----------------
 
@@ -315,11 +328,44 @@ app.get("/api/accidents/:id", async (req, res) => {
   }
 });
 
+// List of recipient emails
+const recipientEmails = [
+  "saisimhadri2207@gmail.com",
+  "Siddhu4356@gmail.com"
+];
+
+// Create transporter for sending emails
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "saisimhadri2207@gmail.com",  // Replace with your email
+    pass: "kght pxda coha ghra"    // Replace with your email password or app password
+  }
+});
+
 app.post("/api/accidents", async (req, res) => {
   try {
     const { streetNumber, area, problem } = req.body;
     const accident = new Accident({ streetNumber, area, problem });
     await accident.save();
+
+    // Email content
+    const mailOptions = {
+      from: "saisimhadri2207@gmail.com",
+      to: recipientEmails.join(","),
+      subject: "New Accident Alert!",
+      text: `A new accident has been reported:\n\nStreet Number: ${streetNumber}\nArea: ${area}\nProblem: ${problem}\n\nStay Alert!`
+    };
+
+    // Send email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+
     res.status(201).json(accident);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -338,18 +384,6 @@ app.put("/api/accidents/:id", async (req, res) => {
       return res.status(404).json({ error: "Accident not found" });
     }
     res.json(accident);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.delete("/api/accidents/:id", async (req, res) => {
-  try {
-    const accident = await Accident.findByIdAndDelete(req.params.id);
-    if (!accident) {
-      return res.status(404).json({ error: "Accident not found" });
-    }
-    res.json({ message: "Accident deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -725,14 +759,6 @@ app.post("/api/lost_items", async (req, res) => {
     });
     await newLostItem.save();
 
-    // Configure nodemailer transporter
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER || "saisimhadri2207@gmail.com", // Replace with your email
-        pass: process.env.EMAIL_PASS || "kght pxda coha ghra" // Replace with your email password or app-specific password
-      }
-    });
 
     // Compose confirmation email
     let mailOptions = {
@@ -837,6 +863,79 @@ app.get("/api/search_multimodal", async (req, res) => {
   }
 });
 
+const ParkingSchema = new mongoose.Schema({
+  name: String,
+  address: String,
+  distance: Number,
+  pricePerHour: Number,
+  availableSlots: Number
+});
+
+const Parking = mongoose.model('Parking', ParkingSchema, "nearbyparkings");
+
+app.get('/api/nearbyparking', async (req, res) => {
+  try {
+    const parkingSpaces = await Parking.find();
+    res.json(parkingSpaces);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching parking data" });
+  }
+});
+
+// Define Schema & Model
+const evStationSchema = new mongoose.Schema({
+  name: String,
+  address: String,
+  city: String,
+  distance: Number,
+  pricePerKWh: Number,
+  chargingSpeed: String,
+  connectorType: String
+});
+
+const EVStation = mongoose.model('EVStation', evStationSchema, "nearbyevs");
+
+// API to Fetch EV Charging Stations by City
+app.get('/api/evstations', async (req, res) => {
+  try {
+    const { city } = req.query;
+    let query = {};
+
+    if (city) {
+      query.city = { $regex: new RegExp(city, 'i') };
+    }
+
+    const stations = await EVStation.find(query).limit(20);
+    res.json(stations);
+  } catch (error) {
+    console.error("Error fetching EV stations:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Define Fuel Station Schema
+const fuelStationSchema = new mongoose.Schema({
+  name: String,
+  address: String,
+  city: String,
+  distance: Number,
+  pricePerLitre: Number,
+  fuelType: String
+});
+
+// Create Model
+const FuelStation = mongoose.model('FuelStation', fuelStationSchema, "nearbyfuelstations");
+
+// API Route to Get Fuel Stations
+app.get('/api/nearbyfuels', async (req, res) => {
+  try {
+      const stations = await FuelStation.find();
+      res.json(stations);
+  } catch (error) {
+      console.error("Error fetching data:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000/home");

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nearby Parking Spaces in Coimbatore</title>
+    <script src="header.js"></script>
+    <script src="logout.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            color: rgb(105, 42, 187);
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .filters {
+            margin: 20px;
+            text-align: center;
+        }
+
+        .filters label {
+            font-weight: bold;
+            font-size: 16px;
+            margin-right: 10px;
+            color: #333;
+        }
+
+        /* Custom Dropdown Styling */
+        .filters select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding: 10px 15px;
+            width: 100px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            background-color: #fff;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .filters select::-ms-expand {
+            display: none;
+        }
+
+        .filters select:hover {
+            border-color: #666;
+        }
+
+        .filters select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Search Bar Styling */
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .parking-list {
+            padding: 20px;
+        }
+
+        #parkingResults {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 0 20px;
+            justify-content: center;
+        }
+
+        .parking-item {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 280px;
+            text-align: center;
+        }
+
+        .parking-item h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #2e29ca;
+        }
+
+        .parking-item p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .slots {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .full {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <header>
+        <h1>Find Nearby Parking Spaces in Coimbatore</h1>
+    </header>
+
+    <main>
+        <div class="filters">
+            <label for="sortBy">Sort By:</label>
+            <select id="sortBy">
+                <option value="distance">Distance</option>
+                <option value="price">Price</option>
+            </select>
+        </div>
+
+        <!-- Search by Area -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search by area...">
+        </div>
+
+        <section class="parking-list">
+            <div id="parkingResults">
+                <!-- Parking spaces will be dynamically added here -->
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let parkingData = []; // Global variable to store parking data
+
+        async function fetchParkingData() {
+            try {
+                const response = await fetch('/api/nearbyparking'); // Fetching from backend API
+                parkingData = await response.json();
+                displayParkingSpaces(parkingData);
+            } catch (error) {
+                console.error("Error fetching parking data:", error);
+            }
+        }
+
+        function sortParkingLots(lots, sortBy) {
+            if (sortBy === "distance") return lots.sort((a, b) => a.distance - b.distance);
+            if (sortBy === "price") return lots.sort((a, b) => a.pricePerHour - b.pricePerHour);
+            return lots;
+        }
+
+        function displayParkingSpaces(spaces) {
+            const resultsContainer = document.getElementById("parkingResults");
+            resultsContainer.innerHTML = "";
+
+            spaces.forEach(parking => {
+                const parkingItem = document.createElement("div");
+                parkingItem.className = "parking-item";
+                parkingItem.innerHTML = `
+                    <h3>${parking.name}</h3>
+                    <p>📍 ${parking.address}</p>
+                    <p>🚗 Distance: ${parking.distance} km</p>
+                    <p>💰 Price: ₹${parking.pricePerHour}/hour</p>
+                    <p class="${parking.availableSlots === 0 ? "full" : "slots"}"> Available Slots: ${parking.availableSlots === 0 ? "Full" : parking.availableSlots}</p>
+                `;
+                resultsContainer.appendChild(parkingItem);
+            });
+        }
+
+        document.getElementById("sortBy").addEventListener("change", () => {
+            const sortedLots = sortParkingLots([...parkingData], document.getElementById("sortBy").value);
+            displayParkingSpaces(sortedLots);
+        });
+
+        // Search by area
+        document.getElementById("searchInput").addEventListener("input", (event) => {
+            const query = event.target.value.toLowerCase();
+            const filteredSpaces = parkingData.filter(parking =>
+                parking.address.toLowerCase().includes(query)
+            );
+            displayParkingSpaces(filteredSpaces);
+        });
+
+        fetchParkingData(); // Initial fetch
+    </script>
+</body>
+
+</html>
