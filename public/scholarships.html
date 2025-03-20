@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scholarship Opportunities</title>
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5069d8;
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .filter-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .filter-section h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .filter-section .sort-search {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .filter-section input[type="text"],
+        .filter-section select {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #fff;
+            color: #333;
+            min-width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-section input[type="text"]:focus,
+        .filter-section select:focus {
+            border-color: #5069d8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(80, 105, 216, 0.1);
+        }
+
+        .filter-section button {
+            padding: 10px 20px;
+            background: #5069d8;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-section button:hover {
+            background: #3b4fa3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(80, 105, 216, 0.3);
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #d8d8db, #a698dd);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            text-align: left;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardEntry 0.6s ease forwards;
+        }
+
+        .card:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+
+        .card:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) rotateX(2deg) rotateY(1deg) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .card p {
+            margin: 8px 0;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        @keyframes cardEntry {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+            font-size: 14px;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        /* Ripple effect styles */
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation: rippleEffect 0.6s linear;
+        }
+
+        @keyframes rippleEffect {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+
+            100% {
+                width: 200px;
+                height: 200px;
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <div class="container">
+        <h1>Scholarship Opportunities</h1>
+
+        <div class="filter-section">
+            <h2>Filter Scholarships</h2>
+            <div class="sort-search">
+                <input type="text" id="courseFilter" placeholder="Enter course" />
+                <select id="scholarshipTypeFilter">
+                    <option value="">All Scholarship Types</option>
+                    <option value="Merit-Based Scholarship">Merit-Based Scholarship</option>
+                    <option value="Need-Based Grant">Need-Based Grant</option>
+                    <option value="Institute Merit Scholarship">Institute Merit Scholarship</option>
+                    <option value="Institute Need-Based Grant">Institute Need-Based Grant</option>
+                    <option value="Merit & Need-Based Scholarship">Merit & Need-Based Scholarship</option>
+                    <option value="Govt. Funded Scholarship">Govt. Funded Scholarship</option>
+                    <option value="Merit-Based Fellowship">Merit-Based Fellowship</option>
+                    <option value="Need-Based Assistance">Need-Based Assistance</option>
+                    <option value="Diversity Scholarship">Diversity Scholarship</option>
+                </select>
+            </div>
+            <button class="apply-btn" onclick="applyFilters()">Apply Filter</button>
+        </div>
+
+        <div class="cards-container" id="cardsContainer">
+            <!-- Scholarship cards will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        let scholarships = [];
+
+        async function fetchScholarships() {
+            try {
+                const response = await fetch("http://localhost:3000/api/scholarships");
+                scholarships = await response.json();
+                displayScholarships(scholarships);
+            } catch (error) {
+                console.error("Error fetching scholarships:", error);
+            }
+        }
+
+        function displayScholarships(data) {
+            const container = document.getElementById("cardsContainer");
+            container.innerHTML = "";
+            if (data.length === 0) {
+                container.innerHTML = "<p>No scholarships found.</p>";
+                return;
+            }
+            data.forEach(scholarship => {
+                container.innerHTML += `
+                    <div class="card">
+                        <h3>${scholarship.university}</h3>
+                        <p><strong>Course:</strong> ${scholarship.course}</p>
+                        <p><strong>Country:</strong> ${scholarship.country}</p>
+                        <p><strong>Scholarship Type:</strong> ${scholarship.scholarship_type}</p>
+                        <p><strong>Eligibility:</strong> ${scholarship.eligibility}</p>
+                    </div>
+                `;
+            });
+
+            // Initialize animations for new cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        }
+
+        // Enhanced ripple effect
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function (e) {
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                ripple.style.left = e.clientX - button.offsetLeft + 'px';
+                ripple.style.top = e.clientY - button.offsetTop + 'px';
+                button.appendChild(ripple);
+
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        function applyFilters() {
+            const course = document.getElementById("courseFilter").value.trim().toLowerCase();
+            const scholarshipType = document.getElementById("scholarshipTypeFilter").value;
+
+            let filtered = scholarships;
+            if (course) {
+                filtered = filtered.filter(s => s.course.toLowerCase().includes(course));
+            }
+            if (scholarshipType) {
+                filtered = filtered.filter(s => s.scholarship_type === scholarshipType);
+            }
+            displayScholarships(filtered);
+        }
+
+        fetchScholarships();
+    </script>
+</body>
+
+</html>

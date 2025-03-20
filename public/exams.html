@@ -76,6 +76,20 @@
             color: #ff5c5c;
             font-size: 18px;
         }
+
+        /* Add bookmark icon styles */
+        .bookmark-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+
+        .bookmark-icon.bookmarked {
+            color: #ffd700;
+        }
     </style>
 </head>
 
@@ -261,20 +275,40 @@
         function displayExams(data) {
             const container = document.getElementById("cardsContainer");
             container.innerHTML = "";
+            const bookmarks = JSON.parse(localStorage.getItem("bookmarkedExams")) || [];
+
             data.forEach(exam => {
+                const isBookmarked = bookmarks.some(b => b.ExamName === exam.ExamName);
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-          <h3>${getExamIcon(exam.Foreign)} ${exam.ExamName}</h3>
-          <p><strong>Last Application Date:</strong> ${exam.LastApplicationDate}</p>
-          <p><strong>Examination Date:</strong> ${exam.ExaminationDate}</p>
-          <p><strong>Difficulty Level:</strong> ${exam.DifficultyLevel}</p>
-          <p><a class="resource-link" href="${exam.PreparationLink}" target="_blank">Preparation Resources</a></p>
-        `;
+                    <i class="fas fa-bookmark bookmark-icon ${isBookmarked ? 'bookmarked' : ''}" 
+                       onclick="toggleBookmark(this, '${exam.ExamName}')"></i>
+                    <h3>${getExamIcon(exam.Foreign)} ${exam.ExamName}</h3>
+                    <p><strong>Last Application Date:</strong> ${exam.LastApplicationDate}</p>
+                    <p><strong>Examination Date:</strong> ${exam.ExaminationDate}</p>
+                    <p><strong>Difficulty Level:</strong> ${exam.DifficultyLevel}</p>
+                    <p><a href="${exam.PreparationLink}" target="_blank">Preparation Resources</a></p>
+                    <p><a href="${exam.QuestionBank}" target="_blank">Question Bank & Mock Tests</a></p>
+                `;
                 container.appendChild(card);
             });
         }
+        function toggleBookmark(icon, examName) {
+            const bookmarks = JSON.parse(localStorage.getItem("bookmarkedExams")) || [];
+            const exam = examData.find(e => e.ExamName === examName);
 
+            const index = bookmarks.findIndex(b => b.ExamName === examName);
+            if (index === -1) {
+                bookmarks.push(exam);
+                icon.classList.add('bookmarked');
+            } else {
+                bookmarks.splice(index, 1);
+                icon.classList.remove('bookmarked');
+            }
+
+            localStorage.setItem("bookmarkedExams", JSON.stringify(bookmarks));
+        }
         // In a real application, you'd fetch data from the server.
         // For this demo, we use the examData defined above.
         document.addEventListener("DOMContentLoaded", function () {

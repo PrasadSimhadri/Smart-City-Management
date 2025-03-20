@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Top Exams in India & Abroad</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        #voice-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        button {
+            background-color: #5069d8;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: green;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5069d8;
+            margin-bottom: 20px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .foreign-icon {
+            color: #ff5c5c;
+            font-size: 18px;
+        }
+
+        #voice-button {
+            margin-left: 10px;
+            background-color: #ff5733;
+        }
+
+        #sort-button {
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .card a {
+            color: #5069d8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .card a:hover {
+            color: #3b4fa3;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <h1>E-BOOKS AND REFERENCES</h1>
+    <button id="sort-button" onclick="sortByDifficulty()">Sort by Difficulty</button>
+    <button id="voice-button" onclick="startVoiceRecognition()">Start Voice Navigation</button>
+    <div class="cards-container" id="cardsContainer"></div>
+    <div id="footer-container"></div>
+
+    <script>
+        const examData = [
+            { "ExamName": "IIT JEE Advanced", "LastApplicationDate": "2025-03-15", "ExaminationDate": "2025-04-05", "DifficultyLevel": "Very Hard", "PreparationLink": "https://www.shiksha.com/engineering/jee-main-exam-preparation", "QuestionBank": "https://jeeadv.ac.in/archive.html", "Foreign": "NO" },
+            { "ExamName": "NEET", "LastApplicationDate": "2025-03-20", "ExaminationDate": "2025-04-10", "DifficultyLevel": "Very Hard", "PreparationLink": "https://www.neetprep.com/", "QuestionBank": "https://www.neetprep.com/papers-test-series", "Foreign": "NO" },
+            {
+                "ExamName": "GATE",
+                "LastApplicationDate": "2025-03-25",
+                "ExaminationDate": "2025-04-15",
+                "DifficultyLevel": "Hard",
+                "PreparationLink": "https://gate.iitb.ac.in",
+                "QuestionBank": "https://gate2025.iitr.ac.in/mock-test-links.html",
+
+                "Foreign": "NO"
+            },
+            {
+                "ExamName": "CAT",
+                "LastApplicationDate": "2025-03-28",
+                "ExaminationDate": "2025-04-20",
+                "DifficultyLevel": "Hard",
+                "PreparationLink": "https://www.iimcat.ac.in",
+                "QuestionBank": "https://cracku.in/cat-previous-papers",
+
+                "Foreign": "NO"
+            },
+
+            {
+                "ExamName": "CLAT",
+                "LastApplicationDate": "2025-03-30",
+                "ExaminationDate": "2025-04-22",
+                "DifficultyLevel": "Easy",
+                "PreparationLink": "https://lawprep.in/clat-coaching-in-hyderabad/?gad_source=1",
+                "QuestionBank": "https://www.shiksha.com/law/clat-exam-mocktest",
+
+                "Foreign": "NO"
+            },
+            {
+                "ExamName": "UPSC Civil Services",
+                "LastApplicationDate": "2025-03-05",
+                "ExaminationDate": "2025-04-01",
+                "DifficultyLevel": "Very Hard",
+                "PreparationLink": "https://www.upsc.gov.in",
+                "QuestionBank": "https://upsc.gov.in/examinations/previous-question-papers",
+
+                "Foreign": "NO"
+            },
+            {
+                "ExamName": "IES/ISS Exam",
+                "LastApplicationDate": "2025-03-10",
+                "ExaminationDate": "2025-04-03",
+                "DifficultyLevel": "Hard",
+                "PreparationLink": "https://www.upsc.gov.in",
+                "QuestionBank": "https://testbook.com/upsc-ies-iss/previous-year-papers",
+
+                "Foreign": "NO"
+            },
+            {
+                "ExamName": "NDA",
+                "LastApplicationDate": "2025-03-12",
+                "ExaminationDate": "2025-04-05",
+                "DifficultyLevel": "Moderate",
+                "PreparationLink": "https://nda.nic.in",
+                "QuestionBank": "https://testbook.com/nda/test-series",
+
+                "Foreign": "NO"
+            },
+            {
+                "ExamName": "SAT",
+                "LastApplicationDate": "2025-03-18",
+                "ExaminationDate": "2025-04-11",
+                "DifficultyLevel": "Moderate",
+                "PreparationLink": "https://collegereadiness.collegeboard.org/sat",
+                "QuestionBank": "https://www.shiksha.com/studyabroad/exams/sat/sample-papers",
+
+                "Foreign": "YES"
+            },
+            {
+                "ExamName": "TOEFL",
+                "LastApplicationDate": "2025-03-20",
+                "ExaminationDate": "2025-04-13",
+                "DifficultyLevel": "Hard",
+                "PreparationLink": "https://www.ets.org/toefl",
+                "QuestionBank": "https://www.bestmytest.com/toefl/practice-test",
+
+                "Foreign": "YES"
+            },
+            {
+                "ExamName": "IELTS",
+                "LastApplicationDate": "2025-03-22",
+                "ExaminationDate": "2025-04-15",
+                "DifficultyLevel": "Moderate",
+                "PreparationLink": "https://www.ielts.org",
+                "QuestionBank": "https://ielts.org/take-a-test/preparation-resources/sample-test-questions",
+
+                "Foreign": "YES"
+            },
+            {
+                "ExamName": "LSAT",
+                "LastApplicationDate": "2025-03-24",
+                "ExaminationDate": "2025-04-17",
+                "DifficultyLevel": "Hard",
+                "PreparationLink": "https://www.lsac.org",
+                "QuestionBank": "https://www.examsnet.com/exams/lsat-india-practice-papers-online",
+
+                "Foreign": "YES"
+            },
+            {
+                "ExamName": "MCAT",
+                "LastApplicationDate": "2025-03-28",
+                "ExaminationDate": "2025-04-21",
+                "DifficultyLevel": "Very Hard",
+                "PreparationLink": "https://students-residents.aamc.org/mcat",
+                "QuestionBank": "https://www.kaptest.com/mcat/free/mcat-pop-quiz?srsltid=AfmBOoq8oAJTXjaHqX0Pqr-WAq7Zv0Z7XkhVKswS7qoGQrVoAEPKVQHJ",
+
+                "Foreign": "YES"
+            },
+
+
+            { "ExamName": "GRE", "LastApplicationDate": "2025-03-14", "ExaminationDate": "2025-04-07", "DifficultyLevel": "Moderate", "PreparationLink": "https://www.ets.org/gre", "QuestionBank": "https://www.shiksha.com/studyabroad/exams/gre/sample-papers", "Foreign": "YES" },
+            { "ExamName": "GMAT", "LastApplicationDate": "2025-03-16", "ExaminationDate": "2025-04-09", "DifficultyLevel": "Hard", "PreparationLink": "https://www.mba.com/gmat", "QuestionBank": "https://www.shiksha.com/studyabroad/exams/gmat/sample-papers", "Foreign": "YES" }
+        ];
+
+        function getExamIcon(foreign) {
+            return foreign === "YES" ? '<i class="fas fa-globe foreign-icon"></i>' : "";
+        }
+
+        function displayExams(data) {
+            const container = document.getElementById("cardsContainer");
+            container.innerHTML = "";
+            data.forEach(exam => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+                    <h3>${getExamIcon(exam.Foreign)} ${exam.ExamName}</h3>
+                    <p><strong>Last Application Date:</strong> ${exam.LastApplicationDate}</p>
+                    <p><strong>Examination Date:</strong> ${exam.ExaminationDate}</p>
+                    <p><strong>Difficulty Level:</strong> ${exam.DifficultyLevel}</p>
+                    <p><a href="${exam.PreparationLink}" target="_blank">Preparation Resources</a></p>
+                    <p><a href="${exam.QuestionBank}" target="_blank">Question Bank & Mock Tests</a></p>
+                    <button onclick="window.location.href='apply.html'">Apply</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function sortByDifficulty() {
+            const levels = { "Easy": 1, "Moderate": 2, "Hard": 3, "Very Hard": 4 };
+            const sortedData = [...examData].sort((a, b) => levels[a.DifficultyLevel] - levels[b.DifficultyLevel]);
+            displayExams(sortedData);
+            document.getElementById("sort-button").innerText = "Sorted by Difficulty";
+        }
+        let recognition;
+        let speechSynthesisUtterance;
+        function startVoiceRecognition() {
+            if (recognition) {
+                recognition.stop();
+            }
+
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.continuous = true;
+            recognition.start();
+
+            recognition.onresult = function (event) {
+                const command = event.results[event.results.length - 1][0].transcript.toLowerCase();
+                console.log("Voice Command:", command);
+
+                if (command.includes("scroll down")) {
+                    window.scrollBy(0, window.innerHeight);
+                } else if (command.includes("scroll up")) {
+                    window.scrollBy(0, -window.innerHeight);
+                } else if (command.includes("reload page") || command.includes("refresh")) {
+                    location.reload();
+                } else if (command.includes("stop listening")) {
+                    stopVoiceRecognition();
+                } else if (command.includes("open google")) {
+                    window.open("https://www.google.com", "_blank");
+
+                }
+                else if (command.includes("stop reading")) {
+                    stopSpeech();
+                }
+                else if (command.includes("read this page")) {
+                    speakText(document.body.innerText);
+                } else if (command.includes("what time is it")) {
+                    alert("Current time: " + new Date().toLocaleTimeString());
+                } else {
+                    alert("Command not recognized.");
+                }
+            };
+
+            recognition.onerror = function (event) {
+                console.error("Voice Recognition Error:", event.error);
+                alert("Voice recognition stopped. Click the button to restart.");
+            };
+        }
+        function stopVoiceRecognition() {
+            if (recognition) {
+                recognition.stop();
+                alert("Voice recognition stopped.");
+            }
+        }
+
+        function speakText(text) {
+            stopSpeech();
+            speechSynthesisUtterance = new SpeechSynthesisUtterance(text);
+            speechSynthesisUtterance.onend = function () {
+                console.log("Speech finished.");
+            };
+
+            speechSynthesis.speak(speechSynthesisUtterance);
+        }
+
+        function stopSpeech() {
+            if (speechSynthesisUtterance) {
+                speechSynthesisUtterance.onend = null; // Remove event listener
+            }
+            window.speechSynthesis.cancel(); // Forcefully stop speech
+            console.log("Speech stopped.");
+        }
+
+
+        displayExams(examData);
+    </script>
+</body>
+
+</html>

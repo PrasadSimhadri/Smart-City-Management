@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bookmarked Exams</title>
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .h2head {
+            text-align: center;
+            color: #5069d8;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #d8d8db, #a698dd);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            text-align: left;
+            position: relative;
+            min-height: 250px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .card p {
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        .remove-btn {
+            padding: 10px 15px;
+            background: red;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .remove-btn:hover {
+            background: darkred;
+        }
+
+        .bookmark-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #ffd700;
+        }
+
+        /* Added visual distinctions between types */
+        .card.institution {
+            background: linear-gradient(135deg, #d8d8db, #a698dd);
+        }
+
+        .card.exam {
+            background: linear-gradient(135deg, #d8d8db, #a698dd);
+        }
+
+        /* Enhanced type badges */
+        .type-badge {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: #8d98c5;
+            color: rgba(0, 0, 0, 0.616);
+            padding: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Added hover animation */
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 600px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <h2 class="h2head">BOOKMARKED CONTENT</h2>
+
+    <div class="cards-container" id="bookmarksContainer">
+        <!-- Content loaded dynamically -->
+    </div>
+
+    <script>
+        function loadBookmarks() {
+            const institutions = JSON.parse(localStorage.getItem("bookmarks")) || [];
+            const exams = JSON.parse(localStorage.getItem("bookmarkedExams")) || [];
+            const container = document.getElementById("bookmarksContainer");
+
+            if (institutions.length + exams.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-bookmark fa-3x" style="color: #5069d8; margin-bottom: 20px;"></i>
+                        <p>No bookmarks found. Start bookmarking content from other pages!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const institutionsHTML = institutions.map(inst => `
+                <div class="card institution">
+                    <span class="type-badge">Institution</span>
+                    <i class="fas fa-bookmark bookmark-icon"></i>
+                    <h3>${inst.institution}</h3>
+                    <p><strong>National Rank:</strong> ${inst.national_rank}</p>
+                    <p><strong>Specialization:</strong> ${inst.specialization}</p>
+                    <div class="card-footer">
+                        <button class="remove-btn" onclick="removeBookmark('institution', '${inst.institution}')">
+                            <i class="fas fa-trash-alt"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            const examsHTML = exams.map(exam => `
+                <div class="card exam">
+                    <span class="type-badge">Exam</span>
+                    <i class="fas fa-bookmark bookmark-icon"></i>
+                    <h3>${exam.ExamName}</h3>
+                    <p><strong>Application Deadline:</strong> ${exam.LastApplicationDate}</p>
+                    <p><strong>Exam Date:</strong> ${exam.ExaminationDate}</p>
+                    <p><strong>Difficulty:</strong> ${exam.DifficultyLevel}</p>
+                    <div class="card-footer">
+                        <button class="remove-btn" onclick="removeBookmark('exam', '${exam.ExamName}')">
+                            <i class="fas fa-trash-alt"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = institutionsHTML + examsHTML;
+        }
+
+        // Enhanced remove function with confirmation
+        function removeBookmark(type, name) {
+            if (!confirm(`Are you sure you want to remove ${name} from bookmarks?`)) return;
+
+            if (type === 'institution') {
+                let bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+                bookmarks = bookmarks.filter(inst => inst.institution !== name);
+                localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+            } else {
+                let exams = JSON.parse(localStorage.getItem("bookmarkedExams")) || [];
+                exams = exams.filter(exam => exam.ExamName !== name);
+                localStorage.setItem("bookmarkedExams", JSON.stringify(exams));
+            }
+
+            // Show temporary confirmation
+            const tempAlert = document.createElement('div');
+            tempAlert.textContent = `${name} removed from bookmarks`;
+            document.body.appendChild(tempAlert);
+            setTimeout(() => tempAlert.remove(), 2000);
+
+            loadBookmarks();
+        }
+
+        // Initial load
+        loadBookmarks();
+    </script>
+
+</body>
+
+</html>

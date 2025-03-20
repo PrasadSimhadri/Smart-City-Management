@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>University Cost Comparison</title>
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5069d8;
+            margin-bottom: 20px;
+        }
+
+        /* Compare Section Styles */
+        .compare-section {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .compare-section h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .compare-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .compare-form input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 45%;
+        }
+
+        .compare-form button {
+            padding: 10px 20px;
+            background: #5069d8;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .compare-form button:hover {
+            background: #3b4fa3;
+        }
+
+        .compare-results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            text-align: left;
+        }
+
+        .compare-card {
+            background: linear-gradient(135deg, #d8d8db, #a698dd);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .compare-card h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .compare-card p {
+            margin: 5px 0;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        /* Institutions List Styles */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #d8d8db, #a698dd);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 20px;
+        }
+
+        .card p {
+            margin: 8px 0;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <h1>University Cost Comparison</h1>
+
+    <!-- Compare Section -->
+    <div class="compare-section">
+        <h2>Compare University Costs</h2>
+        <div class="compare-form">
+            <input type="text" id="compareInst1" placeholder="Enter first university name" />
+            <input type="text" id="compareInst2" placeholder="Enter second university name" />
+            <button onclick="compareUniversities()">Compare</button>
+        </div>
+        <div class="compare-results" id="compareResults">
+            <!-- Comparison results will be displayed here -->
+        </div>
+    </div>
+
+    <!-- Universities Display -->
+    <div class="cards-container" id="cardsContainer">
+        <!-- University cost cards will be displayed here -->
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script>
+        let universities = [];
+
+        // Fetch universities from backend
+        async function fetchUniversities() {
+            try {
+                const response = await fetch("http://localhost:3000/api/universities");
+                universities = await response.json();
+                displayUniversities(universities);
+            } catch (error) {
+                console.error("Error fetching universities:", error);
+            }
+        }
+
+        // Display universities
+        function displayUniversities(data) {
+            const container = document.getElementById("cardsContainer");
+            container.innerHTML = "";
+
+            if (data.length === 0) {
+                container.innerHTML = "<p>No university data available.</p>";
+                return;
+            }
+
+            data.forEach(univ => {
+                container.innerHTML += `
+                    <div class="card">
+                        <h3>${univ.name}</h3>
+                        <p><strong>Specialisation:</strong> ${univ.specialisation || "N/A"}</p>
+                        <p><strong>Tuition Fee:</strong> ₹${univ.tuition_fee ? univ.tuition_fee.toLocaleString() : "N/A"}</p>
+                        <p><strong>Estimated Cost of Living:</strong> ₹${univ.estimated_cost_of_living ? univ.estimated_cost_of_living.toLocaleString() : "N/A"}</p>
+                        <p><strong>Financial Aid:</strong> ${univ.financial_aid ? univ.financial_aid.toLocaleString() : "N/A"}</p>
+                        <p><strong>Scholarships:</strong> ${univ.scholarships ? univ.scholarships.toLocaleString() : "N/A"}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // Compare universities
+        function compareUniversities() {
+            const name1 = document.getElementById("compareInst1").value.trim().toLowerCase();
+            const name2 = document.getElementById("compareInst2").value.trim().toLowerCase();
+            const resultContainer = document.getElementById("compareResults");
+
+            if (!name1 || !name2) {
+                resultContainer.innerHTML = "<p>Please enter both university names.</p>";
+                return;
+            }
+
+            const uni1 = universities.find(u => u.name.toLowerCase() === name1);
+            const uni2 = universities.find(u => u.name.toLowerCase() === name2);
+
+            if (!uni1 || !uni2) {
+                resultContainer.innerHTML = "<p>One or both universities not found.</p>";
+                return;
+            }
+
+            resultContainer.innerHTML = `
+                <div class="compare-card">
+                    <h3>${uni1.name}</h3>
+                    <p><strong>Tuition Fee:</strong> $${uni1.tuition_fee ? uni1.tuition_fee.toLocaleString() : "N/A"}</p>
+                    <p><strong>Estimated Cost of Living:</strong> $${uni1.estimated_cost_of_living ? uni1.estimated_cost_of_living.toLocaleString() : "N/A"}</p>
+                </div>
+                <div class="compare-card">
+                    <h3>${uni2.name}</h3>
+                    <p><strong>Tuition Fee:</strong> $${uni2.tuition_fee ? uni2.tuition_fee.toLocaleString() : "N/A"}</p>
+                    <p><strong>Estimated Cost of Living:</strong> $${uni2.estimated_cost_of_living ? uni2.estimated_cost_of_living.toLocaleString() : "N/A"}</p>
+                </div>
+            `;
+        }
+
+        fetchUniversities();
+    </script>
+</body>
+
+</html>
