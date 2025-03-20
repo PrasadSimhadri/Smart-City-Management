@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Exam Question Bank</title>
+    <script src="logout.js"></script>
+    <script src="header.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #2A5C8D;
+            --secondary-color: #6C63FF;
+            --accent-color: #FF6584;
+            --text-color: #2D3748;
+            --background-color: #F8F9FA;
+        }
+
+        .body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .card h3 {
+            color:black;
+            font-size: 1.25rem;
+            margin: 0 0 0.75rem 0;
+        }
+
+        .difficulty {
+            margin-left: 2px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color:black;
+            margin-bottom: 1rem;
+        }
+
+        .view-btn {
+            align-items: center;
+            padding: 8px;
+            background:blueviolet;
+            color: white;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .view-btn:hover {
+            background: #1E4A76;
+            transform: translateY(-1px);
+        }
+
+        /* Popup Styling */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .popup-header {
+            padding: 1.5rem;
+            background: var(--background-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .popup h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .close-btn {
+            font-size: 1.5rem;
+            color: #94A3B8;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .popup-content {
+            padding: 1.5rem;
+            height: 70vh;
+            overflow-y: auto;
+        }
+
+        .question-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .question-item {
+            background: var(--background-color);
+            padding: 1.25rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.2s ease;
+        }
+
+        .question-item:hover {
+            transform: translateX(4px);
+        }
+
+        .question-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #64748B;
+        }
+
+        .question-text {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Overlay */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+        }
+
+        @media (max-width: 768px) {
+            .popup {
+                width: 95%;
+                border-radius: 16px;
+            }
+
+            .card {
+                padding: 1rem;
+            }
+
+            .popup-header {
+                padding: 1rem;
+            }
+
+            .popup h3 {
+                font-size: 1.25rem;
+            }
+        }
+        h1{
+            margin-left: 380px;
+            color: blueviolet;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div><br>
+    <div class="body">
+        <h1>UNIVERSITY IMPORTANT QUESTIONS</h1>
+
+        <div class="container" id="universityContainer"></div>
+
+        <!-- Improved Popup for Questions -->
+        <div id="popup" class="popup">
+            <div class="popup-header">
+                <h3 id="popupTitle">Important Questions</h3>
+                <span class="close-btn" onclick="closePopup()">×</span>
+            </div>
+            <ul id="questionList"></ul>
+        </div>
+    </div>
+
+    <script>
+        async function fetchUniversities() {
+            try {
+                const response = await fetch("http://localhost:3000/api/questions");
+                const universities = await response.json();
+
+                let containerHTML = "";
+                universities.forEach(uni => {
+                    containerHTML += `
+                        <div class="card">
+                            <h3>${uni.univname}</h3>
+                            <p class="difficulty">Difficulty: ${uni.exam_difficulty}</p>
+                            <a href="#" class="view-btn" onclick="fetchQuestions('${uni.univname}')">View Questions</a>
+                        </div>
+                    `;
+                });
+                document.getElementById("universityContainer").innerHTML = containerHTML;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        async function fetchQuestions(university) {
+            try {
+                const response = await fetch(`http://localhost:3000/api/questions/${university}`);
+                const questions = await response.json();
+
+                let questionListHTML = questions.map(q => `
+                    <li>
+                        <strong>Year:</strong> ${q.year} | 
+                        <strong>Subject:</strong> ${q.subject} | 
+                        <strong>Exam Type:</strong> ${q.exam_type}<br>
+                        <em>${q.question_text}</em><br>
+                    </li>
+                `).join("");
+
+                document.getElementById("popupTitle").innerText = `${university} - Important Questions`;
+                document.getElementById("questionList").innerHTML = questionListHTML;
+                document.getElementById("popup").style.display = "block";
+            } catch (error) {
+                console.error("Error fetching questions:", error);
+            }
+        }
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        fetchUniversities();
+    </script>
+
+</body>
+
+</html>

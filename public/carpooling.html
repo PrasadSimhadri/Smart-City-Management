@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ride Sharing Finder</title>
+    <script src="header.js"></script>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .search-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .search-container input {
+            padding: 12px;
+            width: 280px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .search-container button {
+            padding: 12px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-container button:hover {
+            background: #0056b3;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #0b042b;
+            font-size: 20px;
+        }
+
+        .card p {
+            margin: 8px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .icon {
+            margin-right: 5px;
+            color: #007bff;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .search-container input {
+                width: 90%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <header>
+        <h1>Ride Sharing Finder</h1>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="startInput" placeholder="Enter Pickup (e.g., Coimbatore Central)" />
+        <input type="text" id="destinationInput" placeholder="Enter Drop (e.g., Peelamedu)" />
+        <button id="searchButton">Search Rides</button>
+    </div>
+
+    <div class="cards-container" id="rideResults">
+        <!-- Ride cards will be dynamically added here -->
+    </div>
+
+    <script>
+        async function fetchRides() {
+            const start = document.getElementById("startInput").value.trim();
+            const destination = document.getElementById("destinationInput").value.trim();
+
+            if (!start || !destination) {
+                alert("Please enter both starting point and destination.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/rides?start=${encodeURIComponent(start)}&destination=${encodeURIComponent(destination)}`);
+                const rides = await response.json();
+                displayRides(rides);
+            } catch (error) {
+                console.error("Error fetching rides:", error);
+            }
+        }
+
+        function displayRides(rides) {
+            const resultsContainer = document.getElementById("rideResults");
+            resultsContainer.innerHTML = "";
+
+            if (rides.length === 0) {
+                resultsContainer.innerHTML = "<p style='text-align:center;'>No rides found for the selected route.</p>";
+                return;
+            }
+
+            rides.forEach(ride => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+          <h3><i class="icon fas fa-user-circle"></i> ${ride.driver}</h3>
+          <p><strong>From:</strong> ${ride.currentLocation}</p>
+          <p><strong>To:</strong> ${ride.destination}</p>
+          <p><strong>Price:</strong> ₹${ride.price}</p>
+          <p><strong>Seats Available:</strong> ${ride.seatsAvailable}</p>
+          <p><strong>Provider:</strong> ${ride.provider}</p>
+        `;
+                resultsContainer.appendChild(card);
+            });
+        }
+
+        document.getElementById("searchButton").addEventListener("click", fetchRides);
+    </script>
+</body>
+
+</html>

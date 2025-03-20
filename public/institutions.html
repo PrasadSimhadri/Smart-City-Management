@@ -7,6 +7,7 @@
     <title>Institution Rankings</title>
     <script src="header.js"></script>
     <script src="footer.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
     <style>
         body {
@@ -155,6 +156,51 @@
             line-height: 1.4;
         }
 
+        .apply-now {
+            padding: 10px 15px;
+            background: #5069d8;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-align: center;
+            display: block;
+            width: 85%;
+            margin-top: auto;
+            text-decoration: none;
+        }
+
+        .apply-now:hover {
+            background: #32459c;
+        }
+
+        /* Updated bookmark styles */
+        .bookmark-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #666;
+            /* Visible gray color */
+            font-size: 24px;
+            transition: color 0.3s ease;
+            z-index: 1;
+            opacity: 1 !important;
+            /* Force visibility */
+        }
+
+        .bookmark-icon:hover {
+            color: #ffd700;
+            /* Gold on hover */
+        }
+
+        .bookmark-icon.bookmarked {
+            color: #ffd700;
+            /* Gold when bookmarked */
+        }
+
         footer {
             text-align: center;
             margin-top: 40px;
@@ -190,6 +236,7 @@
     <script>
         let institutions = [];
         let allSpecializations = [];
+        let currentFilteredData = [];
 
         // Fetch institutions from backend
         async function fetchInstitutions() {
@@ -220,48 +267,67 @@
             });
         }
 
+        // Update applyFilters to track current filtered data
         function applyFilters() {
             const selectedButtons = document.querySelectorAll(".spec-button.selected");
             const selectedSpecs = Array.from(selectedButtons).map(btn => btn.textContent);
             const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
-            let filtered = institutions;
 
-            if (selectedSpecs.length > 0) {
-                filtered = filtered.filter(inst => selectedSpecs.includes(inst.specialization));
-            }
-            if (searchTerm) {
-                filtered = filtered.filter(inst => inst.institution.toLowerCase().includes(searchTerm));
-            }
+            currentFilteredData = institutions.filter(inst => {
+                const matchesSpec = selectedSpecs.length === 0 || selectedSpecs.includes(inst.specialization);
+                const matchesSearch = searchTerm === '' || inst.institution.toLowerCase().includes(searchTerm);
+                return matchesSpec && matchesSearch;
+            });
 
             const sortValue = document.getElementById("sortSelect").value;
             if (sortValue === "worldRank") {
-                filtered.sort((a, b) => a.world_rank - b.world_rank);
+                currentFilteredData.sort((a, b) => a.world_rank - b.world_rank);
             } else if (sortValue === "alphabetical") {
-                filtered.sort((a, b) => a.institution.localeCompare(b.institution));
+                currentFilteredData.sort((a, b) => a.institution.localeCompare(b.institution));
             }
-            displayInstitutions(filtered);
+
+            displayInstitutions(currentFilteredData);
         }
 
         function displayInstitutions(data) {
             const container = document.getElementById("cardsContainer");
             container.innerHTML = "";
-            if (data.length === 0) {
-                container.innerHTML = "<p>No institutions match the selected criteria.</p>";
-                return;
-            }
+            const bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+
             data.forEach(inst => {
+                const isBookmarked = bookmarks.some(b => b.institution === inst.institution);
                 container.innerHTML += `
-          <div class="card">
-            <h3>${inst.institution}</h3>
-            <p><strong>World Rank:</strong> ${inst.world_rank}</p>
-            <p><strong>National Rank:</strong> ${inst.national_rank}</p>
-            <p><strong>Quality of Education:</strong> ${inst.quality_of_education}</p>
-            <p><strong>Score:</strong> ${inst.score}</p>
-            <p><strong>Specialization:</strong> ${inst.specialization}</p>
-            <p><strong>Year:</strong> ${inst.year}</p>
-          </div>
+            <div class="card">
+                <i class="fas fa-bookmark bookmark-icon ${isBookmarked ? 'bookmarked' : ''}" 
+                   onclick="toggleBookmark('${inst.institution.replace(/'/g, "\\'")}')"></i>
+                <h3>${inst.institution}</h3>
+                <p><strong>World Rank:</strong> ${inst.world_rank}</p>
+                <p><strong>National Rank:</strong> ${inst.national_rank}</p>
+                <p><strong>Quality of Education:</strong> ${inst.quality_of_education}</p>
+                <p><strong>Score:</strong> ${inst.score}</p>
+                <p><strong>Specialization:</strong> ${inst.specialization}</p>
+                <p><strong>Year:</strong> ${inst.year}</p>
+                <a href="https://example.com/apply" class="apply-now" target="_blank">Apply Now</a>
+            </div>
         `;
             });
+        }
+
+        function toggleBookmark(institutionName) {
+            const bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+            const institution = institutions.find(inst => inst.institution === institutionName);
+
+            const index = bookmarks.findIndex(b => b.institution === institutionName);
+            if (index !== -1) {
+                bookmarks.splice(index, 1);
+            } else {
+                bookmarks.push(institution);
+            }
+
+            localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+
+            // Re-render current view (preserves filters)
+            displayInstitutions(currentFilteredData.length > 0 ? currentFilteredData : institutions);
         }
 
         fetchInstitutions();
