@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Institution Rankings</title>
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4cc9f0;
+            --primary-dark: #3a0ca3;
+            --secondary: #f72585;
+            --secondary-light: #ff6b95;
+            --secondary-dark: #b5179e;
+            --accent: #7209b7;
+            --accent-light: #9d4edd;
+            --light: #f8f9ff;
+            --dark: #2b2d42;
+            --gray: #e9ecef;
+            --success: #06d6a0;
+            --warning: #ffd166;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Advanced animated background with particles */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 35%, rgba(67, 97, 238, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(247, 37, 133, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(114, 9, 183, 0.03) 0%, transparent 50%);
+            z-index: -2;
+            animation: gradientMove 25s ease infinite alternate;
+        }
+
+        /* Particle overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%234361ee' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            50% {
+                background-position: 100% 100%;
+            }
+
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 3rem 0 2.5rem;
+            letter-spacing: -1.5px;
+            position: relative;
+            padding-bottom: 1.5rem;
+            animation: titleFadeIn 1.2s ease-out forwards;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        @keyframes titleFadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+                filter: blur(10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 6px;
+            animation: lineExpand 1.5s ease-out forwards;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+
+        @keyframes lineExpand {
+            0% {
+                width: 0;
+                opacity: 0;
+            }
+
+            100% {
+                width: 120px;
+                opacity: 1;
+            }
+        }
+
+        .filter-container {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.08),
+                0 10px 20px rgba(0, 0, 0, 0.05),
+                0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            position: relative;
+            overflow: hidden;
+            animation: containerSlideUp 1s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        @keyframes containerSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px) scale(0.98);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Animated gradient border */
+        .filter-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg,
+                    var(--primary),
+                    var(--accent),
+                    var(--secondary),
+                    var(--primary-light),
+                    var(--primary));
+            background-size: 400% 100%;
+            animation: gradientBorder 6s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes gradientBorder {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Subtle corner accents */
+        .filter-container::after {
+            content: "";
+            position: absolute;
+            top: 8px;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, transparent 50%, rgba(76, 201, 240, 0.1) 100%);
+            border-radius: 0 0 0 100%;
+            z-index: 0;
+        }
+
+        .filter-container h2 {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: var(--primary-dark);
+            font-weight: 800;
+            text-align: center;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .filter-container h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 40px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 4px;
+            transition: width 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .filter-container:hover h2::after {
+            width: 100%;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .filter-button {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 16px;
+            background: white;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            font-size: 1.1rem;
+            font-weight: 700;
+            box-shadow:
+                0 10px 20px rgba(0, 0, 0, 0.05),
+                0 6px 6px rgba(0, 0, 0, 0.02),
+                0 0 0 1px rgba(67, 97, 238, 0.1) inset;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            letter-spacing: 0.5px;
+            transform-style: preserve-3d;
+        }
+
+        .filter-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .filter-button:hover {
+            color: white;
+            box-shadow:
+                0 15px 30px rgba(67, 97, 238, 0.2),
+                0 8px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(-5px) translateZ(10px);
+            letter-spacing: 1px;
+        }
+
+        .filter-button:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .filter-button.selected {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow:
+                0 15px 30px rgba(67, 97, 238, 0.3),
+                0 8px 15px rgba(0, 0, 0, 0.05);
+            transform: translateY(-5px);
+            letter-spacing: 1px;
+        }
+
+        .filter-button.selected::before {
+            transform: scaleX(1);
+        }
+
+        .spec-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            perspective: 1000px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .spec-button {
+            padding: 0.8rem 1.6rem;
+            border: none;
+            border-radius: 12px;
+            background: white;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow:
+                0 4px 10px rgba(0, 0, 0, 0.03),
+                0 0 0 1px rgba(0, 0, 0, 0.05) inset;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+
+        .spec-button:hover {
+            background: var(--gray);
+            transform: translateY(-4px) rotateX(10deg);
+            box-shadow:
+                0 8px 15px rgba(0, 0, 0, 0.08),
+                0 0 0 1px rgba(0, 0, 0, 0.08) inset;
+        }
+
+        .spec-button.selected {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-color: transparent;
+            box-shadow:
+                0 10px 20px rgba(67, 97, 238, 0.25),
+                0 6px 10px rgba(0, 0, 0, 0.05);
+            transform: translateY(-4px);
+        }
+
+        .sort-search {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+            z-index: 2;
+            position: relative;
+        }
+
+        .input-container {
+            position: relative;
+            min-width: 300px;
+            perspective: 1000px;
+        }
+
+        .sort-search input {
+            padding: 1.3rem 1.6rem;
+            font-size: 1.05rem;
+            border: 2px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            background: white;
+            color: var(--dark);
+            width: 100%;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow:
+                0 10px 20px rgba(0, 0, 0, 0.03),
+                0 4px 6px rgba(0, 0, 0, 0.02);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 500;
+            transform-style: preserve-3d;
+        }
+
+        .sort-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow:
+                0 15px 25px rgba(67, 97, 238, 0.1),
+                0 5px 10px rgba(0, 0, 0, 0.02),
+                0 0 0 5px rgba(67, 97, 238, 0.1);
+            transform: translateY(-4px) translateZ(10px);
+        }
+
+        .sort-search input::placeholder {
+            color: transparent;
+        }
+
+        .input-container label {
+            position: absolute;
+            top: 50%;
+            left: 1.6rem;
+            transform: translateY(-50%);
+            background: transparent;
+            padding: 0 5px;
+            color: #a0a0a0;
+            font-size: 1.05rem;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            pointer-events: none;
+            font-weight: 500;
+        }
+
+        .sort-search input:focus+label,
+        .sort-search input:not(:placeholder-shown)+label {
+            top: 0;
+            left: 1.2rem;
+            font-size: 0.85rem;
+            color: var(--primary);
+            background: white;
+            font-weight: 700;
+            padding: 0 8px;
+            z-index: 1;
+            letter-spacing: 0.5px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        .apply-btn,
+        .reset-btn {
+            padding: 1.2rem 3rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            letter-spacing: 0.5px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+        }
+
+        .apply-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow:
+                0 15px 30px rgba(67, 97, 238, 0.25),
+                0 8px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .apply-btn:hover {
+            transform: translateY(-8px) scale(1.05) translateZ(20px);
+            box-shadow:
+                0 20px 40px rgba(67, 97, 238, 0.3),
+                0 15px 20px rgba(0, 0, 0, 0.08);
+            letter-spacing: 1.5px;
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            color: white;
+            box-shadow:
+                0 15px 30px rgba(247, 37, 133, 0.25),
+                0 8px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-8px) scale(1.05) translateZ(20px);
+            box-shadow:
+                0 20px 40px rgba(247, 37, 133, 0.3),
+                0 15px 20px rgba(0, 0, 0, 0.08);
+            letter-spacing: 1.5px;
+        }
+
+        /* Advanced button ripple effect */
+        .apply-btn::after,
+        .reset-btn::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .apply-btn:active::after,
+        .reset-btn:active::after {
+            animation: ripple 1.2s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(40, 40);
+                opacity: 0;
+            }
+        }
+
+        /* Hover glow effect */
+        .apply-btn::before,
+        .reset-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            filter: blur(30px);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+            transform: translateZ(-1px);
+        }
+
+        .apply-btn:hover::before,
+        .reset-btn:hover::before {
+            opacity: 0.7;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+            perspective: 2000px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.05),
+                0 10px 20px rgba(0, 0, 0, 0.03),
+                0 0 0 1px rgba(0, 0, 0, 0.01);
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            animation: fadeInUp 1s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            opacity: 0;
+            transform: translateY(50px) rotateX(10deg);
+            animation-delay: calc(var(--i, 0) * 0.1s);
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+
+        /* Card hover effect with 3D transform */
+        .card:hover {
+            transform: translateY(-20px) rotateX(5deg) scale(1.05);
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.1),
+                0 15px 30px rgba(0, 0, 0, 0.05),
+                0 0 0 1px rgba(0, 0, 0, 0.01);
+            z-index: 2;
+        }
+
+        /* Card background gradient effect */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-light), var(--accent-light));
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .card:hover::before {
+            opacity: 0.05;
+        }
+
+        /* Card top accent */
+        .card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .card h3 {
+            color: var(--dark);
+            font-size: 1.6rem;
+            margin-bottom: 1.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            padding-bottom: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .card h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 4px;
+            transition: width 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .card:hover h3::after {
+            width: 120px;
+        }
+
+        .card p {
+            margin: 1.2rem 0;
+            color: #555;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: translateZ(0);
+        }
+
+        .card:hover p {
+            transform: translateY(-3px) translateZ(5px);
+            color: #333;
+        }
+
+        .card p strong {
+            color: var(--primary-dark);
+            font-weight: 700;
+            margin-right: 0.5rem;
+            transition: color 0.4s ease;
+        }
+
+        .card:hover p strong {
+            color: var(--primary);
+        }
+
+        /* Fancy visit link */
+        .visit-link {
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 0.8rem 1.6rem;
+            border-radius: 50px;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow:
+                0 10px 20px rgba(67, 97, 238, 0.25),
+                0 5px 10px rgba(0, 0, 0, 0.05);
+            display: inline-flex;
+            align-items: center;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .visit-link:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow:
+                0 15px 30px rgba(67, 97, 238, 0.3),
+                0 8px 15px rgba(0, 0, 0, 0.08);
+            letter-spacing: 1px;
+        }
+
+        .visit-link::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .visit-link:hover::before {
+            opacity: 1;
+        }
+
+        .visit-link::after {
+            content: "→";
+            margin-left: 0.6rem;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .visit-link:hover::after {
+            transform: translateX(8px);
+        }
+
+        /* Advanced animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+                filter: blur(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) rotateX(10deg);
+                filter: blur(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+                filter: blur(0);
+            }
+        }
+
+        /* Floating animation for cards */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 3.5rem;
+                margin: 2.5rem 0;
+            }
+
+            .filter-container {
+                padding: 2.5rem 2rem;
+                margin-bottom: 3rem;
+            }
+
+            .cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 2.5rem;
+                padding: 0 1.5rem 4rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+                margin: 2rem 0;
+            }
+
+            .filter-container {
+                padding: 2rem 1.5rem;
+                margin-bottom: 2.5rem;
+                border-radius: 24px;
+            }
+
+            .filter-container h2 {
+                font-size: 1.8rem;
+            }
+
+            .cards-container {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                padding: 0 1rem 3rem;
+                gap: 2rem;
+            }
+
+            .input-container {
+                min-width: 100%;
+            }
+
+            .button-group {
+                flex-direction: column;
+                width: 100%;
+                gap: 1rem;
+            }
+
+            .apply-btn,
+            .reset-btn {
+                width: 100%;
+                padding: 1rem 2rem;
+            }
+
+            .filter-button {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .filter-container {
+                padding: 1.5rem 1rem;
+            }
+
+            .card {
+                padding: 1.8rem;
+            }
+
+            .card h3 {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--primary-light), var(--primary));
+            border-radius: 10px;
+            border: 4px solid #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--primary), var(--primary-dark));
+        }
+
+        /* Mouse trail effect */
+        .cursor-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            opacity: 0.5;
+            mix-blend-mode: screen;
+            filter: blur(2px);
+            animation: trailFade 1s ease-out forwards;
+        }
+
+        @keyframes trailFade {
+            0% {
+                opacity: 0.7;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(2);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+    <h1>INSTITUTIONS LIST</h1>
+
+    <div class="filter-container">
+        <h2>Filter Options</h2>
+        <div class="filter-buttons">
+            <button class="filter-button" onclick="setFilterType('Stream', this)">Filter by Stream</button>
+            <button class="filter-button" onclick="setFilterType('Courses', this)">Filter by Courses</button>
+        </div>
+
+        <div class="spec-buttons" id="specButtons"></div>
+
+        <div class="sort-search">
+            <div class="input-container">
+                <input type="text" id="searchInput" placeholder="Search by Institution Name">
+                <label for="searchInput">Search by Institution Name</label>
+            </div>
+            <div class="input-container">
+                <input type="text" id="searchLocation" placeholder="Search by Location">
+                <label for="searchLocation">Search by Location</label>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="apply-btn" onclick="applyFilters()">Apply Filter</button>
+            <button class="reset-btn" onclick="resetFilters()">Reset Filters</button>
+        </div>
+    </div>
+
+    <div class="cards-container" id="cardsContainer"></div>
+
+    <script>
+        let allInstitutions = [];
+        let selectedFilterType = "";
+        let selectedFilterValues = [];
+
+        async function fetchInstitutions() {
+            try {
+                const response = await fetch("http://localhost:3000/api/all_institutions");
+                allInstitutions = await response.json();
+                displayInstitutions(allInstitutions);
+            } catch (error) {
+                console.error("Error fetching institutions:", error);
+                // Fallback to display whatever data we have
+                displayInstitutions(allInstitutions);
+            }
+        }
+
+        function displayInstitutions(data) {
+            const container = document.getElementById("cardsContainer");
+            container.innerHTML = "";
+
+            data.forEach((inst, index) => {
+                let courses = inst.Courses ? inst.Courses.split(",").map(course => course.trim()) : [];
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.setProperty('--i', index);
+
+                card.innerHTML = `
+                    <h3>${inst.Name || "Unknown Institution"} 
+                        ${inst.Website ? `<a class="visit-link" href="${inst.Website}" target="_blank">Visit</a>` : ""}
+                    </h3>
+                    <p><strong>Address:</strong> ${inst.Address || "N/A"}</p>
+                    <p><strong>Contact:</strong> ${inst.Contact || "N/A"}</p>
+                    <p><strong>Email:</strong> ${inst.Email || "N/A"}</p>
+                    <p><strong>Vice Chairperson:</strong> ${inst.VC || "N/A"}</p>
+                    <p><strong>Vice Chairperson Phone:</strong> ${inst.VC_Phone || "N/A"}</p>
+                    <p><strong>Stream:</strong> ${inst.Stream || "N/A"}</p>
+                    <p><strong>Courses:</strong> ${courses.join(", ") || "N/A"}</p>
+                `;
+
+                container.appendChild(card);
+
+                // Add staggered animation
+                setTimeout(() => {
+                    card.style.opacity = "1";
+                }, 100 * index);
+            });
+        }
+
+        function setFilterType(type, btn) {
+            selectedFilterType = type;
+            document.querySelectorAll(".filter-button").forEach(b => b.classList.remove("selected"));
+            btn.classList.add("selected");
+            selectedFilterValues = [];
+            populateFilters();
+        }
+
+        function populateFilters() {
+            const container = document.getElementById("specButtons");
+            container.innerHTML = "";
+
+            let values = new Set();
+            allInstitutions.forEach(inst => {
+                if (selectedFilterType === "Courses") {
+                    (inst.Courses || "").split(",").map(c => c.trim()).forEach(course => values.add(course));
+                } else {
+                    values.add(inst.Stream);
+                }
+            });
+
+            [...values].filter(Boolean).forEach(value => {
+                let button = document.createElement("button");
+                button.classList.add("spec-button");
+                button.textContent = value;
+                button.onclick = () => {
+                    if (selectedFilterValues.includes(value)) {
+                        selectedFilterValues = selectedFilterValues.filter(v => v !== value);
+                        button.classList.remove("selected");
+                    } else {
+                        selectedFilterValues.push(value);
+                        button.classList.add("selected");
+                    }
+                };
+                container.appendChild(button);
+            });
+        }
+
+        function applyFilters() {
+            let searchText = document.getElementById("searchInput").value.trim().toLowerCase();
+            let locationText = document.getElementById("searchLocation").value.trim().toLowerCase();
+
+            let filteredData = allInstitutions.filter(inst => {
+                let matchesSearch = searchText === "" || inst.Name?.toLowerCase().includes(searchText);
+                let matchesLocation = locationText === "" || inst.Address?.toLowerCase().includes(locationText);
+                let matchesFilter = selectedFilterValues.length === 0;
+
+                if (selectedFilterType === "Courses" && selectedFilterValues.length > 0) {
+                    matchesFilter = selectedFilterValues.some(value =>
+                        inst.Courses?.toLowerCase().includes(value.toLowerCase())
+                    );
+                } else if (selectedFilterType === "Stream" && selectedFilterValues.length > 0) {
+                    matchesFilter = selectedFilterValues.includes(inst.Stream);
+                }
+
+                return matchesSearch && matchesLocation && matchesFilter;
+            });
+
+            // Add animation effect when filtering
+            const container = document.getElementById("cardsContainer");
+            container.style.opacity = "0";
+            container.style.transform = "translateY(20px)";
+
+            setTimeout(() => {
+                displayInstitutions(filteredData);
+                container.style.opacity = "1";
+                container.style.transform = "translateY(0)";
+            }, 300);
+        }
+
+        function resetFilters() {
+            selectedFilterValues = [];
+            document.getElementById("searchInput").value = "";
+            document.getElementById("searchLocation").value = "";
+            document.querySelectorAll(".filter-button").forEach(b => b.classList.remove("selected"));
+            document.getElementById("specButtons").innerHTML = "";
+
+            // Add animation effect when resetting
+            const container = document.getElementById("cardsContainer");
+            container.style.opacity = "0";
+            container.style.transform = "translateY(20px)";
+
+            setTimeout(() => {
+                displayInstitutions(allInstitutions);
+                container.style.opacity = "1";
+                container.style.transform = "translateY(0)";
+            }, 300);
+        }
+
+        // Mouse trail effect
+        function createTrail(e) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = e.pageX + 'px';
+            trail.style.top = e.pageY + 'px';
+            document.body.appendChild(trail);
+
+            setTimeout(() => {
+                trail.remove();
+            }, 1000);
+        }
+
+        // Only add mouse trail on non-mobile devices
+        if (window.innerWidth > 768) {
+            document.addEventListener('mousemove', (e) => {
+                // Throttle the effect to avoid performance issues
+                if (Math.random() > 0.85) {
+                    createTrail(e);
+                }
+            });
+        }
+
+        // Initialize
+        fetchInstitutions();
+    </script>
+</body>
+
+</html>

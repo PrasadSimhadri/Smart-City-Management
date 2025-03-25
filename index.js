@@ -268,7 +268,10 @@ app.get("/scholarships", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "scholarships.html"));
 });
 app.get("/exams1", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "exams1.html"));
+  res.sendFile(path.join(__dirname, "public", "scholarships.html"));
+});
+app.get("/all_institutions", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "all_institutions.html"));
 });
 
 
@@ -1112,6 +1115,32 @@ app.get("/api/scholarships", async (req, res) => {
     res.json(scholarships);
   } catch (error) {
     res.status(500).json({ error: "Error fetching scholarship data" });
+  }
+});
+
+const all_institutionSchema = new mongoose.Schema({
+  Name: String,
+  Address: String,
+  Website: String,
+  Contact: String,
+  Email: String,
+  VC: String,
+  VC_Phone: String,
+  REG: String,
+  REG_Phone: String,
+  Stream: String,
+  Courses: String  // Array of courses
+});
+
+const All_Institution = mongoose.model("All_Institution", institutionSchema, "all_institutions");
+
+// API Route to get institutions
+app.get("/api/all_institutions", async (req, res) => {
+  try {
+    const institutions = await All_Institution.find();
+    res.json(institutions);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching institutions" });
   }
 });
 

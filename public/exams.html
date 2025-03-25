@@ -5,11 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Top Exams in India & Abroad</title>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="header.js"></script>
     <script src="footer.js"></script>
-
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -17,6 +15,28 @@
             margin: 0;
             padding: 20px;
             color: #333;
+        }
+
+        #voice-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        button {
+            background-color: #5069d8;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: green;
         }
 
         h1 {
@@ -46,49 +66,30 @@
             transform: translateY(-5px);
         }
 
-        .card h3 {
-            margin-top: 0;
-            font-size: 20px;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card p {
-            margin: 8px 0;
-            font-size: 16px;
-            line-height: 1.4;
-        }
-
-        .card a {
-            color: #5069d8;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .card a:hover {
-            text-decoration: underline;
-        }
-
-        /* Globe icon styling for foreign exams */
         .foreign-icon {
             color: #ff5c5c;
             font-size: 18px;
         }
 
-        /* Add bookmark icon styles */
-        .bookmark-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
-            color: #ccc;
+        #voice-button {
+            margin-left: 10px;
+            background-color: #ff5733;
+        }
+
+        #sort-button {
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .card a {
+            color: #5069d8;
+            text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .bookmark-icon.bookmarked {
-            color: #ffd700;
+        .card a:hover {
+            color: #3b4fa3;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -96,37 +97,23 @@
 <body>
     <div id="header-container"></div>
     <h1>TOP EXAMS IN INDIA & ABROAD</h1>
-    <div class="cards-container" id="cardsContainer">
-        <!-- Exam cards will be populated here -->
-    </div>
+    <button id="sort-button" onclick="sortByDifficulty()">Sort by Difficulty</button>
+    <button id="voice-button" onclick="startVoiceRecognition()">Start Voice Navigation</button>
+    <div class="cards-container" id="cardsContainer"></div>
     <div id="footer-container"></div>
 
     <script>
-        // For demonstration, we assume the data is available as a JSON array.
-        // In a real-world scenario, you might fetch this from your backend.
         const examData = [
-            {
-                "ExamName": "IIT JEE Advanced",
-                "LastApplicationDate": "2025-03-15",
-                "ExaminationDate": "2025-04-05",
-                "DifficultyLevel": "Very Hard",
-                "PreparationLink": "https://www.shiksha.com/engineering/jee-main-exam-preparation",
-                "Foreign": "NO"
-            },
-            {
-                "ExamName": "NEET",
-                "LastApplicationDate": "2025-03-20",
-                "ExaminationDate": "2025-04-10",
-                "DifficultyLevel": "Very Hard",
-                "PreparationLink": "https://www.neetprep.com/",
-                "Foreign": "NO"
-            },
+            { "ExamName": "IIT JEE Advanced", "LastApplicationDate": "2025-03-15", "ExaminationDate": "2025-04-05", "DifficultyLevel": "Very Hard", "PreparationLink": "https://www.shiksha.com/engineering/jee-main-exam-preparation", "QuestionBank": "https://jeeadv.ac.in/archive.html", "Foreign": "NO" },
+            { "ExamName": "NEET", "LastApplicationDate": "2025-03-20", "ExaminationDate": "2025-04-10", "DifficultyLevel": "Very Hard", "PreparationLink": "https://www.neetprep.com/", "QuestionBank": "https://www.neetprep.com/papers-test-series", "Foreign": "NO" },
             {
                 "ExamName": "GATE",
                 "LastApplicationDate": "2025-03-25",
                 "ExaminationDate": "2025-04-15",
                 "DifficultyLevel": "Hard",
                 "PreparationLink": "https://gate.iitb.ac.in",
+                "QuestionBank": "https://gate2025.iitr.ac.in/mock-test-links.html",
+
                 "Foreign": "NO"
             },
             {
@@ -135,14 +122,19 @@
                 "ExaminationDate": "2025-04-20",
                 "DifficultyLevel": "Hard",
                 "PreparationLink": "https://www.iimcat.ac.in",
+                "QuestionBank": "https://cracku.in/cat-previous-papers",
+
                 "Foreign": "NO"
             },
+
             {
                 "ExamName": "CLAT",
                 "LastApplicationDate": "2025-03-30",
                 "ExaminationDate": "2025-04-22",
-                "DifficultyLevel": "Moderate",
+                "DifficultyLevel": "Easy",
                 "PreparationLink": "https://lawprep.in/clat-coaching-in-hyderabad/?gad_source=1",
+                "QuestionBank": "https://www.shiksha.com/law/clat-exam-mocktest",
+
                 "Foreign": "NO"
             },
             {
@@ -151,6 +143,8 @@
                 "ExaminationDate": "2025-04-01",
                 "DifficultyLevel": "Very Hard",
                 "PreparationLink": "https://www.upsc.gov.in",
+                "QuestionBank": "https://upsc.gov.in/examinations/previous-question-papers",
+
                 "Foreign": "NO"
             },
             {
@@ -159,6 +153,8 @@
                 "ExaminationDate": "2025-04-03",
                 "DifficultyLevel": "Hard",
                 "PreparationLink": "https://www.upsc.gov.in",
+                "QuestionBank": "https://testbook.com/upsc-ies-iss/previous-year-papers",
+
                 "Foreign": "NO"
             },
             {
@@ -167,23 +163,9 @@
                 "ExaminationDate": "2025-04-05",
                 "DifficultyLevel": "Moderate",
                 "PreparationLink": "https://nda.nic.in",
+                "QuestionBank": "https://testbook.com/nda/test-series",
+
                 "Foreign": "NO"
-            },
-            {
-                "ExamName": "GRE",
-                "LastApplicationDate": "2025-03-14",
-                "ExaminationDate": "2025-04-07",
-                "DifficultyLevel": "Moderate",
-                "PreparationLink": "https://www.ets.org/gre",
-                "Foreign": "YES"
-            },
-            {
-                "ExamName": "GMAT",
-                "LastApplicationDate": "2025-03-16",
-                "ExaminationDate": "2025-04-09",
-                "DifficultyLevel": "Hard",
-                "PreparationLink": "https://www.mba.com/gmat",
-                "Foreign": "YES"
             },
             {
                 "ExamName": "SAT",
@@ -191,6 +173,8 @@
                 "ExaminationDate": "2025-04-11",
                 "DifficultyLevel": "Moderate",
                 "PreparationLink": "https://collegereadiness.collegeboard.org/sat",
+                "QuestionBank": "https://www.shiksha.com/studyabroad/exams/sat/sample-papers",
+
                 "Foreign": "YES"
             },
             {
@@ -199,6 +183,8 @@
                 "ExaminationDate": "2025-04-13",
                 "DifficultyLevel": "Hard",
                 "PreparationLink": "https://www.ets.org/toefl",
+                "QuestionBank": "https://www.bestmytest.com/toefl/practice-test",
+
                 "Foreign": "YES"
             },
             {
@@ -207,6 +193,8 @@
                 "ExaminationDate": "2025-04-15",
                 "DifficultyLevel": "Moderate",
                 "PreparationLink": "https://www.ielts.org",
+                "QuestionBank": "https://ielts.org/take-a-test/preparation-resources/sample-test-questions",
+
                 "Foreign": "YES"
             },
             {
@@ -215,14 +203,8 @@
                 "ExaminationDate": "2025-04-17",
                 "DifficultyLevel": "Hard",
                 "PreparationLink": "https://www.lsac.org",
-                "Foreign": "YES"
-            },
-            {
-                "ExamName": "GMAT",
-                "LastApplicationDate": "2025-03-26",
-                "ExaminationDate": "2025-04-19",
-                "DifficultyLevel": "Very Hard",
-                "PreparationLink": "https://www.mba.com/gmat",
+                "QuestionBank": "https://www.examsnet.com/exams/lsat-india-practice-papers-online",
+
                 "Foreign": "YES"
             },
             {
@@ -231,43 +213,16 @@
                 "ExaminationDate": "2025-04-21",
                 "DifficultyLevel": "Very Hard",
                 "PreparationLink": "https://students-residents.aamc.org/mcat",
+                "QuestionBank": "https://www.kaptest.com/mcat/free/mcat-pop-quiz?srsltid=AfmBOoq8oAJTXjaHqX0Pqr-WAq7Zv0Z7XkhVKswS7qoGQrVoAEPKVQHJ",
+
                 "Foreign": "YES"
             },
-            {
-                "ExamName": "LSAT ",
-                "LastApplicationDate": "2025-03-30",
-                "ExaminationDate": "2025-04-23",
-                "DifficultyLevel": "Hard",
-                "PreparationLink": "https://www.lsac.org",
-                "Foreign": "YES"
-            },
-            {
-                "ExamName": "SAT",
-                "LastApplicationDate": "2025-04-01",
-                "ExaminationDate": "2025-04-25",
-                "DifficultyLevel": "Moderate",
-                "PreparationLink": "https://collegereadiness.collegeboard.org/sat",
-                "Foreign": "YES"
-            },
-            {
-                "ExamName": "GRE",
-                "LastApplicationDate": "2025-04-03",
-                "ExaminationDate": "2025-04-27",
-                "DifficultyLevel": "Hard",
-                "PreparationLink": "https://www.ets.org/gre",
-                "Foreign": "YES"
-            },
-            {
-                "ExamName": "GMAT",
-                "LastApplicationDate": "2025-04-05",
-                "ExaminationDate": "2025-04-29",
-                "DifficultyLevel": "Hard",
-                "PreparationLink": "https://www.mba.com/gmat",
-                "Foreign": "YES"
-            }
+
+
+            { "ExamName": "GRE", "LastApplicationDate": "2025-03-14", "ExaminationDate": "2025-04-07", "DifficultyLevel": "Moderate", "PreparationLink": "https://www.ets.org/gre", "QuestionBank": "https://www.shiksha.com/studyabroad/exams/gre/sample-papers", "Foreign": "YES" },
+            { "ExamName": "GMAT", "LastApplicationDate": "2025-03-16", "ExaminationDate": "2025-04-09", "DifficultyLevel": "Hard", "PreparationLink": "https://www.mba.com/gmat", "QuestionBank": "https://www.shiksha.com/studyabroad/exams/gmat/sample-papers", "Foreign": "YES" }
         ];
 
-        // Function to get a globe icon if exam is foreign
         function getExamIcon(foreign) {
             return foreign === "YES" ? '<i class="fas fa-globe foreign-icon"></i>' : "";
         }
@@ -275,45 +230,101 @@
         function displayExams(data) {
             const container = document.getElementById("cardsContainer");
             container.innerHTML = "";
-            const bookmarks = JSON.parse(localStorage.getItem("bookmarkedExams")) || [];
-
             data.forEach(exam => {
-                const isBookmarked = bookmarks.some(b => b.ExamName === exam.ExamName);
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-                    <i class="fas fa-bookmark bookmark-icon ${isBookmarked ? 'bookmarked' : ''}" 
-                       onclick="toggleBookmark(this, '${exam.ExamName}')"></i>
                     <h3>${getExamIcon(exam.Foreign)} ${exam.ExamName}</h3>
                     <p><strong>Last Application Date:</strong> ${exam.LastApplicationDate}</p>
                     <p><strong>Examination Date:</strong> ${exam.ExaminationDate}</p>
                     <p><strong>Difficulty Level:</strong> ${exam.DifficultyLevel}</p>
                     <p><a href="${exam.PreparationLink}" target="_blank">Preparation Resources</a></p>
                     <p><a href="${exam.QuestionBank}" target="_blank">Question Bank & Mock Tests</a></p>
+                    <button onclick="window.location.href='apply.html'">Apply</button>
                 `;
                 container.appendChild(card);
             });
         }
-        function toggleBookmark(icon, examName) {
-            const bookmarks = JSON.parse(localStorage.getItem("bookmarkedExams")) || [];
-            const exam = examData.find(e => e.ExamName === examName);
 
-            const index = bookmarks.findIndex(b => b.ExamName === examName);
-            if (index === -1) {
-                bookmarks.push(exam);
-                icon.classList.add('bookmarked');
-            } else {
-                bookmarks.splice(index, 1);
-                icon.classList.remove('bookmarked');
+        function sortByDifficulty() {
+            const levels = { "Easy": 1, "Moderate": 2, "Hard": 3, "Very Hard": 4 };
+            const sortedData = [...examData].sort((a, b) => levels[a.DifficultyLevel] - levels[b.DifficultyLevel]);
+            displayExams(sortedData);
+            document.getElementById("sort-button").innerText = "Sorted by Difficulty";
+        }
+        let recognition;
+        let speechSynthesisUtterance;
+        function startVoiceRecognition() {
+            if (recognition) {
+                recognition.stop();
             }
 
-            localStorage.setItem("bookmarkedExams", JSON.stringify(bookmarks));
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.continuous = true;
+            recognition.start();
+
+            recognition.onresult = function (event) {
+                const command = event.results[event.results.length - 1][0].transcript.toLowerCase();
+                console.log("Voice Command:", command);
+
+                if (command.includes("scroll down")) {
+                    window.scrollBy(0, window.innerHeight);
+                } else if (command.includes("scroll up")) {
+                    window.scrollBy(0, -window.innerHeight);
+                } else if (command.includes("reload page") || command.includes("refresh")) {
+                    location.reload();
+                } else if (command.includes("stop listening")) {
+                    stopVoiceRecognition();
+                } else if (command.includes("open google")) {
+                    window.open("https://www.google.com", "_blank");
+
+                }
+                else if (command.includes("stop reading")) {
+                    stopSpeech();
+                }
+                else if (command.includes("read this page")) {
+                    speakText(document.body.innerText);
+                } else if (command.includes("what time is it")) {
+                    alert("Current time: " + new Date().toLocaleTimeString());
+                } else {
+                    alert("Command not recognized.");
+                }
+            };
+
+            recognition.onerror = function (event) {
+                console.error("Voice Recognition Error:", event.error);
+                alert("Voice recognition stopped. Click the button to restart.");
+            };
         }
-        // In a real application, you'd fetch data from the server.
-        // For this demo, we use the examData defined above.
-        document.addEventListener("DOMContentLoaded", function () {
-            displayExams(examData);
-        });
+        function stopVoiceRecognition() {
+            if (recognition) {
+                recognition.stop();
+                alert("Voice recognition stopped.");
+            }
+        }
+
+        function speakText(text) {
+            stopSpeech();
+            speechSynthesisUtterance = new SpeechSynthesisUtterance(text);
+            speechSynthesisUtterance.onend = function () {
+                console.log("Speech finished.");
+            };
+
+            speechSynthesis.speak(speechSynthesisUtterance);
+        }
+
+        function stopSpeech() {
+            if (speechSynthesisUtterance) {
+                speechSynthesisUtterance.onend = null; // Remove event listener
+            }
+            window.speechSynthesis.cancel(); // Forcefully stop speech
+            console.log("Speech stopped.");
+        }
+
+
+        displayExams(examData);
     </script>
+</body>
 
 </html>
