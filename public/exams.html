@@ -91,6 +91,26 @@
             color: #3b4fa3;
             text-decoration: underline;
         }
+
+        /* Globe icon styling for foreign exams */
+        .foreign-icon {
+            color: #ff5c5c;
+            font-size: 18px;
+        }
+
+        /* Add bookmark icon styles */
+        .bookmark-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+
+        .bookmark-icon.bookmarked {
+            color: #ffd700;
+        }
     </style>
 </head>
 
@@ -230,100 +250,28 @@
         function displayExams(data) {
             const container = document.getElementById("cardsContainer");
             container.innerHTML = "";
+            const bookmarks = JSON.parse(localStorage.getItem("bookmarkedExams")) || [];
+
             data.forEach(exam => {
+                const isBookmarked = bookmarks.some(b => b.ExamName === exam.ExamName);
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-                    <h3>${getExamIcon(exam.Foreign)} ${exam.ExamName}</h3>
-                    <p><strong>Last Application Date:</strong> ${exam.LastApplicationDate}</p>
-                    <p><strong>Examination Date:</strong> ${exam.ExaminationDate}</p>
-                    <p><strong>Difficulty Level:</strong> ${exam.DifficultyLevel}</p>
-                    <p><a href="${exam.PreparationLink}" target="_blank">Preparation Resources</a></p>
-                    <p><a href="${exam.QuestionBank}" target="_blank">Question Bank & Mock Tests</a></p>
-                    <button onclick="window.location.href='apply.html'">Apply</button>
-                `;
+          <h3>${getExamIcon(exam.Foreign)} ${exam.ExamName}</h3>
+          <p><strong>Last Application Date:</strong> ${exam.LastApplicationDate}</p>
+          <p><strong>Examination Date:</strong> ${exam.ExaminationDate}</p>
+          <p><strong>Difficulty Level:</strong> ${exam.DifficultyLevel}</p>
+          <p><a class="resource-link" href="${exam.PreparationLink}" target="_blank">Preparation Resources</a></p>
+        `;
                 container.appendChild(card);
             });
         }
 
-        function sortByDifficulty() {
-            const levels = { "Easy": 1, "Moderate": 2, "Hard": 3, "Very Hard": 4 };
-            const sortedData = [...examData].sort((a, b) => levels[a.DifficultyLevel] - levels[b.DifficultyLevel]);
-            displayExams(sortedData);
-            document.getElementById("sort-button").innerText = "Sorted by Difficulty";
-        }
-        let recognition;
-        let speechSynthesisUtterance;
-        function startVoiceRecognition() {
-            if (recognition) {
-                recognition.stop();
-            }
-
-            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.lang = 'en-US';
-            recognition.continuous = true;
-            recognition.start();
-
-            recognition.onresult = function (event) {
-                const command = event.results[event.results.length - 1][0].transcript.toLowerCase();
-                console.log("Voice Command:", command);
-
-                if (command.includes("scroll down")) {
-                    window.scrollBy(0, window.innerHeight);
-                } else if (command.includes("scroll up")) {
-                    window.scrollBy(0, -window.innerHeight);
-                } else if (command.includes("reload page") || command.includes("refresh")) {
-                    location.reload();
-                } else if (command.includes("stop listening")) {
-                    stopVoiceRecognition();
-                } else if (command.includes("open google")) {
-                    window.open("https://www.google.com", "_blank");
-
-                }
-                else if (command.includes("stop reading")) {
-                    stopSpeech();
-                }
-                else if (command.includes("read this page")) {
-                    speakText(document.body.innerText);
-                } else if (command.includes("what time is it")) {
-                    alert("Current time: " + new Date().toLocaleTimeString());
-                } else {
-                    alert("Command not recognized.");
-                }
-            };
-
-            recognition.onerror = function (event) {
-                console.error("Voice Recognition Error:", event.error);
-                alert("Voice recognition stopped. Click the button to restart.");
-            };
-        }
-        function stopVoiceRecognition() {
-            if (recognition) {
-                recognition.stop();
-                alert("Voice recognition stopped.");
-            }
-        }
-
-        function speakText(text) {
-            stopSpeech();
-            speechSynthesisUtterance = new SpeechSynthesisUtterance(text);
-            speechSynthesisUtterance.onend = function () {
-                console.log("Speech finished.");
-            };
-
-            speechSynthesis.speak(speechSynthesisUtterance);
-        }
-
-        function stopSpeech() {
-            if (speechSynthesisUtterance) {
-                speechSynthesisUtterance.onend = null; // Remove event listener
-            }
-            window.speechSynthesis.cancel(); // Forcefully stop speech
-            console.log("Speech stopped.");
-        }
-
-
-        displayExams(examData);
+        // In a real application, you'd fetch data from the server.
+        // For this demo, we use the examData defined above.
+        document.addEventListener("DOMContentLoaded", function () {
+            displayExams(examData);
+        });
     </script>
 </body>
 
