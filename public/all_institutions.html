@@ -963,7 +963,7 @@
 
         async function fetchInstitutions() {
             try {
-                const response = await fetch("http://localhost:3000/api/all_institutions");
+                const response = await fetch("https://smart-city-management-y28e.onrender.com/api/all_institutions");
                 allInstitutions = await response.json();
                 displayInstitutions(allInstitutions);
             } catch (error) {

@@ -134,7 +134,7 @@
     <script>
         async function fetchData() {
             try {
-                const response = await fetch("http://localhost:3000/api/pedestrian_hours");
+                const response = await fetch("https://smart-city-management-y28e.onrender.com/api/pedestrian_hours");
                 const data = await response.json();
                 populateTable(data);
             } catch (error) {

@@ -148,7 +148,7 @@
         <script>
             async function fetchData() {
                 try {
-                    const response = await fetch("http://localhost:3000/api/drunk_driving");
+                    const response = await fetch("https://smart-city-management-y28e.onrender.com/api/drunk_driving");
                     const data = await response.json();
                     processChartData(data);
                 } catch (error) {

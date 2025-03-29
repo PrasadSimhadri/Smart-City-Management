@@ -227,7 +227,7 @@
     <script>
         async function fetchUniversities() {
             try {
-                const response = await fetch("http://localhost:3000/api/questions");
+                const response = await fetch("https://smart-city-management-y28e.onrender.com/api/questions");
                 const universities = await response.json();
 
                 let containerHTML = "";
@@ -248,7 +248,7 @@
 
         async function fetchQuestions(university) {
             try {
-                const response = await fetch(`http://localhost:3000/api/questions/${university}`);
+                const response = await fetch(`https://smart-city-management-y28e.onrender.com/api/questions/${university}`);
                 const questions = await response.json();
 
                 let questionListHTML = questions.map(q => `

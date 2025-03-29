@@ -157,7 +157,7 @@
                 return;
             }
             try {
-                const response = await fetch(`http://localhost:3000/api/fare_comparison?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`);
+                const response = await fetch(`https://smart-city-management-y28e.onrender.com/api/fare_comparison?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`);
                 const data = await response.json();
                 displayResults(data);
                 // Optionally, move the search form to the left

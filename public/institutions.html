@@ -264,7 +264,7 @@
         // Fetch institutions from backend
         async function fetchInstitutions() {
             try {
-                const response = await fetch("http://localhost:3000/api/institutions");
+                const response = await fetch("https://smart-city-management-y28e.onrender.com/api/institutions");
                 institutions = await response.json();
                 institutions.forEach(inst => {
                     if (inst.specialization && !allSpecializations.includes(inst.specialization)) {

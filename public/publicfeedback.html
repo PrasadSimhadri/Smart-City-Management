@@ -178,7 +178,7 @@
 
             // First, validate the ticket data against the existing dataset
             try {
-                const validateResponse = await fetch(`http://localhost:3000/api/validateTicket?ticketid=${encodeURIComponent(ticketid)}&vehicleType=${encodeURIComponent(vehicleType)}`);
+                const validateResponse = await fetch(`https://smart-city-management-y28e.onrender.com/api/validateTicket?ticketid=${encodeURIComponent(ticketid)}&vehicleType=${encodeURIComponent(vehicleType)}`);
                 const validateData = await validateResponse.json();
 
                 if (!validateData.exists) {
@@ -198,7 +198,7 @@
             };
 
             try {
-                const updateResponse = await fetch(`http://localhost:3000/api/updateFeedback/${encodeURIComponent(ticketid)}`, {
+                const updateResponse = await fetch(`https://smart-city-management-y28e.onrender.com/api/updateFeedback/${encodeURIComponent(ticketid)}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json"

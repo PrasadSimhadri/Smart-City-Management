@@ -232,7 +232,7 @@
 
         async function fetchScholarships() {
             try {
-                const response = await fetch("http://localhost:3000/api/scholarships");
+                const response = await fetch("https://smart-city-management-y28e.onrender.com/api/scholarships");
                 scholarships = await response.json();
                 displayScholarships(scholarships);
             } catch (error) {

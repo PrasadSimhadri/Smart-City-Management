@@ -196,7 +196,7 @@
         // Fetch institutions with reviews from backend endpoint /api/allInstitutionReviews
         async function fetchInstitutionsAndReviews() {
             try {
-                const response = await fetch("http://localhost:3000/api/allInstitutionReviews");
+                const response = await fetch("https://smart-city-management-y28e.onrender.com/api/allInstitutionReviews");
                 const data = await response.json();
                 console.log("Data received:", data);
                 if (!Array.isArray(data)) {

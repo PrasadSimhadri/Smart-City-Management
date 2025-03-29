@@ -193,7 +193,7 @@
             const intermediate = document.getElementById("intermediate").value.toLowerCase();
 
             try {
-                const response = await fetch(`http://localhost:3000/api/search_transport?source=${source}&destination=${destination}&intermediate=${intermediate}`);
+                const response = await fetch(`https://smart-city-management-y28e.onrender.com/api/search_transport?source=${source}&destination=${destination}&intermediate=${intermediate}`);
                 const data = await response.json();
                 displaySchedule(data);
             } catch (error) {
