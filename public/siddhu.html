@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Mobility Analytics | Ride Comparison</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --light-gray: #e2e8f0;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Modern header */
+        header {
+            background-color: var(--darker);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 10px;
+            color: var(--primary-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        /* Search section */
+        .search-section {
+            padding: 2rem 0;
+            background: linear-gradient(to right, var(--darker), var(--dark));
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .search-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+        }
+
+        .search-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--darker);
+            font-weight: 600;
+        }
+
+        .location-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .search-button:hover {
+            background-color: var(--primary-light);
+        }
+
+        .search-button svg {
+            margin-left: 8px;
+        }
+
+        /* Map visualization */
+        .map-container {
+            height: 300px;
+            background-color: #e2e8f0;
+            border-radius: 12px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=12.9716,77.5946&zoom=13&size=1200x300&maptype=roadmap&key=YOUR_API_KEY');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.1) 100%);
+        }
+
+        .map-marker {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            border: 3px solid white;
+            transform: translate(-50%, -50%);
+        }
+
+        .map-marker.pickup {
+            top: 40%;
+            left: 30%;
+            background-color: var(--secondary);
+        }
+
+        .map-marker.dropoff {
+            top: 60%;
+            left: 70%;
+        }
+
+        .map-route {
+            position: absolute;
+            top: 40%;
+            left: 30%;
+            width: 40%;
+            height: 20%;
+            border-top: 2px dashed var(--primary);
+            border-right: 2px dashed var(--primary);
+            opacity: 0.8;
+        }
+
+        /* Results section */
+        .results-section {
+            padding: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--darker);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-button {
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-button.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .filter-button:hover {
+            border-color: var(--primary);
+        }
+
+        /* Ride cards */
+        .ride-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .ride-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .ride-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .ride-card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+        }
+
+        .ride-logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-right: 1rem;
+            border-radius: 8px;
+            background-color: #f1f5f9;
+            padding: 5px;
+        }
+
+        .ride-info {
+            flex: 1;
+        }
+
+        .ride-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .ride-type {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .ride-card-body {
+            padding: 1.5rem;
+        }
+
+        .ride-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 0.3rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .price {
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .eta {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f0fdf4;
+            color: var(--secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .eta svg {
+            margin-right: 5px;
+        }
+
+        .ride-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-tag {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-tag svg {
+            margin-right: 5px;
+        }
+
+        .ride-card-footer {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .book-button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-button:hover {
+            background-color: var(--primary-light);
+        }
+
+        .book-button svg {
+            margin-left: 8px;
+        }
+
+        /* Price comparison visualization */
+        .price-comparison {
+            margin-top: 1rem;
+            height: 6px;
+            background-color: var(--light-gray);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .price-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            border-radius: 3px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .location-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .ride-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .filter-button {
+                white-space: nowrap;
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(37, 99, 235, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state img {
+            max-width: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .empty-state p {
+            color: var(--gray);
+        }
+    </style>
+</head>
+
+<body>
+    <section class="search-section">
+        <div class="container">
+
+            <div class="search-container">
+                <h2 class="search-title">Plan Your Journey</h2>
+
+                <div class="location-inputs">
+                    <div class="input-group">
+                        <label for="pickupInput">Pickup Location</label>
+                        <input type="text" id="pickupInput" placeholder="Enter your current location"
+                            value="Tech Park, Bangalore">
+                    </div>
+                    <div class="input-group">
+                        <label for="dropInput">Drop Location</label>
+                        <input type="text" id="dropInput" placeholder="Where to?" value="MG Road, Bangalore">
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <div class="map-overlay"></div>
+                    <div class="map-marker pickup"></div>
+                    <div class="map-marker dropoff"></div>
+                    <div class="map-route"></div>
+                </div>
+
+                <button class="search-button" id="searchButton">
+                    Find Optimal Rides
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span>Available Ride Options</span>
+                <span class="result-count">4 options found</span>
+            </h2>
+
+            <div class="filters">
+                <button class="filter-button active">All</button>
+                <button class="filter-button">Economy</button>
+                <button class="filter-button">Premium</button>
+                <button class="filter-button">Bike</button>
+                <button class="filter-button">Shared</button>
+            </div>
+
+            <div class="ride-cards" id="rideCards">
+                <!-- Ride cards will be inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Sample ride data
+        const rideData = [
+            {
+                id: 1,
+                name: "Uber Premier",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Uber_logo_2018.svg/2560px-Uber_logo_2018.svg.png",
+                price: 320,
+                eta: "4 min",
+                distance: "2.1 km",
+                carType: "Toyota Camry",
+                capacity: 4,
+                features: ["AC", "WiFi", "Premium", "Charging"],
+                multiplier: 0.92
+            },
+            {
+                id: 2,
+                name: "Ola Electric",
+                type: "EV Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Ola_Cabs_logo.svg/1200px-Ola_Cabs_logo.svg.png",
+                price: 280,
+                eta: "7 min",
+                distance: "3.5 km",
+                carType: "Hyundai Kona",
+                capacity: 4,
+                features: ["AC", "EV", "Eco-friendly"],
+                multiplier: 0.88
+            },
+            {
+                id: 3,
+                name: "Rapido Bike",
+                type: "Bike Taxi",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Rapido_logo.svg/1200px-Rapido_logo.svg.png",
+                price: 120,
+                eta: "2 min",
+                distance: "1.2 km",
+                carType: "Bajaj Pulsar",
+                capacity: 1,
+                features: ["Quickest", "Economical"],
+                multiplier: 0.95
+            },
+            {
+                id: 4,
+                name: "BluSmart Prime",
+                type: "Luxury EV",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/BluSmart_logo.svg/1200px-BluSmart_logo.svg.png",
+                price: 380,
+                eta: "5 min",
+                distance: "2.8 km",
+                carType: "MG ZS EV",
+                capacity: 4,
+                features: ["AC", "EV", "Premium", "WiFi", "Water"],
+                multiplier: 0.85
+            }
+        ];
+
+        // DOM elements
+        const rideCards = document.getElementById('rideCards');
+        const searchButton = document.getElementById('searchButton');
+        const pickupInput = document.getElementById('pickupInput');
+        const dropInput = document.getElementById('dropInput');
+        const filterButtons = document.querySelectorAll('.filter-button');
+
+        // Display ride cards
+        function displayRides(rides) {
+            if (rides.length === 0) {
+                rideCards.innerHTML = `
+                    <div class="empty-state">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png" alt="No rides">
+                        <h3>No rides available</h3>
+                        <p>Try adjusting your locations or filters</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by price (lowest first)
+            rides.sort((a, b) => a.price - b.price);
+
+            // Find the lowest price for comparison
+            const lowestPrice = rides[0].price;
+
+            rideCards.innerHTML = '';
+
+            rides.forEach((ride, index) => {
+                // Calculate price comparison percentage
+                const pricePercentage = (lowestPrice / ride.price) * 100;
+
+                // Generate feature tags
+                const featureTags = ride.features.map(feature => {
+                    let icon = '';
+                    switch (feature) {
+                        case 'AC': icon = '❄'; break;
+                        case 'WiFi': icon = '📶'; break;
+                        case 'Premium': icon = '⭐'; break;
+                        case 'Charging': icon = '🔋'; break;
+                        case 'EV': icon = '⚡'; break;
+                        case 'Eco-friendly': icon = '🌿'; break;
+                        case 'Quickest': icon = '🏎'; break;
+                        case 'Economical': icon = '💰'; break;
+                        case 'Water': icon = '💧'; break;
+                        default: icon = '✓';
+                    }
+                    return `
+                        <div class="feature-tag">
+                            ${icon} ${feature}
+                        </div>
+                    `;
+                }).join('');
+
+                const rideCard = document.createElement('div');
+                rideCard.className = 'ride-card';
+
+                rideCard.innerHTML = `
+                    <div class="ride-card-header">
+                        <img src="${ride.logo}" alt="${ride.name}" class="ride-logo">
+                        <div class="ride-info">
+                            <div class="ride-name">${ride.name}</div>
+                            <div class="ride-type">${ride.type} • ${ride.carType}</div>
+                        </div>
+                        <div class="eta">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            ${ride.eta}
+                        </div>
+                    </div>
+                    <div class="ride-card-body">
+                        <div class="ride-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Price</div>
+                                <div class="detail-value price">₹${ride.price}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Distance</div>
+                                <div class="detail-value">${ride.distance}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Capacity</div>
+                                <div class="detail-value">${ride.capacity} <small>pax</small></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Match Score</div>
+                                <div class="detail-value">${Math.round(ride.multiplier * 100)}%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="ride-features">
+                            ${featureTags}
+                        </div>
+                        
+                        <div class="price-comparison">
+                            <div class="price-bar" style="width: ${pricePercentage}%"></div>
+                        </div>
+                    </div>
+                    <div class="ride-card-footer">
+                        <button class="book-button" data-id="${ride.id}">
+                            Book Now
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+
+                rideCards.appendChild(rideCard);
+            });
+
+            // Add event listeners to book buttons
+            document.querySelectorAll('.book-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    const rideId = this.getAttribute('data-id');
+                    bookRide(rideId);
+                });
+            });
+        }
+
+        // Simulate booking a ride
+        function bookRide(rideId) {
+            const ride = rideData.find(r => r.id == rideId);
+            if (ride) {
+                alert(Booking confirmed with ${ ride.name } !\n\nPrice: ₹${ ride.price } \nETA: ${ ride.eta } \nVehicle: ${ ride.carType });
+            }
+        }
+
+        // Show loading state
+        function showLoading() {
+            rideCards.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            `;
+        }
+
+        // Filter rides by type
+        function filterRides(type) {
+            if (type === 'All') return rideData;
+
+            const typeMap = {
+                'Economy': ['Standard', 'Economy', 'Bike Taxi'],
+                'Premium': ['Premium', 'Luxury', 'Premier'],
+                'Bike': ['Bike Taxi'],
+                'Shared': ['Shared', 'Pool']
+            };
+
+            return rideData.filter(ride => typeMap[type].includes(ride.type));
+        }
+
+        // Initialize the page
+        function init() {
+            // Display initial rides
+            displayRides(rideData);
+
+            // Event listeners
+            searchButton.addEventListener('click', () => {
+                const pickup = pickupInput.value.trim();
+                const drop = dropInput.value.trim();
+
+                if (!pickup || !drop) {
+                    alert('Please enter both pickup and drop locations');
+                    return;
+                }
+
+                showLoading();
+
+                // Simulate API delay
+                setTimeout(() => {
+                    displayRides(rideData);
+                }, 1000);
+            });
+
+            // Filter button event listeners
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const filterType = button.textContent;
+                    const filteredRides = filterRides(filterType);
+                    displayRides(filteredRides);
+                });
+            });
+
+            // Simulate real-time updates
+            setInterval(() => {
+                // Randomly update some ETAs and prices to simulate real-time changes
+                rideData.forEach(ride => {
+                    if (Math.random() > 0.7) {
+                        const etaChange = Math.floor(Math.random() * 3) - 1; // -1, 0, or 1
+                        let newEta = parseInt(ride.eta) + etaChange;
+                        newEta = Math.max(1, newEta);
+                        ride.eta = ${ newEta } min;
+
+                        const priceChange = Math.floor(Math.random() * 20) - 10; // -10 to +10
+                        ride.price = Math.max(100, ride.price + priceChange);
+                    }
+                });
+
+                if (rideCards.children.length > 0 && !rideCards.querySelector('.loading')) {
+                    const activeFilter = document.querySelector('.filter-button.active').textContent;
+                    const filteredRides = filterRides(activeFilter);
+                    displayRides(filteredRides);
+                }
+            }, 8000); // Update every 8 seconds
+        }
+
+        // Start the app
+        init();
+    </script>
+</body>
+
+</html>

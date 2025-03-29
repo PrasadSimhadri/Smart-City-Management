@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Pass Planner</title>
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --secondary: #27ae60;
+            --background: #ecf0f1;
+            --foreground: #2c3e50;
+            --muted: #7f8c8d;
+            --border: #dfe6e9;
+            --radius: 12px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--foreground);
+            background-color: var(--background);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            position: relative;
+        }
+
+        .card-header h1,
+        .card-header h2 {
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .route-planner {
+            display: grid;
+            gap: 20px;
+        }
+
+        .route-planner select,
+        .route-planner button {
+            padding: 14px 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            background: white;
+            transition: var(--transition);
+        }
+
+        .route-planner select {
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="%237f8c8d" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 15px center;
+            padding-right: 40px;
+        }
+
+        .route-planner select:focus,
+        .route-planner button:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+        }
+
+        .route-planner button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .route-planner button:hover {
+            background: var(--secondary);
+        }
+
+        .route-details {
+            margin-top: 25px;
+        }
+
+        .route-item {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            background: #fafafa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .route-item:hover {
+            background: #f5f6f5;
+        }
+
+        .route-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .route-item strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            color: var(--foreground);
+        }
+
+        .pass-options {
+            margin-top: 25px;
+        }
+
+        .pass-option {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 15px;
+            background: white;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pass-option:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.1);
+        }
+
+        .pass-option strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            color: var(--foreground);
+        }
+
+        .savings {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .pay-btn {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .pay-btn:hover {
+            background: var(--secondary);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px auto;
+            }
+
+            .card-header {
+                padding: 15px;
+            }
+
+            .card-content {
+                padding: 20px;
+            }
+
+            .route-planner select,
+            .route-planner button {
+                padding: 12px 15px;
+            }
+
+            .pass-option {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>Travel Pass Planner</h1>
+            </div>
+            <div class="card-content">
+                <div class="route-planner">
+                    <select id="start-point">
+                        <option value="">Select Start Point</option>
+                    </select>
+                    <select id="end-point">
+                        <option value="">Select End Point</option>
+                    </select>
+                    <button onclick="planRoute()">Plan Route</button>
+                </div>
+                <div class="route-details" id="route-details">
+                    <p>Select start and end points to see available routes.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Subscription Passes</h2>
+            </div>
+            <div class="card-content">
+                <div class="pass-options" id="pass-options"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const transportData = {
+            stops: [
+                { id: "stop1", name: "Central Station", lat: 40.7128, lng: -74.0060, operator: "Public" },
+                { id: "stop2", name: "Market Square", lat: 40.7200, lng: -74.0100, operator: "Public" },
+                { id: "stop3", name: "River Park", lat: 40.7150, lng: -74.0150, operator: "Private" },
+                { id: "stop4", name: "University Ave", lat: 40.7100, lng: -74.0200, operator: "Public" },
+                { id: "stop5", name: "Downtown Plaza", lat: 40.7050, lng: -74.0050, operator: "Private" }
+            ],
+            routes: [
+                {
+                    id: "route1",
+                    operator: "Public",
+                    stops: ["stop1", "stop2", "stop3", "stop4"],
+                    times: ["08:00", "08:10", "08:15", "08:25"],
+                    cost: 2.50
+                },
+                {
+                    id: "route2",
+                    operator: "Private",
+                    stops: ["stop3", "stop5"],
+                    times: ["08:20", "08:30"],
+                    cost: 3.00
+                }
+            ],
+            passes: [
+                { name: "Daily Pass", baseCost: 5.00, discount: 0.05, tripsPerPeriod: 2, description: "Unlimited rides for 24 hours" },
+                { name: "Weekly Pass", baseCost: 20.00, discount: 0.10, tripsPerPeriod: 10, description: "Unlimited rides for 7 days" },
+                { name: "Monthly Pass", baseCost: 70.00, discount: 0.20, tripsPerPeriod: 40, description: "Unlimited rides for 30 days" }
+            ]
+        };
+
+        let selectedRouteCost = 0;
+
+        function populateDropdowns() {
+            const startSelect = document.getElementById('start-point');
+            const endSelect = document.getElementById('end-point');
+            transportData.stops.forEach(stop => {
+                const option = document.createElement('option');
+                option.value = stop.id;
+                option.textContent = ${ stop.name } (${ stop.operator });
+            startSelect.appendChild(option.cloneNode(true));
+            endSelect.appendChild(option);
+        });
+        }
+
+        function calculateDistance(pos1, pos2) {
+            const R = 6371;
+            const dLat = (pos2.lat - pos1.lat) * Math.PI / 180;
+            const dLng = (pos2.lng - pos1.lng) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(pos1.lat * Math.PI / 180) * Math.cos(pos2.lat * Math.PI / 180) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function planRoute() {
+            const startId = document.getElementById('start-point').value;
+            const endId = document.getElementById('end-point').value;
+            if (!startId || !endId || startId === endId) {
+                alert('Please select different start and end points.');
+                return;
+            }
+
+            const startStop = transportData.stops.find(s => s.id === startId);
+            const endStop = transportData.stops.find(s => s.id === endId);
+            const routeDetails = document.getElementById('route-details');
+            routeDetails.innerHTML = '';
+
+            let possibleRoutes = [];
+            transportData.routes.forEach(route => {
+                const startIdx = route.stops.indexOf(startId);
+                const endIdx = route.stops.indexOf(endId);
+                if (startIdx !== -1 && endIdx !== -1 && startIdx < endIdx) {
+                    possibleRoutes.push({
+                        route: route,
+                        startTime: route.times[startIdx],
+                        endTime: route.times[endIdx],
+                        cost: route.cost,
+                        transfers: []
+                    });
+                }
+            });
+
+            transportData.routes.forEach(r1 => {
+                transportData.routes.forEach(r2 => {
+                    if (r1 !== r2) {
+                        const r1Stops = r1.stops;
+                        const r2Stops = r2.stops;
+                        const startIdx = r1Stops.indexOf(startId);
+                        const endIdx = r2Stops.indexOf(endId);
+                        if (startIdx !== -1 && endIdx !== -1) {
+                            const commonStops = r1Stops.filter(s => r2Stops.includes(s));
+                            commonStops.forEach(transferStop => {
+                                const r1TransferIdx = r1Stops.indexOf(transferStop);
+                                const r2TransferIdx = r2Stops.indexOf(transferStop);
+                                if (r1TransferIdx > startIdx && r2TransferIdx < endIdx) {
+                                    const transferTime = r1.times[r1TransferIdx];
+                                    const nextBusTime = r2.times[r2TransferIdx];
+                                    possibleRoutes.push({
+                                        route: [r1, r2],
+                                        startTime: r1.times[startIdx],
+                                        endTime: r2.times[endIdx],
+                                        cost: r1.cost + r2.cost,
+                                        transfers: [{
+                                            stop: transportData.stops.find(s => s.id === transferStop),
+                                            time: transferTime,
+                                            nextBus: nextBusTime
+                                        }]
+                                    });
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+            if (possibleRoutes.length === 0) {
+                routeDetails.innerHTML = '<p>No routes available between selected points.</p>';
+                selectedRouteCost = 0;
+            } else {
+                possibleRoutes.forEach((r, idx) => {
+                    const distance = calculateDistance(startStop, endStop);
+                    const timeDiff = (new Date(2025-03 - 25 ${ r.endTime }) - new Date(2025-03 - 25 ${ r.startTime })) / 60000;
+                    const routeDiv = document.createElement('div');
+                    routeDiv.className = 'route-item';
+                    routeDiv.innerHTML = `
+                        <strong>Route ${idx + 1}</strong>
+                        Start: ${startStop.name} at ${r.startTime}<br>
+                        End: ${endStop.name} at ${r.endTime}<br>
+                        Duration: ${timeDiff} min<br>
+                        Distance: ${distance.toFixed(2)} km<br>
+                        Cost: $${r.cost.toFixed(2)}
+                    `;
+                    if (r.transfers.length > 0) {
+                        routeDiv.innerHTML += `
+                            <br>Transfer at: ${r.transfers[0].stop.name}<br>
+                            Arrive: ${r.transfers[0].time}, Next Bus: ${r.transfers[0].nextBus}
+                        `;
+                    }
+                    if (idx === 0) selectedRouteCost = r.cost;
+                    routeDetails.appendChild(routeDiv);
+                });
+            }
+
+            displayPassOptions();
+        }
+
+        function displayPassOptions() {
+            const passOptions = document.getElementById('pass-options');
+            passOptions.innerHTML = '';
+
+            if (selectedRouteCost === 0) {
+                passOptions.innerHTML = '<p>Select a route to see pass savings.</p>';
+                return;
+            }
+
+            transportData.passes.forEach(pass => {
+                const singleTripCost = selectedRouteCost * pass.tripsPerPeriod;
+                const discountedCost = pass.baseCost * (1 - pass.discount);
+                const savings = singleTripCost - discountedCost;
+
+                const passDiv = document.createElement('div');
+                passDiv.className = 'pass-option';
+                passDiv.innerHTML = `
+                    <div>
+                        <strong>${pass.name}</strong>
+                        Original Cost: $${pass.baseCost.toFixed(2)}<br>
+                        Discounted Cost: $${discountedCost.toFixed(2)} (${Math.round(pass.discount * 100)}% off)<br>
+                        ${pass.description}<br>
+                        <span class="savings">Savings: $${savings > 0 ? savings.toFixed(2) : '0.00'} over ${pass.tripsPerPeriod} trips</span>
+                    </div>
+                    <a href="payment.html?pass=${encodeURIComponent(pass.name)}&cost=${discountedCost.toFixed(2)}" class="pay-btn">Pay Now</a>
+                `;
+                passOptions.appendChild(passDiv);
+            });
+        }
+
+        populateDropdowns();
+        displayPassOptions();
+    </script>
+</body>
+
+</html>

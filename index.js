@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -8,8 +9,6 @@ const mongoose = require("mongoose");
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-// Serve static files from the public folder
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
@@ -17,16 +16,17 @@ app.use(
     secret: "f5$g3^n!7L#r2@8uZ9pQ1X&wE",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // Use secure:true with HTTPS
+    cookie: { secure: false }
   })
 );
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/smart_city", {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 30000, // Increase timeout to 30 seconds
+  serverSelectionTimeoutMS: 30000,
 });
+
 mongoose.connection.on("error", err => console.error("Connection error:", err));
 mongoose.connection.once("open", () => console.log("Connected to MongoDB"));
 
