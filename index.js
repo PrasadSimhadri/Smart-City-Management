@@ -1095,6 +1095,27 @@ app.post("/api/universities", async (req, res) => {
   }
 });
 
+// Fare Comparison Schema and Model
+const fareComparisonSchema = new mongoose.Schema({
+  start_point: String,
+  end_point: String,
+  ola_fare: Number,
+  uber_fare: Number,
+  rapido_fare: Number
+});
+
+const FareComparison = mongoose.model("FareComparison", fareComparisonSchema, "fare_comparisons");
+
+// API Endpoint to retrieve fare comparison data
+app.get("/api/fare_comparison", async (req, res) => {
+  try {
+    const fares = await FareComparison.find();
+    res.json(fares);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000/home");
 });
