@@ -1010,6 +1010,91 @@ app.get("/api/scholarships", async (req, res) => {
   }
 });
 
+const QuestionsSchema = new mongoose.Schema({
+  univname: String,
+  exam_difficulty: String,
+  exam_rank: Number,
+  year: Number,
+  subject: String,
+  exam_type: String,
+  question_text: String,
+  options: String,
+  correct_answer: String,
+});
+
+const Questions = mongoose.model("Questions", QuestionsSchema, "questionbanks");
+
+// ----------------- API Endpoint -----------------
+
+// Get unique universities with their exam difficulty
+app.get("/api/questions", async (req, res) => {
+  try {
+    const universities = await Questions.aggregate([
+      {
+        $group: {
+          _id: "$univname",
+          exam_difficulty: { $first: "$exam_difficulty" },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          univname: "$_id",
+          exam_difficulty: 1,
+        },
+      },
+    ]);
+
+    res.json(universities);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching universities" });
+  }
+});
+
+// Get questions for a selected university
+app.get("/api/questions/:university", async (req, res) => {
+  try {
+    const university = req.params.university;
+    const questions = await Questions.find({ univname: university }).select(
+      "year subject exam_type question_text -_id"
+    );
+
+    res.json(questions);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching questions" });
+  }
+});
+
+const universitySchema = new mongoose.Schema({
+  name: String,
+  specialisation: String,
+  tuition_fee: Number,
+  estimated_cost_of_living: Number,
+  financial_aid: String,
+  scholarships: String
+});
+
+const University = mongoose.model("University", universitySchema, "univcosts");
+
+app.get("/api/universities", async (req, res) => {
+  try {
+    const universities = await University.find();
+    res.json(universities);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching data", error });
+  }
+});
+
+app.post("/api/universities", async (req, res) => {
+  try {
+    const newUniversity = new University(req.body);
+    await newUniversity.save();
+    res.status(201).json(newUniversity);
+  } catch (error) {
+    res.status(400).json({ message: "Error adding university", error });
+  }
+});
+
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000/home");
 });
