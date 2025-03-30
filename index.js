@@ -962,6 +962,54 @@ app.get('/api/nearbyfuels', async (req, res) => {
   }
 });
 
+const all_institutionSchema = new mongoose.Schema({
+  Name: String,
+  Address: String,
+  Website: String,
+  Contact: String,
+  Email: String,
+  VC: String,
+  VC_Phone: String,
+  REG: String,
+  REG_Phone: String,
+  Stream: String,
+  Courses: String  // Array of courses
+});
+
+const All_Institution = mongoose.model("All_Institution", institutionSchema, "all_institutions");
+
+// API Route to get institutions
+app.get("/api/all_institutions", async (req, res) => {
+  try {
+    const institutions = await All_Institution.find();
+    res.json(institutions);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching institutions" });
+  }
+});
+
+// ----------------- Scholarships Model -----------------
+const scholarshipSchema = new mongoose.Schema({
+  university: String,
+  course: String,
+  country: String,
+  scholarship_type: String,
+  eligibility: String,
+  application_link: String,
+});
+
+const Scholarship = mongoose.model("Scholarship", scholarshipSchema, "scholarships");
+
+// API endpoint to get scholarships
+app.get("/api/scholarships", async (req, res) => {
+  try {
+    const scholarships = await Scholarship.find().lean();
+    res.json(scholarships);
+  } catch (error) {
+    res.status(500).json({ error: "Error fetching scholarship data" });
+  }
+});
+
 app.listen(3000, () => {
   console.log("Server is running on http://localhost:3000/home");
 });
