@@ -133,7 +133,7 @@
             }
 
             try {
-                const response = await fetch(`/api/rides?start=${encodeURIComponent(start)}&destination=${encodeURIComponent(destination)}`);
+                const response = await fetch(`https://smart-city-management-y28e.onrender.com/api/rides?start=${encodeURIComponent(start)}&destination=${encodeURIComponent(destination)}`);
                 const rides = await response.json();
                 displayRides(rides);
             } catch (error) {
