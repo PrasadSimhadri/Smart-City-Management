@@ -119,14 +119,31 @@
     <div id="header-container"></div>
     <h1>TOP EXAMS IN INDIA & ABROAD</h1>
     <button id="sort-button" onclick="sortByDifficulty()">Sort by Difficulty</button>
-    <button id="voice-button" onclick="startVoiceRecognition()">Start Voice Navigation</button>
     <div class="cards-container" id="cardsContainer"></div>
     <div id="footer-container"></div>
 
     <script>
         const examData = [
-            { "ExamName": "IIT JEE Advanced", "LastApplicationDate": "2025-03-15", "ExaminationDate": "2025-04-05", "DifficultyLevel": "Very Hard", "PreparationLink": "https://www.shiksha.com/engineering/jee-main-exam-preparation", "QuestionBank": "https://jeeadv.ac.in/archive.html", "Foreign": "NO" },
-            { "ExamName": "NEET", "LastApplicationDate": "2025-03-20", "ExaminationDate": "2025-04-10", "DifficultyLevel": "Very Hard", "PreparationLink": "https://www.neetprep.com/", "QuestionBank": "https://www.neetprep.com/papers-test-series", "Foreign": "NO" },
+            {
+                "ExamName": "IIT JEE Advanced",
+                "LastApplicationDate": "2025-03-15",
+                "ExaminationDate": "2025-04-05",
+                "DifficultyLevel": "Very Hard",
+                "PreparationLink": "https://www.shiksha.com/engineering/jee-main-exam-preparation",
+                "QuestionBank": "https://jeeadv.ac.in/archive.html",
+                "Foreign": "NO",
+                "ResultAnnouncementDate": "2025-04-25"
+            },
+            {
+                "ExamName": "NEET",
+                "LastApplicationDate": "2025-03-20",
+                "ExaminationDate": "2025-04-10",
+                "DifficultyLevel": "Very Hard",
+                "PreparationLink": "https://www.neetprep.com/",
+                "QuestionBank": "https://www.neetprep.com/papers-test-series",
+                "Foreign": "NO",
+                "ResultAnnouncementDate": "2025-04-26"
+            },
             {
                 "ExamName": "GATE",
                 "LastApplicationDate": "2025-03-25",
@@ -134,8 +151,8 @@
                 "DifficultyLevel": "Hard",
                 "PreparationLink": "https://gate.iitb.ac.in",
                 "QuestionBank": "https://gate2025.iitr.ac.in/mock-test-links.html",
-
-                "Foreign": "NO"
+                "Foreign": "NO",
+                "ResultAnnouncementDate": "2025-04-27"
             },
             {
                 "ExamName": "CAT",
@@ -144,10 +161,9 @@
                 "DifficultyLevel": "Hard",
                 "PreparationLink": "https://www.iimcat.ac.in",
                 "QuestionBank": "https://cracku.in/cat-previous-papers",
-
-                "Foreign": "NO"
+                "Foreign": "NO",
+                "ResultAnnouncementDate": "2025-04-28"
             },
-
             {
                 "ExamName": "CLAT",
                 "LastApplicationDate": "2025-03-30",
@@ -155,8 +171,8 @@
                 "DifficultyLevel": "Easy",
                 "PreparationLink": "https://lawprep.in/clat-coaching-in-hyderabad/?gad_source=1",
                 "QuestionBank": "https://www.shiksha.com/law/clat-exam-mocktest",
-
-                "Foreign": "NO"
+                "Foreign": "NO",
+                "ResultAnnouncementDate": "2025-04-29"
             },
             {
                 "ExamName": "UPSC Civil Services",
@@ -165,8 +181,8 @@
                 "DifficultyLevel": "Very Hard",
                 "PreparationLink": "https://www.upsc.gov.in",
                 "QuestionBank": "https://upsc.gov.in/examinations/previous-question-papers",
-
-                "Foreign": "NO"
+                "Foreign": "NO",
+                "ResultAnnouncementDate": "2025-04-20"
             },
             {
                 "ExamName": "IES/ISS Exam",
@@ -175,8 +191,8 @@
                 "DifficultyLevel": "Hard",
                 "PreparationLink": "https://www.upsc.gov.in",
                 "QuestionBank": "https://testbook.com/upsc-ies-iss/previous-year-papers",
-
-                "Foreign": "NO"
+                "Foreign": "NO",
+                "ResultAnnouncementDate": "2025-04-21"
             },
             {
                 "ExamName": "NDA",
@@ -185,8 +201,8 @@
                 "DifficultyLevel": "Moderate",
                 "PreparationLink": "https://nda.nic.in",
                 "QuestionBank": "https://testbook.com/nda/test-series",
-
-                "Foreign": "NO"
+                "Foreign": "NO",
+                "ResultAnnouncementDate": "2025-04-22"
             },
             {
                 "ExamName": "SAT",
@@ -195,8 +211,8 @@
                 "DifficultyLevel": "Moderate",
                 "PreparationLink": "https://collegereadiness.collegeboard.org/sat",
                 "QuestionBank": "https://www.shiksha.com/studyabroad/exams/sat/sample-papers",
-
-                "Foreign": "YES"
+                "Foreign": "YES",
+                "ResultAnnouncementDate": "2025-04-30"
             },
             {
                 "ExamName": "TOEFL",
@@ -205,8 +221,8 @@
                 "DifficultyLevel": "Hard",
                 "PreparationLink": "https://www.ets.org/toefl",
                 "QuestionBank": "https://www.bestmytest.com/toefl/practice-test",
-
-                "Foreign": "YES"
+                "Foreign": "YES",
+                "ResultAnnouncementDate": "2025-04-30"
             },
             {
                 "ExamName": "IELTS",
@@ -215,8 +231,8 @@
                 "DifficultyLevel": "Moderate",
                 "PreparationLink": "https://www.ielts.org",
                 "QuestionBank": "https://ielts.org/take-a-test/preparation-resources/sample-test-questions",
-
-                "Foreign": "YES"
+                "Foreign": "YES",
+                "ResultAnnouncementDate": "2025-04-30"
             },
             {
                 "ExamName": "LSAT",
@@ -225,8 +241,8 @@
                 "DifficultyLevel": "Hard",
                 "PreparationLink": "https://www.lsac.org",
                 "QuestionBank": "https://www.examsnet.com/exams/lsat-india-practice-papers-online",
-
-                "Foreign": "YES"
+                "Foreign": "YES",
+                "ResultAnnouncementDate": "2025-04-30"
             },
             {
                 "ExamName": "MCAT",
@@ -235,13 +251,29 @@
                 "DifficultyLevel": "Very Hard",
                 "PreparationLink": "https://students-residents.aamc.org/mcat",
                 "QuestionBank": "https://www.kaptest.com/mcat/free/mcat-pop-quiz?srsltid=AfmBOoq8oAJTXjaHqX0Pqr-WAq7Zv0Z7XkhVKswS7qoGQrVoAEPKVQHJ",
-
-                "Foreign": "YES"
+                "Foreign": "YES",
+                "ResultAnnouncementDate": "2025-04-30"
             },
-
-
-            { "ExamName": "GRE", "LastApplicationDate": "2025-03-14", "ExaminationDate": "2025-04-07", "DifficultyLevel": "Moderate", "PreparationLink": "https://www.ets.org/gre", "QuestionBank": "https://www.shiksha.com/studyabroad/exams/gre/sample-papers", "Foreign": "YES" },
-            { "ExamName": "GMAT", "LastApplicationDate": "2025-03-16", "ExaminationDate": "2025-04-09", "DifficultyLevel": "Hard", "PreparationLink": "https://www.mba.com/gmat", "QuestionBank": "https://www.shiksha.com/studyabroad/exams/gmat/sample-papers", "Foreign": "YES" }
+            {
+                "ExamName": "GRE",
+                "LastApplicationDate": "2025-03-14",
+                "ExaminationDate": "2025-04-07",
+                "DifficultyLevel": "Moderate",
+                "PreparationLink": "https://www.ets.org/gre",
+                "QuestionBank": "https://www.shiksha.com/studyabroad/exams/gre/sample-papers",
+                "Foreign": "YES",
+                "ResultAnnouncementDate": "2025-04-30"
+            },
+            {
+                "ExamName": "GMAT",
+                "LastApplicationDate": "2025-03-16",
+                "ExaminationDate": "2025-04-09",
+                "DifficultyLevel": "Hard",
+                "PreparationLink": "https://www.mba.com/gmat",
+                "QuestionBank": "https://www.shiksha.com/studyabroad/exams/gmat/sample-papers",
+                "Foreign": "YES",
+                "ResultAnnouncementDate": "2025-04-30"
+            }
         ];
 
         function getExamIcon(foreign) {
@@ -258,18 +290,29 @@
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-          <h3>${getExamIcon(exam.Foreign)} ${exam.ExamName}</h3>
-          <p><strong>Last Application Date:</strong> ${exam.LastApplicationDate}</p>
-          <p><strong>Examination Date:</strong> ${exam.ExaminationDate}</p>
-          <p><strong>Difficulty Level:</strong> ${exam.DifficultyLevel}</p>
-          <p><a class="resource-link" href="${exam.PreparationLink}" target="_blank">Preparation Resources</a></p>
-        `;
+                    <h3>${getExamIcon(exam.Foreign)} ${exam.ExamName}</h3>
+                    <p><strong>Last Application Date:</strong> ${exam.LastApplicationDate}</p>
+                    <p><strong>Examination Date:</strong> ${exam.ExaminationDate}</p>
+                    <p><strong>Result Announcement Date:</strong> ${exam.ResultAnnouncementDate}</p>
+                    <p><strong>Difficulty Level:</strong> ${exam.DifficultyLevel}</p>
+                    <p><a class="resource-link" href="${exam.PreparationLink}" target="_blank">Preparation Resources</a></p>
+                `;
                 container.appendChild(card);
             });
         }
 
-        // In a real application, you'd fetch data from the server.
-        // For this demo, we use the examData defined above.
+        function sortByDifficulty() {
+            // Assign numerical weights to difficulty levels
+            const difficultyWeights = {
+                "Easy": 1,
+                "Moderate": 2,
+                "Hard": 3,
+                "Very Hard": 4
+            };
+            examData.sort((a, b) => difficultyWeights[a.DifficultyLevel] - difficultyWeights[b.DifficultyLevel]);
+            displayExams(examData);
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             displayExams(examData);
         });
