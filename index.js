@@ -273,8 +273,9 @@ app.get("/exams1", (req, res) => {
 app.get("/all_institutions", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "all_institutions.html"));
 });
-
-
+app.get("/private_ride_prices", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "private_ride_prices.html"));
+});
 
 // ----------------- Authentication Endpoints -----------------
 
@@ -1119,6 +1120,37 @@ app.get('/api/fare_comparison', async (req, res) => {
   } catch (error) {
     console.error("Database query error:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Define a Ride schema
+const rideSchema = new mongoose.Schema({
+  id: Number,
+  name: String,
+  type: String,
+  logo: String,
+  price: Number,
+  eta: String,
+  distance: String,
+  carType: String,
+  capacity: Number,
+  features: [String],
+  multiplier: Number,
+  pickup: String,
+  drop: String
+});
+
+// Create a Ride model
+const Ride = mongoose.model('Ride', rideSchema, "urbanmobilites");
+
+// GET /api/rides endpoint to retrieve ride data
+app.get('/api/rides', async (req, res) => {
+  try {
+    const rides = await Ride.find({});
+    res.json(rides);
+  } catch (err) {
+    console.error('Error retrieving rides:', err);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

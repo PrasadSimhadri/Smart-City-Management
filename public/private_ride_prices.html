@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
+    <title>Urban Mobility</title>
+    <script src="header.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --light-gray: #e2e8f0;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Modern header */
+        header {
+            background-color: var(--darker);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            margin-right: 10px;
+            color: var(--primary-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        /* Search section */
+        .search-section {
+            padding: 2rem 0;
+            background: linear-gradient(to right, var(--darker), var(--dark));
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .search-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+        }
+
+        .search-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--darker);
+            font-weight: 600;
+        }
+
+        .location-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .input-group input {
+            width: 80%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .search-button:hover {
+            background-color: var(--primary-light);
+        }
+
+        .search-button svg {
+            margin-left: 8px;
+        }
+
+        /* Results section */
+        .results-section {
+            padding: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--darker);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-button {
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-button.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .filter-button:hover {
+            border-color: var(--primary);
+        }
+
+        /* Ride cards */
+        .ride-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .ride-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .ride-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .ride-card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+        }
+
+        .ride-info {
+            flex: 1;
+        }
+
+        .ride-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .ride-type {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .ride-card-body {
+            padding: 1.5rem;
+        }
+
+        .ride-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-bottom: 0.3rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .price {
+            color: var(--primary);
+            font-size: 1.3rem;
+        }
+
+        .eta {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f0fdf4;
+            color: var(--secondary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .eta svg {
+            margin-right: 5px;
+        }
+
+        .ride-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-tag {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-tag svg {
+            margin-right: 5px;
+        }
+
+        .ride-card-footer {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .book-button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-button:hover {
+            background-color: var(--primary-light);
+        }
+
+        .book-button svg {
+            margin-left: 8px;
+        }
+
+        /* Price comparison visualization */
+        .price-comparison {
+            margin-top: 1rem;
+            height: 6px;
+            background-color: var(--light-gray);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .price-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            border-radius: 3px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .location-inputs {
+                grid-template-columns: 1fr;
+            }
+
+            .ride-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+
+            .filter-button {
+                white-space: nowrap;
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(37, 99, 235, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state img {
+            max-width: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .empty-state p {
+            color: var(--gray);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <h2 class="search-title">Plan Your Journey</h2>
+                <div class="location-inputs">
+                    <div class="input-group">
+                        <label for="pickupInput">Pickup Location</label>
+                        <input type="text" id="pickupInput" placeholder="Enter your current location"
+                            value="Coimbatore Central">
+                    </div>
+                    <div class="input-group">
+                        <label for="dropInput">Drop Location</label>
+                        <input type="text" id="dropInput" placeholder="Where to?" value="Peelamedu">
+                    </div>
+                </div>
+                <div class="map-container">
+                    <!-- The map markers and route elements can be further styled/positioned if needed -->
+                    <div class="map-marker pickup"></div>
+                    <div class="map-marker dropoff"></div>
+                    <div class="map-route"></div>
+                </div>
+                <button class="search-button" id="searchButton">
+                    Find Optimal Rides
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="container">
+            <h2 class="section-title">
+                <span>Available Ride Options</span>
+                <span class="result-count"></span>
+            </h2>
+            <div class="filters">
+                <button class="filter-button active">All</button>
+                <button class="filter-button">Economy</button>
+                <button class="filter-button">Premium</button>
+                <button class="filter-button">Bike</button>
+                <button class="filter-button">Shared</button>
+            </div>
+            <div class="ride-cards" id="rideCards">
+                <!-- Ride cards will be inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Separate dataset (30 rows) for rides with additional attributes.
+        const rideData = [
+            {
+                id: 1,
+                name: "Ola - Rahul Kumar",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 150,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Hyundai i20",
+                capacity: 3,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "Coimbatore Central",
+                drop: "Peelamedu"
+            },
+            {
+                id: 2,
+                name: "Uber - Amit Singh",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg",
+                price: 200,
+                eta: "7 min",
+                distance: "3.5 km",
+                carType: "Toyota Camry",
+                capacity: 2,
+                features: ["AC", "Premium"],
+                multiplier: 0.92,
+                pickup: "RS Puram",
+                drop: "Coimbatore Railway Station"
+            },
+            {
+                id: 3,
+                name: "Rapido - Neha Patel",
+                type: "Bike Taxi",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rapido_logo.svg",
+                price: 180,
+                eta: "7 min",
+                distance: "2.8 km",
+                carType: "Bajaj Pulsar",
+                capacity: 4,
+                features: ["Quickest", "Economical"],
+                multiplier: 0.95,
+                pickup: "Gandhipuram",
+                drop: "Peelamedu"
+            },
+            {
+                id: 4,
+                name: "Ola - Suresh Reddy",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 170,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Hyundai i20",
+                capacity: 1,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "Peelamedu",
+                drop: "RS Puram"
+            },
+            {
+                id: 5,
+                name: "Uber - Kavita Sharma",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg",
+                price: 160,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Toyota Camry",
+                capacity: 3,
+                features: ["AC", "Premium"],
+                multiplier: 0.92,
+                pickup: "Coimbatore Central",
+                drop: "Peelamedu"
+            },
+            {
+                id: 6,
+                name: "Rapido - Vijay Gupta",
+                type: "Bike Taxi",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rapido_logo.svg",
+                price: 190,
+                eta: "7 min",
+                distance: "3 km",
+                carType: "Bajaj Pulsar",
+                capacity: 2,
+                features: ["Quickest", "Economical"],
+                multiplier: 0.95,
+                pickup: "RS Puram",
+                drop: "Peelamedu"
+            },
+            {
+                id: 7,
+                name: "Ola - Ravi Kumar",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 150,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Hyundai i20",
+                capacity: 3,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "Coimbatore Central",
+                drop: "Peelamedu"
+            },
+            {
+                id: 8,
+                name: "Uber - Anjali Rao",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg",
+                price: 210,
+                eta: "8 min",
+                distance: "3.5 km",
+                carType: "Toyota Camry",
+                capacity: 2,
+                features: ["AC", "Premium"],
+                multiplier: 0.92,
+                pickup: "Gandhipuram",
+                drop: "Coimbatore Railway Station"
+            },
+            {
+                id: 9,
+                name: "Rapido - Prakash",
+                type: "Bike Taxi",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rapido_logo.svg",
+                price: 180,
+                eta: "7 min",
+                distance: "3 km",
+                carType: "Bajaj Pulsar",
+                capacity: 4,
+                features: ["Quickest", "Economical"],
+                multiplier: 0.95,
+                pickup: "Coimbatore Central",
+                drop: "Peelamedu"
+            },
+            {
+                id: 10,
+                name: "Ola - Sneha Kapoor",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 200,
+                eta: "7 min",
+                distance: "3.2 km",
+                carType: "Hyundai i20",
+                capacity: 3,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "RS Puram",
+                drop: "Coimbatore Central"
+            },
+            {
+                id: 11,
+                name: "Uber - Manoj Verma",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg",
+                price: 170,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Toyota Camry",
+                capacity: 2,
+                features: ["AC", "Premium"],
+                multiplier: 0.92,
+                pickup: "Peelamedu",
+                drop: "RS Puram"
+            },
+            {
+                id: 12,
+                name: "Rapido - Sonal Singh",
+                type: "Bike Taxi",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rapido_logo.svg",
+                price: 220,
+                eta: "8 min",
+                distance: "3.5 km",
+                carType: "Bajaj Pulsar",
+                capacity: 1,
+                features: ["Quickest", "Economical"],
+                multiplier: 0.95,
+                pickup: "Gandhipuram",
+                drop: "Coimbatore Railway Station"
+            },
+            {
+                id: 13,
+                name: "Ola - Rohan Gupta",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 160,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Hyundai i20",
+                capacity: 3,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "Coimbatore Central",
+                drop: "Peelamedu"
+            },
+            {
+                id: 14,
+                name: "Uber - Preeti Sharma",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg",
+                price: 180,
+                eta: "7 min",
+                distance: "3.2 km",
+                carType: "Toyota Camry",
+                capacity: 2,
+                features: ["AC", "Premium"],
+                multiplier: 0.92,
+                pickup: "RS Puram",
+                drop: "Coimbatore"
+            },
+            {
+                id: 15,
+                name: "Rapido - Arjun Desai",
+                type: "Bike Taxi",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rapido_logo.svg",
+                price: 200,
+                eta: "7 min",
+                distance: "3 km",
+                carType: "Bajaj Pulsar",
+                capacity: 4,
+                features: ["Quickest", "Economical"],
+                multiplier: 0.95,
+                pickup: "Peelamedu",
+                drop: "Coimbatore Railway Station"
+            },
+            {
+                id: 16,
+                name: "Ola - Divya Patel",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 190,
+                eta: "7 min",
+                distance: "3.2 km",
+                carType: "Hyundai i20",
+                capacity: 3,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "Coimbatore Central",
+                drop: "RS Puram"
+            },
+            {
+                id: 17,
+                name: "Uber - Tarun Kumar",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg",
+                price: 210,
+                eta: "8 min",
+                distance: "3.5 km",
+                carType: "Toyota Camry",
+                capacity: 2,
+                features: ["AC", "Premium"],
+                multiplier: 0.92,
+                pickup: "Gandhipuram",
+                drop: "Peelamedu"
+            },
+            {
+                id: 18,
+                name: "Rapido - Nisha Singh",
+                type: "Bike Taxi",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rapido_logo.svg",
+                price: 180,
+                eta: "7 min",
+                distance: "3 km",
+                carType: "Bajaj Pulsar",
+                capacity: 1,
+                features: ["Quickest", "Economical"],
+                multiplier: 0.95,
+                pickup: "RS Puram",
+                drop: "Coimbatore Railway Station"
+            },
+            {
+                id: 19,
+                name: "Ola - Akash Verma",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 170,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Hyundai i20",
+                capacity: 3,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "Coimbatore Central",
+                drop: "Peelamedu"
+            },
+            {
+                id: 20,
+                name: "Uber - Ritu Sharma",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg",
+                price: 160,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Toyota Camry",
+                capacity: 2,
+                features: ["AC", "Premium"],
+                multiplier: 0.92,
+                pickup: "Gandhipuram",
+                drop: "RS Puram"
+            },
+            {
+                id: 21,
+                name: "Ola - Pooja Mehta",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 175,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Hyundai i20",
+                capacity: 3,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "Coimbatore",
+                drop: "Peelamedu"
+            },
+            {
+                id: 22,
+                name: "Uber - Sanjay Patel",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg",
+                price: 205,
+                eta: "8 min",
+                distance: "3.5 km",
+                carType: "Toyota Camry",
+                capacity: 2,
+                features: ["AC", "Premium"],
+                multiplier: 0.92,
+                pickup: "RS Puram",
+                drop: "Coimbatore Railway Station"
+            },
+            {
+                id: 23,
+                name: "Rapido - Meera Jain",
+                type: "Bike Taxi",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rapido_logo.svg",
+                price: 185,
+                eta: "7 min",
+                distance: "3 km",
+                carType: "Bajaj Pulsar",
+                capacity: 4,
+                features: ["Quickest", "Economical"],
+                multiplier: 0.95,
+                pickup: "Gandhipuram",
+                drop: "Peelamedu"
+            },
+            {
+                id: 24,
+                name: "Ola - Arvind Rao",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 165,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Hyundai i20",
+                capacity: 1,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "Peelamedu",
+                drop: "RS Puram"
+            },
+            {
+                id: 25,
+                name: "Uber - Sunita Desai",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg",
+                price: 155,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Toyota Camry",
+                capacity: 3,
+                features: ["AC", "Premium"],
+                multiplier: 0.92,
+                pickup: "Coimbatore",
+                drop: "Peelamedu"
+            },
+            {
+                id: 26,
+                name: "Rapido - Rohit Shah",
+                type: "Bike Taxi",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rapido_logo.svg",
+                price: 195,
+                eta: "7 min",
+                distance: "3.2 km",
+                carType: "Bajaj Pulsar",
+                capacity: 2,
+                features: ["Quickest", "Economical"],
+                multiplier: 0.95,
+                pickup: "RS Puram",
+                drop: "Coimbatore Central"
+            },
+            {
+                id: 27,
+                name: "Ola - Leena Gupta",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 175,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Hyundai i20",
+                capacity: 4,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "Coimbatore Central",
+                drop: "Peelamedu"
+            },
+            {
+                id: 28,
+                name: "Uber - Manoj Reddy",
+                type: "Premium Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.svg",
+                price: 215,
+                eta: "8 min",
+                distance: "3.5 km",
+                carType: "Toyota Camry",
+                capacity: 2,
+                features: ["AC", "Premium"],
+                multiplier: 0.92,
+                pickup: "Gandhipuram",
+                drop: "Coimbatore Railway Station"
+            },
+            {
+                id: 29,
+                name: "Rapido - Priya Nair",
+                type: "Bike Taxi",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Rapido_logo.svg",
+                price: 185,
+                eta: "7 min",
+                distance: "3 km",
+                carType: "Bajaj Pulsar",
+                capacity: 3,
+                features: ["Quickest", "Economical"],
+                multiplier: 0.95,
+                pickup: "Peelamedu",
+                drop: "RS Puram"
+            },
+            {
+                id: 30,
+                name: "Ola - Anil Kumar",
+                type: "Standard Sedan",
+                logo: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Ola_Cabs_logo.svg",
+                price: 165,
+                eta: "5 min",
+                distance: "3 km",
+                carType: "Hyundai i20",
+                capacity: 2,
+                features: ["AC", "Standard"],
+                multiplier: 0.90,
+                pickup: "Coimbatore",
+                drop: "Peelamedu"
+            }
+        ];
+
+        // DOM elements
+        const rideCards = document.getElementById('rideCards');
+        const searchButton = document.getElementById('searchButton');
+        const pickupInput = document.getElementById('pickupInput');
+        const dropInput = document.getElementById('dropInput');
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const resultCount = document.querySelector('.result-count');
+
+        // Function to update the map background using dummy coordinates (replace with real geocoding as needed)
+        function updateMap(pickup, drop) {
+            // Dummy coordinate mapping for demonstration
+            const coordinates = {
+                "coimbatore central": { lat: 11.0168, lng: 76.9558 },
+                "peelamedu": { lat: 11.0227, lng: 76.9653 },
+                "rs puram": { lat: 11.0186, lng: 76.9719 },
+                "gandhipuram": { lat: 11.0163, lng: 76.9578 }
+            };
+
+            const pickupCoord = coordinates[pickup.toLowerCase()] || { lat: 11.0168, lng: 76.9558 };
+            const dropCoord = coordinates[drop.toLowerCase()] || { lat: 11.0227, lng: 76.9653 };
+
+            // Use the midpoint between pickup and drop as the center of the map
+            const centerLat = (pickupCoord.lat + dropCoord.lat) / 2;
+            const centerLng = (pickupCoord.lng + dropCoord.lng) / 2;
+
+            // Build a Google Static Maps URL (replace YOUR_API_KEY with an actual API key)
+            const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${centerLat},${centerLng}&zoom=14&size=1200x300&maptype=roadmap&markers=color:green%7Clabel:P%7C${pickupCoord.lat},${pickupCoord.lng}&markers=color:red%7Clabel:D%7C${dropCoord.lat},${dropCoord.lng}&key=YOUR_API_KEY`;
+
+            document.querySelector('.map-container').style.backgroundImage = `url('${mapUrl}')`;
+        }
+
+        // Display ride cards
+        function displayRides(rides) {
+            if (rides.length === 0) {
+                rideCards.innerHTML = `
+                    <div class="empty-state">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png" alt="No rides">
+                        <h3>No rides available</h3>
+                        <p>Try adjusting your locations or filters</p>
+                    </div>
+                `;
+                resultCount.textContent = '0 options found';
+                return;
+            }
+            resultCount.textContent = `${rides.length} options found`;
+            rides.sort((a, b) => a.price - b.price);
+            const lowestPrice = rides[0].price;
+            rideCards.innerHTML = '';
+
+            rides.forEach(ride => {
+                const pricePercentage = (lowestPrice / ride.price) * 100;
+                const featureTags = ride.features.map(feature => {
+                    let icon = '';
+                    switch (feature) {
+                        case 'AC': icon = '❄'; break;
+                        case 'WiFi': icon = '📶'; break;
+                        case 'Premium': icon = '⭐'; break;
+                        case 'Charging': icon = '🔋'; break;
+                        case 'EV': icon = '⚡'; break;
+                        case 'Eco-friendly': icon = '🌿'; break;
+                        case 'Quickest': icon = '🏎'; break;
+                        case 'Economical': icon = '💰'; break;
+                        case 'Standard': icon = '✓'; break;
+                        default: icon = '✓';
+                    }
+                    return `
+                        <div class="feature-tag">
+                            ${icon} ${feature}
+                        </div>
+                    `;
+                }).join('');
+
+                const rideCard = document.createElement('div');
+                rideCard.className = 'ride-card';
+                rideCard.innerHTML = `
+                    <div class="ride-card-header">
+                        <div class="ride-info">
+                            <div class="ride-name">${ride.name}</div>
+                            <div class="ride-type">${ride.type} • ${ride.carType}</div>
+                        </div>
+                        <div class="eta">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            ${ride.eta}
+                        </div>
+                    </div>
+                    <div class="ride-card-body">
+                        <div class="ride-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Price</div>
+                                <div class="detail-value price">₹${ride.price}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Distance</div>
+                                <div class="detail-value">${ride.distance}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Capacity</div>
+                                <div class="detail-value">${ride.capacity} <small>pax</small></div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Match Score</div>
+                                <div class="detail-value">${Math.round(ride.multiplier * 100)}%</div>
+                            </div>
+                        </div>
+                        <div class="ride-features">
+                            ${featureTags}
+                        </div>
+                        <div class="price-comparison">
+                            <div class="price-bar" style="width: ${pricePercentage}%"></div>
+                        </div>
+                    </div>
+                    <div class="ride-card-footer">
+                        <button class="book-button" data-id="${ride.id}">
+                            Book Now
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+                rideCards.appendChild(rideCard);
+            });
+
+            document.querySelectorAll('.book-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    const rideId = this.getAttribute('data-id');
+                    bookRide(rideId);
+                });
+            });
+        }
+
+        // Simulate booking a ride
+        function bookRide(rideId) {
+            const ride = rideData.find(r => r.id == rideId);
+            if (ride) {
+                alert(`Booking confirmed with ${ride.name}!\n\nPrice: ₹${ride.price}\nETA: ${ride.eta}\nVehicle: ${ride.carType}`);
+            }
+        }
+
+        // Show loading state
+        function showLoading() {
+            rideCards.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            `;
+        }
+
+        // Filter rides by type
+        function filterRides(type, data) {
+            if (type === 'All') return data;
+            const typeMap = {
+                'Economy': ['Standard Sedan'],
+                'Premium': ['Premium Sedan'],
+                'Bike': ['Bike Taxi'],
+                'Shared': ['Shared', 'Pool']
+            };
+            return data.filter(ride => typeMap[type].includes(ride.type));
+        }
+
+        // Filter rides by pickup and drop locations
+        function filterByLocation(pickup, drop, data) {
+            return data.filter(ride =>
+                ride.pickup.toLowerCase() === pickup.toLowerCase() &&
+                ride.drop.toLowerCase() === drop.toLowerCase()
+            );
+        }
+
+        async function init() {
+            // Initial data load is from the inline dataset. 
+            // In a production setup, this data should be fetched from the API.
+            // For maps, update the map background.
+            const pickup = pickupInput.value.trim();
+            const drop = dropInput.value.trim();
+            updateMap(pickup, drop);
+
+            let filteredData = filterByLocation(pickup, drop, rideData);
+            displayRides(filteredData);
+
+            searchButton.addEventListener('click', () => {
+                const pickup = pickupInput.value.trim();
+                const drop = dropInput.value.trim();
+
+                if (!pickup || !drop) {
+                    alert('Please enter both pickup and drop locations');
+                    return;
+                }
+
+                updateMap(pickup, drop);
+                showLoading();
+
+                setTimeout(() => {
+                    let filteredData = filterByLocation(pickup, drop, rideData);
+                    const activeFilter = document.querySelector('.filter-button.active').textContent;
+                    filteredData = filterRides(activeFilter, filteredData);
+                    displayRides(filteredData);
+                }, 1000);
+            });
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    const pickup = pickupInput.value.trim();
+                    const drop = dropInput.value.trim();
+                    let filteredData = filterByLocation(pickup, drop, rideData);
+                    filteredData = filterRides(button.textContent, filteredData);
+                    displayRides(filteredData);
+                });
+            });
+
+            setInterval(() => {
+                rideData.forEach(ride => {
+                    if (Math.random() > 0.7) {
+                        const etaChange = Math.floor(Math.random() * 3) - 1;
+                        let newEta = parseInt(ride.eta) + etaChange;
+                        newEta = Math.max(1, newEta);
+                        ride.eta = `${newEta} min`;
+                        const priceChange = Math.floor(Math.random() * 20) - 10;
+                        ride.price = Math.max(100, ride.price + priceChange);
+                    }
+                });
+                const pickup = pickupInput.value.trim();
+                const drop = dropInput.value.trim();
+                let filteredData = filterByLocation(pickup, drop, rideData);
+                const activeFilter = document.querySelector('.filter-button.active').textContent;
+                filteredData = filterRides(activeFilter, filteredData);
+                displayRides(filteredData);
+            }, 8000);
+        }
+
+        // Update map background image using dummy geocoding values.
+        function updateMap(pickup, drop) {
+            const coordinates = {
+                "coimbatore central": { lat: 11.0168, lng: 76.9558 },
+                "peelamedu": { lat: 11.0227, lng: 76.9653 },
+                "rs puram": { lat: 11.0186, lng: 76.9719 },
+                "gandhipuram": { lat: 11.0163, lng: 76.9578 }
+            };
+
+            const pickupCoord = coordinates[pickup.toLowerCase()] || { lat: 11.0168, lng: 76.9558 };
+            const dropCoord = coordinates[drop.toLowerCase()] || { lat: 11.0227, lng: 76.9653 };
+
+            const centerLat = (pickupCoord.lat + dropCoord.lat) / 2;
+            const centerLng = (pickupCoord.lng + dropCoord.lng) / 2;
+
+            const mapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${centerLat},${centerLng}&zoom=14&size=1200x300&maptype=roadmap&markers=color:green%7Clabel:P%7C${pickupCoord.lat},${pickupCoord.lng}&markers=color:red%7Clabel:D%7C${dropCoord.lat},${dropCoord.lng}&key=YOUR_API_KEY`;
+            document.querySelector('.map-container').style.backgroundImage = `url('${mapUrl}')`;
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
