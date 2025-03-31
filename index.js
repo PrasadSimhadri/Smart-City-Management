@@ -276,6 +276,9 @@ app.get("/all_institutions", (req, res) => {
 app.get("/private_ride_prices", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "private_ride_prices.html"));
 });
+app.get("/extracurcillar_opportunities", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "extracurcillar_opportunities.html"));
+});
 
 // ----------------- Authentication Endpoints -----------------
 

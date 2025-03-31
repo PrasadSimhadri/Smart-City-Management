@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Universities - Extracurricular Activities</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8e44ad;
+            --secondary-color: #6c3483;
+            --accent-color: #9b59b6;
+            --background-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-primary: #202124;
+            --text-secondary: #5f6368;
+
+            --university-colors: {
+                "IIT-B": "#c0392b",
+                    "IIT-D": "#e74c3c",
+                    "IIT-M": "#d35400",
+                    "IIT-K": "#e67e22",
+                    "IISc": "#f39c12",
+                    "DU": "#27ae60",
+                    "JNU": "#2ecc71",
+                    "BHU": "#16a085",
+                    "Jadavpur": "#1abc9c",
+                    "TISS": "#3498db"
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header-container {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 2rem 0;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M100 0H0v100h100V0zm-10 90H10V10h80v80z" fill="rgba(255,255,255,0.05)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .university-section {
+            margin-bottom: 3rem;
+        }
+
+        .university-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .university-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .university-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .university-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .club-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .club-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .club-image {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .club-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+        }
+
+        .club-category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .club-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .club-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .club-description {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .teams-list {
+            margin: 15px 0;
+        }
+
+        .teams-list h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .teams {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .team-tag {
+            background-color: #f0f4f9;
+            color: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-secondary);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        .university-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .university-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .stat-item {
+            background-color: rgba(155, 89, 182, 0.1);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+        }
+
+        .stat-item i {
+            color: var(--primary-color);
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .clubs-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .university-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .university-logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .university-stats {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .clubs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header-container">
+        <div class="header">
+            <h1>Top Indian Universities</h1>
+            <p>Explore the diverse extracurricular activities and clubs offered by India's premier educational
+                institutions</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Universities</button>
+            <button class="filter-btn" data-filter="IIT">IITs</button>
+            <button class="filter-btn" data-filter="Central">Central Universities</button>
+            <button class="filter-btn" data-filter="State">State Universities</button>
+            <button class="filter-btn" data-filter="Private">Private Universities</button>
+        </div>
+
+        <div id="universitiesContainer"></div>
+    </div>
+
+    <script>
+        const universities = [
+            {
+                id: "IIT-B",
+                name: "Indian Institute of Technology, Bombay",
+                shortName: "IIT-B",
+                location: "Mumbai, Maharashtra",
+                established: "1958",
+                type: "IIT",
+                color: "#c0392b",
+                studentCount: "10,000+",
+                clubCount: "50+",
+                image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                clubs: [
+                    {
+                        name: "Techfest",
+                        category: "Technical",
+                        description: "Asia's largest science and technology festival organized annually by IIT Bombay.",
+                        activities: ["Competitions", "Exhibitions", "Lectures", "Tech Shows", "Workshops"],
+                        image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Mood Indigo",
+                        category: "Cultural",
+                        description: "One of Asia's largest college cultural festivals featuring performances, competitions, and workshops.",
+                        activities: ["Music", "Dance", "Drama", "Literary Arts", "Fine Arts"],
+                        image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Institute Sports Council",
+                        category: "Sports",
+                        description: "Organizes inter-hostel and inter-collegiate sports competitions throughout the year.",
+                        activities: ["Cricket", "Football", "Basketball", "Athletics", "Swimming"],
+                        image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "E-Cell",
+                        category: "Entrepreneurship",
+                        description: "Promotes entrepreneurship and innovation among students through various initiatives.",
+                        activities: ["Startup Competitions", "Workshops", "Mentorship", "Funding", "Networking"],
+                        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    }
+                ]
+            },
+            {
+                id: "IIT-D",
+                name: "Indian Institute of Technology, Delhi",
+                shortName: "IIT-D",
+                location: "New Delhi",
+                established: "1961",
+                type: "IIT",
+                color: "#e74c3c",
+                studentCount: "8,500+",
+                clubCount: "45+",
+                image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                clubs: [
+                    {
+                        name: "Rendezvous",
+                        category: "Cultural",
+                        description: "Annual cultural festival of IIT Delhi featuring performances, competitions, and celebrity appearances.",
+                        activities: ["Music", "Dance", "Fashion", "Literary", "Fine Arts"],
+                        image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Tryst",
+                        category: "Technical",
+                        description: "Annual technical festival showcasing innovation and technical prowess.",
+                        activities: ["Robotics", "Coding", "Design", "Hackathons", "Tech Talks"],
+                        image: "https://images.unsplash.com/photo-1581092921461-7031e4bfb83e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "BSP (Board for Student Publications)",
+                        category: "Literary",
+                        description: "Manages all student publications and literary activities on campus.",
+                        activities: ["Magazine", "Newsletter", "Creative Writing", "Journalism", "Debates"],
+                        image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "SPIC MACAY Chapter",
+                        category: "Cultural",
+                        description: "Promotes Indian classical music and culture among youth.",
+                        activities: ["Classical Music", "Dance", "Folk Arts", "Workshops", "Performances"],
+                        image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    }
+                ]
+            },
+            {
+                id: "IIT-M",
+                name: "Indian Institute of Technology, Madras",
+                shortName: "IIT-M",
+                location: "Chennai, Tamil Nadu",
+                established: "1959",
+                type: "IIT",
+                color: "#d35400",
+                studentCount: "9,000+",
+                clubCount: "48+",
+                image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                clubs: [
+                    {
+                        name: "Shaastra",
+                        category: "Technical",
+                        description: "Annual technical festival that showcases innovation and technical excellence.",
+                        activities: ["Technical Competitions", "Workshops", "Lectures", "Exhibitions", "Shows"],
+                        image: "https://images.unsplash.com/photo-1581092160607-ee22731c9c4c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Saarang",
+                        category: "Cultural",
+                        description: "One of South India's largest cultural festivals featuring various events and performances.",
+                        activities: ["Music", "Dance", "Drama", "Literary", "Fine Arts"],
+                        image: "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Center for Innovation (CFI)",
+                        category: "Technical",
+                        description: "Student-run lab that promotes practical engineering skills and innovation.",
+                        activities: ["Robotics", "3D Printing", "Electronics", "Programming", "Design"],
+                        image: "https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Nirmaan",
+                        category: "Social",
+                        description: "Social initiative focused on education, environment, and community development.",
+                        activities: ["Teaching", "Environmental Projects", "Community Service", "Fundraising", "Awareness Campaigns"],
+                        image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    }
+                ]
+            },
+            {
+                id: "IIT-K",
+                name: "Indian Institute of Technology, Kanpur",
+                shortName: "IIT-K",
+                location: "Kanpur, Uttar Pradesh",
+                established: "1959",
+                type: "IIT",
+                color: "#e67e22",
+                studentCount: "7,500+",
+                clubCount: "40+",
+                image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                clubs: [
+                    {
+                        name: "Techkriti",
+                        category: "Technical",
+                        description: "Annual technical and entrepreneurship festival with competitions and exhibitions.",
+                        activities: ["Robotics", "Coding", "Model Exhibitions", "Hackathons", "Tech Talks"],
+                        image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Antaragni",
+                        category: "Cultural",
+                        description: "Annual cultural festival featuring performances, competitions, and workshops.",
+                        activities: ["Music", "Dance", "Drama", "Literary", "Fine Arts"],
+                        image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Aeromodelling Club",
+                        category: "Technical",
+                        description: "Focuses on designing and building model aircraft and related technologies.",
+                        activities: ["Aircraft Design", "Drone Building", "Flight Simulation", "Competitions", "Workshops"],
+                        image: "https://images.unsplash.com/photo-1527977966376-1c8408f9f108?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Astronomy Club",
+                        category: "Academic",
+                        description: "Promotes astronomy and space science through observations and discussions.",
+                        activities: ["Star Gazing", "Astrophotography", "Lectures", "Space Science", "Competitions"],
+                        image: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    }
+                ]
+            },
+            {
+                id: "IISc",
+                name: "Indian Institute of Science",
+                shortName: "IISc",
+                location: "Bangalore, Karnataka",
+                established: "1909",
+                type: "Research",
+                color: "#f39c12",
+                studentCount: "4,200+",
+                clubCount: "30+",
+                image: "https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                clubs: [
+                    {
+                        name: "Pravega",
+                        category: "Technical",
+                        description: "Annual science and technology festival showcasing research and innovation.",
+                        activities: ["Research Exhibitions", "Lectures", "Competitions", "Workshops", "Demonstrations"],
+                        image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Rhythmica",
+                        category: "Cultural",
+                        description: "Music club that organizes concerts and promotes musical talent on campus.",
+                        activities: ["Classical Music", "Western Music", "Instrumental", "Vocal", "Performances"],
+                        image: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "IISc Mountaineering Club",
+                        category: "Adventure",
+                        description: "Organizes trekking and mountaineering expeditions for students and faculty.",
+                        activities: ["Trekking", "Rock Climbing", "Mountaineering", "Camping", "Nature Walks"],
+                        image: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Centre for Scientific and Industrial Consultancy",
+                        category: "Research",
+                        description: "Connects academic research with industrial applications and consultancy.",
+                        activities: ["Research Projects", "Industry Collaboration", "Consultancy", "Innovation", "Patents"],
+                        image: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    }
+                ]
+            },
+            {
+                id: "DU",
+                name: "University of Delhi",
+                shortName: "DU",
+                location: "Delhi",
+                established: "1922",
+                type: "Central",
+                color: "#27ae60",
+                studentCount: "132,000+",
+                clubCount: "100+",
+                image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                clubs: [
+                    {
+                        name: "DUSU (Delhi University Students' Union)",
+                        category: "Student Body",
+                        description: "Official student representative body that organizes various events and activities.",
+                        activities: ["Student Welfare", "Events", "Competitions", "Cultural Programs", "Social Initiatives"],
+                        image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f8e1c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Debating Societies",
+                        category: "Literary",
+                        description: "Various college-level debating societies that participate in national and international competitions.",
+                        activities: ["Parliamentary Debates", "MUN", "Extempore", "Group Discussions", "Public Speaking"],
+                        image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "NSS (National Service Scheme)",
+                        category: "Social",
+                        description: "Promotes community service and social awareness among students.",
+                        activities: ["Community Service", "Blood Donation", "Health Camps", "Environmental Awareness", "Education"],
+                        image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Theatre Societies",
+                        category: "Cultural",
+                        description: "College-level drama groups that perform plays and street theatre.",
+                        activities: ["Stage Plays", "Street Plays", "Script Writing", "Direction", "Acting Workshops"],
+                        image: "https://images.unsplash.com/photo-1503095396549-807759245b35?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    }
+                ]
+            },
+            {
+                id: "JNU",
+                name: "Jawaharlal Nehru University",
+                shortName: "JNU",
+                location: "New Delhi",
+                established: "1969",
+                type: "Central",
+                color: "#2ecc71",
+                studentCount: "8,000+",
+                clubCount: "35+",
+                image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                clubs: [
+                    {
+                        name: "JNUSU (JNU Students' Union)",
+                        category: "Student Body",
+                        description: "Active student body known for its political and social engagement.",
+                        activities: ["Debates", "Discussions", "Campaigns", "Student Welfare", "Social Initiatives"],
+                        image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f8e1c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Cultural Clubs",
+                        category: "Cultural",
+                        description: "Various clubs promoting different regional and international cultures.",
+                        activities: ["Folk Dance", "Music", "Cultural Exchange", "Festivals", "Exhibitions"],
+                        image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Literary Society",
+                        category: "Literary",
+                        description: "Promotes literary activities and critical thinking among students.",
+                        activities: ["Poetry", "Creative Writing", "Book Discussions", "Literary Festivals", "Publications"],
+                        image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Forum for International Students",
+                        category: "Social",
+                        description: "Platform for international students to connect and share their cultures.",
+                        activities: ["Cultural Exchange", "Language Learning", "International Food Festival", "Global Issues", "Networking"],
+                        image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    }
+                ]
+            },
+            {
+                id: "BHU",
+                name: "Banaras Hindu University",
+                shortName: "BHU",
+                location: "Varanasi, Uttar Pradesh",
+                established: "1916",
+                type: "Central",
+                color: "#16a085",
+                studentCount: "30,000+",
+                clubCount: "50+",
+                image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                clubs: [
+                    {
+                        name: "Spandan",
+                        category: "Cultural",
+                        description: "Annual cultural festival of BHU featuring various competitions and performances.",
+                        activities: ["Music", "Dance", "Drama", "Literary", "Fine Arts"],
+                        image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Kashiyatra",
+                        category: "Cultural",
+                        description: "One of North India's largest cultural festivals celebrating art, culture and heritage.",
+                        activities: ["Cultural Performances", "Competitions", "Exhibitions", "Celebrity Shows", "Workshops"],
+                        image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "FMS Forum",
+                        category: "Academic",
+                        description: "Management forum that organizes business events and competitions.",
+                        activities: ["Case Studies", "Business Plans", "Management Games", "Seminars", "Industry Visits"],
+                        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Sanskriti Club",
+                        category: "Cultural",
+                        description: "Promotes Indian cultural heritage and traditional arts.",
+                        activities: ["Classical Dance", "Classical Music", "Folk Arts", "Sanskrit Studies", "Cultural Workshops"],
+                        image: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    }
+                ]
+            },
+            {
+                id: "Jadavpur",
+                name: "Jadavpur University",
+                shortName: "JU",
+                location: "Kolkata, West Bengal",
+                established: "1955",
+                type: "State",
+                color: "#1abc9c",
+                studentCount: "16,000+",
+                clubCount: "40+",
+                image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                clubs: [
+                    {
+                        name: "Sanskriti",
+                        category: "Cultural",
+                        description: "Annual cultural festival featuring various competitions and performances.",
+                        activities: ["Music", "Dance", "Drama", "Literary", "Fine Arts"],
+                        image: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "JUSC (Jadavpur University Science Club)",
+                        category: "Academic",
+                        description: "Promotes scientific research and innovation among students.",
+                        activities: ["Research Projects", "Workshops", "Seminars", "Competitions", "Publications"],
+                        image: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Jadavpur University Photographic Club",
+                        category: "Arts",
+                        description: "Platform for photography enthusiasts to showcase their work and learn techniques.",
+                        activities: ["Photography", "Exhibitions", "Workshops", "Photo Walks", "Competitions"],
+                        image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Jadavpur University Debating Society",
+                        category: "Literary",
+                        description: "Organizes debates and public speaking events on various topics.",
+                        activities: ["Parliamentary Debates", "Extempore", "Group Discussions", "Model UN", "Public Speaking"],
+                        image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    }
+                ]
+            },
+            {
+                id: "TISS",
+                name: "Tata Institute of Social Sciences",
+                shortName: "TISS",
+                location: "Mumbai, Maharashtra",
+                established: "1936",
+                type: "Deemed",
+                color: "#3498db",
+                studentCount: "5,000+",
+                clubCount: "25+",
+                image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                clubs: [
+                    {
+                        name: "Social Work Forum",
+                        category: "Social",
+                        description: "Platform for students to engage in social work and community development.",
+                        activities: ["Community Service", "Field Work", "Research", "Advocacy", "Awareness Campaigns"],
+                        image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Cultural Committee",
+                        category: "Cultural",
+                        description: "Organizes cultural events and festivals throughout the academic year.",
+                        activities: ["Music", "Dance", "Drama", "Art", "Cultural Exchange"],
+                        image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "Gender Amity Committee",
+                        category: "Social",
+                        description: "Works towards gender sensitization and creating an inclusive campus.",
+                        activities: ["Workshops", "Discussions", "Campaigns", "Research", "Support Groups"],
+                        image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    },
+                    {
+                        name: "TISS Film Club",
+                        category: "Arts",
+                        description: "Screens and discusses socially relevant films and documentaries.",
+                        activities: ["Film Screenings", "Discussions", "Documentary Making", "Film Festivals", "Workshops"],
+                        image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                    }
+                ]
+            }
+        ];
+
+        const container = document.getElementById("universitiesContainer");
+        let currentFilter = "all";
+
+        function renderUniversities(filter = "all") {
+            container.innerHTML = "";
+
+            const filteredUniversities = filter === "all"
+                ? universities
+                : universities.filter(uni => uni.type === filter);
+
+            if (filteredUniversities.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <p>No universities found for this category</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredUniversities.forEach(university => {
+                const universitySection = document.createElement("div");
+                universitySection.classList.add("university-section");
+
+                // Create university header
+                const headerHTML = `
+                    <div class="university-header">
+                        <div class="university-logo" style="background-color: ${university.color}">
+                            ${university.shortName}
+                        </div>
+                        <div class="university-info">
+                            <h2>${university.name} <span class="university-badge">${university.type}</span></h2>
+                            <p>${university.location} • Established: ${university.established}</p>
+                            <div class="university-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-users"></i> ${university.studentCount} Students
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-layer-group"></i> ${university.clubCount} Clubs & Activities
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Create clubs grid
+                const clubsGridHTML = `<div class="clubs-grid">
+                    ${university.clubs.map(club => `
+                        <div class="club-card">
+                            <div class="club-image" style="background-image: url('${club.image}')">
+                                <span class="club-category">${club.category}</span>
+                            </div>
+                            <div class="club-content">
+                                <h3>${club.name}</h3>
+                                <p class="club-description">${club.description}</p>
+                                
+                                <div class="teams-list">
+                                    <h4>Activities</h4>
+                                    <div class="teams">
+                                        ${club.activities.map(activity => `<span class="team-tag">${activity}</span>`).join("")}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join("")}
+                </div>`;
+
+                universitySection.innerHTML = headerHTML + clubsGridHTML;
+                container.appendChild(universitySection);
+            });
+        }
+
+        // Initialize with all universities
+        renderUniversities();
+
+        // Set up filter buttons
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                // Get filter value and render universities
+                const filter = button.getAttribute('data-filter');
+                currentFilter = filter;
+                renderUniversities(filter);
+            });
+        });
+    </script>
+</body>
+
+</html>
