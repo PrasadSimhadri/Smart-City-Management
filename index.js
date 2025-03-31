@@ -1107,12 +1107,18 @@ const fareComparisonSchema = new mongoose.Schema({
 const FareComparison = mongoose.model("FareComparison", fareComparisonSchema, "fare_comparisons");
 
 // API Endpoint to retrieve fare comparison data
-app.get("/api/fare_comparison", async (req, res) => {
+app.get('/api/fare_comparison', async (req, res) => {
+  const { start, end } = req.query;
+  if (!start || !end) {
+    return res.status(400).json({ error: "Both start and end locations are required." });
+  }
+
   try {
-    const fares = await FareComparison.find();
+    const fares = await FareModel.find({ start_point: start, end_point: end }); // Ensure proper filtering
     res.json(fares);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.error("Database query error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
