@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Universities - Extracurricular Activities</title>
+    <title>Extracurricular Activities</title>
+    <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
+    <script src="header.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -34,12 +36,6 @@
             }
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--background-color);
@@ -47,7 +43,7 @@
             line-height: 1.6;
         }
 
-        .header-container {
+        .header-container1 {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             padding: 2rem 0;
             color: white;
@@ -56,7 +52,7 @@
             overflow: hidden;
         }
 
-        .header-container::before {
+        .header-container1::before {
             content: "";
             position: absolute;
             top: 0;
@@ -67,7 +63,7 @@
             opacity: 0.3;
         }
 
-        .header {
+        .header1 {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
@@ -75,13 +71,13 @@
             z-index: 1;
         }
 
-        .header h1 {
+        .header1 h1 {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
         }
 
-        .header p {
+        .header1 p {
             font-size: 1.1rem;
             opacity: 0.9;
             max-width: 700px;
@@ -293,7 +289,7 @@
         }
 
         @media (max-width: 768px) {
-            .header h1 {
+            .header1 h1 {
                 font-size: 2rem;
             }
 
@@ -318,7 +314,7 @@
         }
 
         @media (max-width: 480px) {
-            .header h1 {
+            .header1 h1 {
                 font-size: 1.8rem;
             }
 
@@ -330,8 +326,10 @@
 </head>
 
 <body>
-    <div class="header-container">
-        <div class="header">
+    <div id="header-container"></div>
+
+    <div class="header-container1">
+        <div class="header1">
             <h1>Top Indian Universities</h1>
             <p>Explore the diverse extracurricular activities and clubs offered by India's premier educational
                 institutions</p>
@@ -344,7 +342,6 @@
             <button class="filter-btn" data-filter="IIT">IITs</button>
             <button class="filter-btn" data-filter="Central">Central Universities</button>
             <button class="filter-btn" data-filter="State">State Universities</button>
-            <button class="filter-btn" data-filter="Private">Private Universities</button>
         </div>
 
         <div id="universitiesContainer"></div>
