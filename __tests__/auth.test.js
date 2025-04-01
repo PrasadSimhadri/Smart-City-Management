@@ -1,44 +1,22 @@
-const { handleLogin } = require("../index"); // Import the handler from index.js
-const Login = require("../models/Login"); // Import your Login model
-const mongoose = require("mongoose");
+const { handleLogin } = require("../index"); // Import the login handler
 
 describe("Authentication Endpoints", () => {
-    beforeAll(async () => {
-        // Connect to a test database
-        await mongoose.connect("mongodb://localhost:27017/smart_city_test", {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-    });
+    let req, res;
 
-    afterAll(async () => {
-        // Disconnect from the database
-        await mongoose.connection.close();
-    });
-
-    beforeEach(async () => {
-        // Clear the database before each test
-        await Login.deleteMany({});
+    beforeEach(() => {
+        // Mock request and response objects
+        req = { body: {} };
+        res = {
+            writeHead: jest.fn(),
+            end: jest.fn(),
+        };
     });
 
     it("should login a user with valid credentials", async () => {
-        // Create a test user
-        await Login.create({
-            username: "testuser",
+        // Mock valid user credentials
+        req.body = {
             email: "test@example.com",
             password: "password123",
-        });
-
-        // Mock request and response objects
-        const req = {
-            body: {
-                email: "test@example.com",
-                password: "password123",
-            },
-        };
-        const res = {
-            writeHead: jest.fn(),
-            end: jest.fn(),
         };
 
         // Call the handler
@@ -59,16 +37,10 @@ describe("Authentication Endpoints", () => {
     });
 
     it("should reject login with invalid credentials", async () => {
-        // Mock request and response objects
-        const req = {
-            body: {
-                email: "wrong@example.com",
-                password: "wrongpassword",
-            },
-        };
-        const res = {
-            writeHead: jest.fn(),
-            end: jest.fn(),
+        // Mock invalid user credentials
+        req.body = {
+            email: "wrong@example.com",
+            password: "wrongpassword",
         };
 
         // Call the handler
