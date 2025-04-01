@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "mainhome.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node mainhome.js",
+    "build": "npm install && echo 'Build completed successfully'",
+    "lint": "eslint . --fix",
+    "dev": "nodemon mainhome.js"
   },
   "keywords": [],
   "author": "",
@@ -17,10 +21,11 @@
     "express-session": "^1.18.1",
     "leaflet": "^1.9.4",
     "mongoose": "^8.10.1",
-    "nodemailer": "^6.10.0",
-    "se_db": "file:"
+    "nodemailer": "^6.10.0"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0",
+    "eslint": "^8.55.0"
   }
 }
