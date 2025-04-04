@@ -70,6 +70,17 @@ cd smart-city-management
 npm install
 ```
 
+## Team Members
+
+| Name              | GitHub Profile                        |
+|------------------|--------------------------------------------------------------|
+| **Trishika** | [@trishika-20004](https://github.com/trishika-20004) |
+| **Siddhardh**  | [@siddhardh4356](https://github.com/siddhardh4356)  |
+| **Indira**  | [@Indirasribhashyam](https://github.com/Indirasribhashyam)  |
+| **Vamsi**  | [@vamsi18x](https://github.com/vamsi18x)  |
+
+---
+
 ## Contribution
 1. Fork the repository
 2. Create a new branch: `git checkout -b feature-branch`
