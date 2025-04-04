@@ -74,7 +74,7 @@ npm install
 
 | Name              | GitHub Profile                        |
 |------------------|--------------------------------------------------------------|
-| **Trishika** | [@trishika-20004](https://github.com/trishika-20004) |
+| **Trishika** | [@trishika-2004](https://github.com/trishika-2004) |
 | **Siddhardh**  | [@siddhardh4356](https://github.com/siddhardh4356)  |
 | **Indira**  | [@Indirasribhashyam](https://github.com/Indirasribhashyam)  |
 | **Vamsi**  | [@vamsi18x](https://github.com/vamsi18x)  |
