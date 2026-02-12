@@ -8,18 +8,21 @@
   <title>Nearby Fuel Stations</title>
   <script src="header.js"></script>
   <script src="logout.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     /* Global Styles */
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Inter', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #f4f4f4;
+      background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: 100vh;
+      color: #fff;
     }
 
     /* Header */
     header {
-      color: #6c53e7;
+      color: #fff;
       padding: 15px;
       text-align: center;
       font-size: 20px;
@@ -41,14 +44,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      color: rgba(255, 255, 255, 0.8);
     }
 
     .filters select {
       padding: 10px;
       font-size: 14px;
-      border: 2px solid #007bff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 5px;
       outline: none;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
     }
 
     /* Fuel Stations List */
@@ -60,7 +66,7 @@
 
     .fuel-station-list h2 {
       text-align: center;
-      color: #333;
+      color: #fff;
     }
 
     #fuelStationResults {
@@ -71,27 +77,30 @@
     }
 
     .fuel-station-item {
-      background-color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       transition: transform 0.2s;
     }
 
     .fuel-station-item:hover {
       transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .fuel-station-item h3 {
       margin: 0;
       font-size: 18px;
-      color: #7c65e2;
+      color: #f97316;
     }
 
     .fuel-station-item p {
       margin: 8px 0;
       font-size: 14px;
-      color: #555;
+      color: rgba(255, 255, 255, 0.8);
     }
 
     .fuel-station-item .status {
@@ -116,7 +125,7 @@
 <body>
   <div id="header-container"></div>
   <header>
-    <h1>Nearby Fuel Stations</h1>
+    <h1>⛽ Nearby Fuel Stations</h1>
   </header>
 
   <!-- Filters -->

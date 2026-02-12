@@ -5,69 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
     <title>Smart City - Transportation</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="header.js"></script>
     <script src="logout.js"></script>
+    <script src="footer.js"></script>
 </head>
-<style>
-    .mainheading{
-        margin-top: 50px;
-        text-align: center;
-        font-size: 45px;
-        font-weight: 700;
-    }
-
-    .main{
-        margin-left: 120px;
-        display: flex;
-        height: 400px;
-    }
-
-    .public, .private, .road{
-        border-radius: 30px;
-        background-color: rgba(214, 55, 142, 0.549);
-        width: 400px;
-        height: 400px;
-        text-align: center;
-        margin-right: 60px;
-    }
-
-    .public:hover, .private:hover, .road:hover{
-        background-color: rgba(39, 2, 74, 0.925);
-        cursor: pointer;
-        transition: 0.4s;
-        color:white;
-    }
-
-    .public:hover h1, .private:hover h1, .road:hover h1{
-        color:white;
-    }
-
-    .public h1, .private h1, .road h1{
-        padding-top: 160px;
-    }
-</style>
 <body>
-    <div id="header-container"></div> 
-    <div class="mainheading">
-        <p>TRANSPORTATION</p>
-    </div>
-    <div class="main">
-        <a href="/public_transport">
-            <div class="public">
-                <h1>Public Transportation</h1>
-            </div>
-        </a>
-        <a href="/private_transport">
-            <div class="private">
-                <h1>Private Transportation</h1>
-            </div>
-        </a>
-        <a href="/road_safety">
-            <div class="road">
-                <h1>Traffic and Road Safety</h1>
-            </div>
-        </a>
-    </div>
+    <div id="header-container"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero-section" style="padding-bottom: 20px;">
+        <h1 class="gradient-text-pink">🚗 Transportation</h1>
+        <p>Navigate the city with ease. Real-time information for all your travel needs.</p>
+    </section>
 
+    <!-- Transportation Options -->
+    <section class="services-section">
+        <div class="services-grid">
+            <a href="/public_transport" class="animate-fadeInUp delay-100" style="opacity: 0;">
+                <div class="service-card" style="min-height: 280px;">
+                    <div class="icon">🚌</div>
+                    <h3>Public Transportation</h3>
+                    <p>Access real-time schedules, routes, and fare information for buses, trains, and metro services across the city.</p>
+                </div>
+            </a>
+            <a href="/private_transport" class="animate-fadeInUp delay-200" style="opacity: 0;">
+                <div class="service-card" style="min-height: 280px;">
+                    <div class="icon">🚗</div>
+                    <h3>Private Transportation</h3>
+                    <p>Book rides, compare prices across platforms, and explore carpooling opportunities for cost-effective travel.</p>
+                </div>
+            </a>
+            <a href="/road_safety" class="animate-fadeInUp delay-300" style="opacity: 0;">
+                <div class="service-card" style="min-height: 280px;">
+                    <div class="icon">🚦</div>
+                    <h3>Traffic & Road Safety</h3>
+                    <p>Stay updated on road conditions, traffic alerts, accident reports, and safety guidelines for safer journeys.</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-fadeInUp').forEach(el => observer.observe(el));
+    </script>
 </body>
 </html>

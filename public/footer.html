@@ -5,27 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
+    <link rel="stylesheet" href="styles.css" />
     <title>Document</title>
 </head>
-<style>
-    footer {
-        text-align: center;
-        background: linear-gradient(-45deg, #01020a, #27049d, #694ccb, #cf3968);
-        background-size: 400% 400%;
-        color: #fff;
-        padding: 20px 0;
-        margin-top: 40px;
-    }
-
-    footer p {
-        margin: 0;
-        font-size: 14px;
-    }
-</style>
 
 <body>
-    <footer>
-        <p>&copy; 2025 Smart City Management. All rights reserved.</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <div class="footer-brand">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 8px; background: linear-gradient(135deg, #667eea 0%, #f5576c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Smart City Management</h3>
+                    <p style="font-size: 0.85rem;">Building smarter cities for a better tomorrow</p>
+                </div>
+                <div class="footer-links" style="display: flex; gap: 24px;">
+                    <a href="/about" style="color: #94a3b8; transition: color 0.3s;">About</a>
+                    <a href="/home" style="color: #94a3b8; transition: color 0.3s;">Home</a>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 20px; padding-top: 20px; text-align: center;">
+                <p>&copy; 2025 Smart City Management.</p>
+            </div>
+        </div>
     </footer>
 </body>
 

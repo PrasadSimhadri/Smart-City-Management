@@ -6,20 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lost Items Report - Smart City Management</title>
   <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="header.js"></script>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f4f9;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+      min-height: 100vh;
       margin: 0;
       padding: 20px;
-      color: #333;
+      color: #fff;
     }
 
     h1 {
       text-align: center;
-      color: #5069d8;
+      color: #fff;
       margin-bottom: 20px;
+      font-size: 2rem;
     }
 
     .button-group {
@@ -28,27 +37,31 @@
     }
 
     .button-group button {
-      padding: 10px 20px;
+      padding: 12px 24px;
       margin: 0 10px;
-      background: #d9534f;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
     }
 
     .button-group button:hover {
-      background: #c9302c;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
     }
 
     .container {
       max-width: 900px;
       margin: auto;
-      background: white;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
     }
 
     .lost-items-grid {
@@ -59,23 +72,23 @@
 
     .lost-item-card {
       flex: 1 1 calc(33.33% - 20px);
-      border: 1px solid #ddd;
-      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
       padding: 15px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      background: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
     }
 
     .lost-item-card h3 {
       font-size: 18px;
-      color: #d9534f;
+      color: #ec4899;
       margin-bottom: 8px;
     }
 
     .lost-item-card p {
       margin: 5px 0;
       font-size: 15px;
-      color: #444;
+      color: rgba(255, 255, 255, 0.8);
     }
 
     /* Modal Styling */
@@ -88,16 +101,21 @@
       width: 100%;
       height: 100%;
       overflow: auto;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.8);
     }
 
     .modal-content {
-      background: linear-gradient(135deg, #d8d8db, #a698dd);
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       margin: 10% auto;
       padding: 20px;
-      border-radius: 8px;
+      border-radius: 16px;
       max-width: 500px;
       position: relative;
+    }
+
+    .modal-content h2 {
+      color: #fff;
     }
 
     .close-modal {
@@ -106,12 +124,12 @@
       top: 10px;
       font-size: 28px;
       font-weight: bold;
-      color: #aaa;
+      color: rgba(255, 255, 255, 0.6);
       cursor: pointer;
     }
 
     .close-modal:hover {
-      color: #000;
+      color: #fff;
     }
 
     form {
@@ -124,28 +142,49 @@
     form textarea,
     form button {
       margin: 10px 0;
-      padding: 10px;
+      padding: 12px;
       font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    form input,
+    form select,
+    form textarea {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    form input::placeholder,
+    form textarea::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    form select option {
+      background: #1a1a2e;
+      color: #fff;
     }
 
     form button {
-      background: #d9534f;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
       color: white;
       border: none;
       cursor: pointer;
+      font-weight: 500;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     form button:hover {
-      background: #c9302c;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
     }
   </style>
 </head>
 
 <body>
   <div id="header-container"></div><br>
-  <h1>LOST ITEMS REPORT</h1>
+  <h1>📦 LOST ITEMS REPORT</h1>
   <div class="container">
     <div class="button-group">
       <button onclick="openModal('addModal')">Add Lost Item</button>

@@ -9,18 +9,18 @@
     <script src="header.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #8e44ad;
-            --secondary-color: #6c3483;
-            --accent-color: #9b59b6;
-            --background-color: #f5f7fa;
-            --card-bg: #ffffff;
-            --text-primary: #202124;
-            --text-secondary: #5f6368;
+            --primary-color: #a855f7;
+            --secondary-color: #ec4899;
+            --accent-color: #c084fc;
+            --background-color: #0c0c0c;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
 
             --university-colors: {
                 "IIT-B": "#c0392b",
@@ -37,17 +37,18 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--background-color);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
             color: var(--text-primary);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         .header-container1 {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            /* background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); */
             padding: 2rem 0;
             color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); */
             position: relative;
             overflow: hidden;
         }
@@ -59,7 +60,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M100 0H0v100h100V0zm-10 90H10V10h80v80z" fill="rgba(255,255,255,0.05)"/></svg>');
+            /* background: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="none"/><path d="M100 0H0v100h100V0zm-10 90H10V10h80v80z" fill="rgba(255,255,255,0.05)"/></svg>'); */
             opacity: 0.3;
         }
 
@@ -99,20 +100,21 @@
         }
 
         .filter-btn {
-            background-color: white;
-            border: 1px solid #ddd;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 8px 16px;
             font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            color: #fff;
         }
 
         .filter-btn:hover,
         .filter-btn.active {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white;
-            border-color: var(--primary-color);
+            border-color: transparent;
         }
 
         .clubs-grid {
@@ -137,7 +139,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: #f0f0f0;
+            background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -150,6 +152,7 @@
         .university-info h2 {
             font-size: 1.8rem;
             margin-bottom: 0.2rem;
+            color: #fff;
         }
 
         .university-info p {
@@ -158,10 +161,12 @@
         }
 
         .club-card {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
@@ -170,7 +175,8 @@
 
         .club-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         .club-image {
@@ -213,7 +219,7 @@
         .club-content h3 {
             font-size: 1.4rem;
             margin-bottom: 10px;
-            color: var(--text-primary);
+            color: #fff;
         }
 
         .club-description {
@@ -229,7 +235,7 @@
         .teams-list h4 {
             font-size: 1rem;
             margin-bottom: 8px;
-            color: var(--text-primary);
+            color: #fff;
         }
 
         .teams {
@@ -239,7 +245,7 @@
         }
 
         .team-tag {
-            background-color: #f0f4f9;
+            background: rgba(168, 85, 247, 0.2);
             color: var(--primary-color);
             padding: 5px 10px;
             border-radius: 15px;
@@ -277,10 +283,11 @@
         }
 
         .stat-item {
-            background-color: rgba(155, 89, 182, 0.1);
+            background: rgba(168, 85, 247, 0.15);
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .stat-item i {
@@ -330,7 +337,7 @@
 
     <div class="header-container1">
         <div class="header1">
-            <h1>Top Indian Universities</h1>
+            <h1>🏭 Top Indian Universities</h1>
             <p>Explore the diverse extracurricular activities and clubs offered by India's premier educational
                 institutions</p>
         </div>

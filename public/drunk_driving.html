@@ -6,13 +6,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Drunk Driving Statistics</title>
         <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="header.js"></script>
         <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
             body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: #f0f2f5;
+                font-family: 'Inter', sans-serif;
+                background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+                min-height: 100vh;
                 justify-content: space-between;
+                color: #fff;
             }
 
             .mainbody {
@@ -20,28 +29,33 @@
                 margin-top: 50px;
                 margin-bottom: 30px;
                 margin-left: 20px;
+                padding: 0 20px;
             }
 
             .left-container {
                 width: 48%;
                 display: flex;
                 flex-direction: column;
-                gap: 15px;
+                gap: 20px;
             }
 
             .chart-container {
                 width: 100%;
-                padding: 10px;
-                background: #fff;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-radius: 16px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
                 text-align: center;
             }
 
             .chart-title {
-                font-size: 18px;
-                font-weight: bold;
-                margin-bottom: 8px;
+                font-size: 1rem;
+                font-weight: 600;
+                margin-bottom: 15px;
+                color: rgba(255, 255, 255, 0.9);
             }
 
             canvas {
@@ -54,40 +68,49 @@
                 margin-right: 20px;
                 height: fit-content;
                 position: fixed;
-                right: 0;
+                right: 20px;
             }
 
             .right_content{
-                background: linear-gradient(135deg, #d8d8db, #a698dd);
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                padding: 25px;
+                border-radius: 16px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
             }
             .consequences-title {
-                color: #d9534f;
-                font-size: 24px;
+                color: #ef4444;
+                font-size: 1.3rem;
                 text-align: center;
-                font-weight: bold;
-                margin-bottom: 15px;
+                font-weight: 700;
+                margin-bottom: 20px;
             }
 
             .consequence-item {
-                background: #ffe6e6;
-                border-left: 5px solid #d9534f;
-                padding: 12px;
-                margin: 8px 0;
-                border-radius: 5px;
-                font-size: 16px;
-                line-height: 1.5;
+                background: rgba(239, 68, 68, 0.1);
+                border-left: 4px solid #ef4444;
+                padding: 15px;
+                margin: 10px 0;
+                border-radius: 10px;
+                font-size: 0.95rem;
+                line-height: 1.6;
+                color: rgba(255, 255, 255, 0.9);
+            }
+
+            .consequence-item b {
+                color: #f97316;
             }
 
             .left_bottom {
                 display: flex;
+                gap: 20px;
             }
 
             .left1 {
-                margin-left: 10px;
-                margin-right: -20px;
+                margin-left: 0;
+                margin-right: 0;
             }
 
             .left2 {
@@ -100,7 +123,13 @@
 
             .small_title{
                 text-align: center;
-                color: #5069d8;
+                font-size: 1.5rem;
+                font-weight: 700;
+                background: linear-gradient(135deg, #ef4444, #f97316);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                margin-bottom: 20px;
             }
         </style>
     </head>
@@ -109,7 +138,7 @@
         <div id="header-container"></div>
         <div class="mainbody">
             <div class="left-container">
-                <h2 class="small_title">DRUNK DRIVING STATISTICS (2019 - 2024)</h2>
+                <h2 class="small_title">🍺 DRUNK DRIVING STATISTICS (2019 - 2024)</h2>
                 <div class="chart-container">
                     <div class="chart-title">Total Road Accident Deaths</div>
                     <canvas id="totalDeathsChart"></canvas>
@@ -127,7 +156,7 @@
             </div>
 
             <div class="right-container">
-                <h2 class="consequences-title small_title">CONSEQUENCES OF DRUNK DRIVING</h2>
+                <h2 class="consequences-title small_title">⚠️ CONSEQUENCES OF DRUNK DRIVING</h2>
                 <div class="right_content">
                     <div class="consequence-item">🚔 <b>Legal Penalties:</b> Heavy fines, license suspension, or
                         imprisonment.

@@ -5,22 +5,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scholarship Opportunities</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="header.js"></script>
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
     <script src="footer.js"></script>
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f4f4f9;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
             margin: 0;
             padding: 20px;
-            color: #333;
+            color: #fff;
         }
 
         h1 {
             text-align: center;
-            color: #5069d8;
-            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fbbf24, #f97316, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
             animation: fadeInUp 0.6s ease;
         }
 
@@ -30,24 +37,24 @@
         }
 
         .filter-section {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
             text-align: center;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .filter-section:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.07);
         }
 
         .filter-section h2 {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 20px;
-            color: #333;
+            color: #fff;
         }
 
         .filter-section .sort-search {
@@ -55,35 +62,45 @@
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .filter-section input[type="text"],
         .filter-section select {
-            padding: 10px 15px;
+            padding: 12px 18px;
             font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background: #fff;
-            color: #333;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
             min-width: 200px;
             transition: all 0.3s ease;
         }
 
+        .filter-section input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .filter-section select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
         .filter-section input[type="text"]:focus,
         .filter-section select:focus {
-            border-color: #5069d8;
+            border-color: #fbbf24;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(80, 105, 216, 0.1);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
         }
 
         .filter-section button {
-            padding: 10px 20px;
-            background: #5069d8;
-            color: #fff;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #fbbf24, #f97316);
+            color: #1a1a2e;
             border: none;
-            border-radius: 4px;
+            border-radius: 10px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -91,22 +108,22 @@
         }
 
         .filter-section button:hover {
-            background: #3b4fa3;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(80, 105, 216, 0.3);
+            box-shadow: 0 10px 30px rgba(251, 191, 36, 0.3);
         }
 
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
         }
 
         .card {
-            background: linear-gradient(135deg, #d8d8db, #a698dd);
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
             text-align: left;
             position: relative;
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
@@ -124,20 +141,28 @@
         }
 
         .card:hover {
-            transform: translateY(-5px) rotateX(2deg) rotateY(1deg) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 15px 40px rgba(251, 191, 36, 0.15);
         }
 
         .card h3 {
             margin-top: 0;
-            color: #333;
-            font-size: 20px;
+            color: #fff;
+            font-size: 1.25rem;
+            font-weight: 600;
         }
 
         .card p {
-            margin: 8px 0;
-            font-size: 16px;
-            line-height: 1.4;
+            margin: 10px 0;
+            font-size: 15px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .card p strong {
+            color: #fbbf24;
         }
 
         @keyframes cardEntry {
@@ -167,12 +192,10 @@
         footer {
             text-align: center;
             margin-top: 40px;
-            color: #777;
+            color: rgba(255, 255, 255, 0.5);
             font-size: 14px;
-            animation: fadeInUp 0.6s ease;
         }
 
-        /* Ripple effect styles */
         .ripple {
             position: absolute;
             background: rgba(255, 255, 255, 0.4);
@@ -201,7 +224,7 @@
 <body>
     <div id="header-container"></div>
     <div class="container">
-        <h1>Scholarship Opportunities</h1>
+        <h1>💰 Scholarship Opportunities</h1>
 
         <div class="filter-section">
             <h2>Filter Scholarships</h2>

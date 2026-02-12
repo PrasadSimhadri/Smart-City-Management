@@ -6,16 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
     <title>Top Exams in India & Abroad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="header.js"></script>
     <script src="footer.js"></script>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f4f9;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
             margin: 0;
             padding: 20px;
-            color: #333;
+            color: #fff;
         }
 
         #voice-button {
@@ -26,98 +28,122 @@
         }
 
         button {
-            background-color: #5069d8;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 12px 25px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
 
         button:hover {
-            background-color: green;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
         }
 
         h1 {
             text-align: center;
-            color: #5069d8;
-            margin-bottom: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #a855f7, #ec4899, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
         }
 
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .card {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            padding: 20px;
-            transition: transform 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
 
         .card:hover {
             transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(168, 85, 247, 0.3);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.15);
+        }
+
+        .card h3 {
+            color: #fff;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0 0 15px 0;
+        }
+
+        .card p {
+            margin: 10px 0;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .card p strong {
+            color: #a855f7;
         }
 
         .foreign-icon {
-            color: #ff5c5c;
+            color: #ef4444;
             font-size: 18px;
-        }
-
-        #voice-button {
-            margin-left: 10px;
-            background-color: #ff5733;
+            margin-right: 8px;
         }
 
         #sort-button {
             display: block;
-            margin: 0 auto 20px;
+            margin: 0 auto 30px;
         }
 
         .card a {
-            color: #5069d8;
+            color: #06b6d4;
             text-decoration: none;
             transition: color 0.3s ease;
+            font-weight: 500;
         }
 
         .card a:hover {
-            color: #3b4fa3;
+            color: #ec4899;
             text-decoration: underline;
         }
 
-        /* Globe icon styling for foreign exams */
-        .foreign-icon {
-            color: #ff5c5c;
-            font-size: 18px;
-        }
-
-        /* Add bookmark icon styles */
         .bookmark-icon {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 15px;
+            right: 15px;
             cursor: pointer;
-            color: #ccc;
-            transition: color 0.3s ease;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .bookmark-icon:hover {
+            color: #fbbf24;
+            transform: scale(1.1);
         }
 
         .bookmark-icon.bookmarked {
-            color: #ffd700;
+            color: #fbbf24;
         }
     </style>
 </head>
 
 <body>
     <div id="header-container"></div>
-    <h1>TOP EXAMS IN INDIA & ABROAD</h1>
+    <h1>📝 TOP EXAMS IN INDIA & ABROAD</h1>
     <button id="sort-button" onclick="sortByDifficulty()">Sort by Difficulty</button>
     <div class="cards-container" id="cardsContainer"></div>
     <div id="footer-container"></div>

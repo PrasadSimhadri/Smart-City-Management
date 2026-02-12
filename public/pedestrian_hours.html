@@ -6,12 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
     <title>Peak Pedestrian Hours</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="header.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
             padding: 20px;
+            color: #fff;
         }
 
         .container {
@@ -21,29 +30,31 @@
 
         h1 {
             text-align: center;
-            color: #5069d8;
+            color: #fff;
             font-size: 26px;
             padding-top: 20px;
         }
 
         .table-container,
         .safety-container {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
             margin-bottom: 20px;
         }
 
         h2 {
             font-size: 22px;
+            color: #fff;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             overflow: hidden;
         }
@@ -51,27 +62,27 @@
         th,
         td {
             padding: 14px;
-            border: 1px solid #ddd;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             font-size: 16px;
         }
 
         th {
-            background: #d9534f;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white;
             text-transform: uppercase;
         }
 
         tr:nth-child(even) {
-            background: #f9f9f9;
+            background: rgba(255, 255, 255, 0.03);
         }
 
         tr:hover {
-            background: #f1f1f1;
+            background: rgba(255, 255, 255, 0.08);
         }
 
         td {
-            color: #444;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .safety-container {
@@ -84,13 +95,13 @@
         }
 
         .safety-container li {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 10px;
+            background: rgba(236, 72, 153, 0.2);
+            color: #fff;
+            padding: 12px;
             margin: 8px 0;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
-            border-left: 5px solid #d9534f;
+            border-left: 5px solid #ec4899;
         }
     </style>
 </head>
@@ -98,7 +109,7 @@
 <body>
     <div id="header-container"></div>
     <div class="container">
-        <h1>PEAK PEDESTRIAN HOURS IN COIMBATOR</h1>
+        <h1>🚶 PEAK PEDESTRIAN HOURS IN COIMBATORE</h1>
 
         <div class="table-container">
             <table id="pedestrianTable">

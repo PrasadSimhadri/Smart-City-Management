@@ -6,51 +6,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Private Ride Booking</title>
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="header.js"></script>
     <script src="footer.js"></script>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, sans-serif;
-            background: #f4f4f9;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
             padding: 20px;
             margin: 0;
-            color: #333;
+            color: #fff;
         }
 
         h1 {
             text-align: center;
-            color: #5069d8;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 40px 0 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .form-container {
             max-width: 600px;
             margin: 20px auto;
-            padding: 30px;
-            background: linear-gradient(135deg, #d8d8db, #a698dd);
-            border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            color: rgb(30, 10, 97);
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            color: #fff;
         }
 
         .form-group {
-            margin-bottom: 25.5px;
+            margin-bottom: 20px;
             text-align: left;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
         }
 
         input,
         select {
-            width: 97%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        select option {
+            background: #1a1a2e;
+            color: #fff;
         }
 
         .hidden {
@@ -58,33 +100,34 @@
         }
 
         button {
-            background: #fff;
-            color: #5069d8;
-            padding: 12px;
-            font-size: 16px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: #fff;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
             border: none;
-            border-radius: 5px;
+            border-radius: 12px;
             cursor: pointer;
             width: 100%;
-            transition: background 0.3s ease, transform 0.3s ease;
-            margin-top: 10px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         button:hover {
-            background: #7787de;
             transform: translateY(-2px);
-            color: #fff;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
         }
 
         .carpooling {
-            background-color: #5069d8;
-            width: 10%;
-            align-items: center;
-            margin-left: 680px;
-            margin-top: 40px;
-            color: white;
+            background: linear-gradient(135deg, #06b6d4, #22c55e);
+            width: auto;
+            padding: 10px 20px;
+            margin: 40px auto 0;
+            display: block;
+            max-width: 200px;
         }
-
     </style>
 </head>
 
@@ -93,7 +136,7 @@
     <!-- <div class="carpoolbutton">
         <a href="/carpooling"><button class="carpooling">Try Car Pooling</button></a>
     </div> -->
-    <h1>BOOK YOUR RIDE</h1>
+    <h1>🚗 BOOK YOUR RIDE</h1>
     <div class="form-container">
         <form id="bookingForm">
             <!-- Always shown fields -->

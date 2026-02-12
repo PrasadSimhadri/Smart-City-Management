@@ -6,102 +6,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ride Sharing Finder</title>
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="header.js"></script>
     <style>
-        /* Global Styles */
         body {
-            font-family: 'Arial', sans-serif;
-            background: #f4f4f4;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
             margin: 0;
             padding: 0;
+            color: #fff;
         }
 
         header {
-            color: #fff;
-            padding: 20px;
+            padding: 60px 20px 30px;
             text-align: center;
         }
 
         h1 {
-            text-align: center;
-            color: #333;
-            margin: 20px 0;
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #10b981, #06b6d4, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
         }
 
         .search-container {
             text-align: center;
-            margin: 20px;
+            margin: 30px 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .search-container input {
-            padding: 12px;
+            padding: 14px 20px;
             width: 280px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            margin-right: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             font-size: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
         }
 
         .search-container button {
-            padding: 12px 20px;
-            background: #007bff;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #10b981, #06b6d4);
             color: #fff;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .search-container button:hover {
-            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
         }
 
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
             max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
+            margin: 30px auto;
+            padding: 0 25px;
         }
 
         .card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.15);
         }
 
         .card h3 {
             margin-top: 0;
-            color: #0b042b;
-            font-size: 20px;
+            color: #fff;
+            font-size: 1.25rem;
+            font-weight: 600;
         }
 
         .card p {
-            margin: 8px 0;
-            font-size: 16px;
-            color: #555;
+            margin: 10px 0;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .card p strong {
+            color: #10b981;
         }
 
         .icon {
-            margin-right: 5px;
-            color: #007bff;
+            margin-right: 8px;
+            color: #06b6d4;
         }
 
-        /* Responsive */
         @media (max-width: 600px) {
             .search-container input {
-                width: 90%;
-                margin-bottom: 10px;
+                width: 100%;
+            }
+            h1 {
+                font-size: 2rem;
             }
         }
     </style>
@@ -110,7 +143,7 @@
 <body>
     <div id="header-container"></div>
     <header>
-        <h1>Ride Sharing Finder</h1>
+        <h1>🚗 Ride Sharing Finder</h1>
     </header>
 
     <div class="search-container">
@@ -147,7 +180,7 @@
             resultsContainer.innerHTML = "";
 
             if (rides.length === 0) {
-                resultsContainer.innerHTML = "<p style='text-align:center;'>No rides found for the selected route.</p>";
+                resultsContainer.innerHTML = "<p style='text-align:center; color: rgba(255,255,255,0.6); grid-column: 1/-1;'>No rides found for the selected route.</p>";
                 return;
             }
 

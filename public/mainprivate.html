@@ -6,116 +6,140 @@
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Smart City - Private Transport</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="header.js"></script>
     <script src="logout.js"></script>
     <script src="footer.js"></script>
     <style>
-        .mainheading {
-            margin-top: 50px;
+        .quick-action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .quick-action {
+            background: linear-gradient(135deg, rgba(245, 87, 108, 0.1) 0%, rgba(240, 147, 251, 0.1) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
             text-align: center;
-            font-size: 45px;
-            font-weight: 700;
-        }
-
-        .main {
-            height: 400px;
-            padding-left: 250px;
-            margin-bottom: 42px;
-        }
-
-        .main1 {
-            display: flex;
-            margin-bottom: 20px;
-        }
-
-        .us {
-            position: relative;
-            background-color: rgba(214, 55, 142, 0.7);
-            padding: 20px 10px;
-            margin-right: 30px;
-            height: 100px;
-            width: 300px;
-            text-align: center;
-            padding-top: 40px;
-            border-radius: 30px;
-            transition: background-color 0.4s;
-        }
-
-        .us1{
-            opacity: 0.4;
-        }
-
-        .us:hover {
-            background-color: rgba(39, 2, 74, 0.925);
+            transition: all 0.3s ease;
             cursor: pointer;
+        }
+
+        .quick-action:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(245, 87, 108, 0.2);
+            border-color: rgba(245, 87, 108, 0.3);
+        }
+
+        .quick-action .icon {
+            width: 60px;
+            height: 60px;
+            background: var(--secondary-gradient);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.3);
+        }
+
+        .quick-action h3 {
             color: white;
+            font-size: 1.1rem;
+            margin: 0;
         }
 
-        .us h2 {
-            font-size: 20px;
-            margin-top: 20px;
-            position: relative;
-            z-index: 2;
-        }
-
-        /* Watermark styling: centered in the card with larger font size */
-        .us1::before {
-            content: "Not Covered";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-15deg);
-            font-size: 32px;
-            font-weight: bold;
-            color: rgba(255, 255, 255, 0.3);
-            z-index: 1;
+        .quick-action.disabled {
+            opacity: 0.5;
             pointer-events: none;
+            position: relative;
+        }
+
+        .quick-action.disabled::after {
+            content: 'Coming Soon';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
 
 <body>
     <div id="header-container"></div>
-    <div class="mainheading">
-        <p>PRIVATE TRANSPORTATION</p>
-    </div>
-    <div class="main">
-        <div class="main1">
-            <a href="/booking_privateride">
-                <div class="us">
-                    <h2>Book a Private Ride</h2>
+    
+    <!-- Hero Section -->
+    <section class="hero-section" style="padding-bottom: 20px;">
+        <h1>🚗 <span class="gradient-text-pink">Private Transport</span></h1>
+        <p>Book rides, compare fares, and find nearby services for your personal transportation needs.</p>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="services-section">
+        <div class="quick-action-grid">
+            <a href="/booking_privateride" class="animate-fadeInUp delay-100" style="opacity: 0;">
+                <div class="quick-action">
+                    <div class="icon">🚕</div>
+                    <h3>Book a Private Ride</h3>
                 </div>
             </a>
-            <a href="/private_ride_prices">
-                <div class="us">
-                    <h2>Rides with Pricing and ETA</h2>
+            <a href="/private_ride_prices" class="animate-fadeInUp delay-200" style="opacity: 0;">
+                <div class="quick-action">
+                    <div class="icon">💰</div>
+                    <h3>Rides with Pricing and ETA</h3>
                 </div>
             </a>
-            <a href="/nearbyparking">
-                <div class="us">
-                    <h2>Nearby Parking Spaces</h2>
+            <a href="/nearbyparking" class="animate-fadeInUp delay-300" style="opacity: 0;">
+                <div class="quick-action">
+                    <div class="icon">🅿️</div>
+                    <h3>Nearby Parking Spaces</h3>
+                </div>
+            </a>
+            <a href="/nearbyevstations" class="animate-fadeInUp delay-400" style="opacity: 0;">
+                <div class="quick-action">
+                    <div class="icon">⚡</div>
+                    <h3>Nearby EV Charging Stations</h3>
+                </div>
+            </a>
+            <a href="/nearbyfuels" class="animate-fadeInUp delay-500" style="opacity: 0;">
+                <div class="quick-action">
+                    <div class="icon">⛽</div>
+                    <h3>Nearby Fuel Stations</h3>
+                </div>
+            </a>
+            <a href="/farecomparision" class="animate-fadeInUp" style="opacity: 0; animation-delay: 0.6s;">
+                <div class="quick-action">
+                    <div class="icon">📊</div>
+                    <h3>Compare Fares Across Platforms</h3>
                 </div>
             </a>
         </div>
-        <div class="main1">
-            <a href="/nearbyevstations">
-                <div class="us">
-                    <h2>Nearby EV Charging Stations</h2>
-                </div>
-            </a>
-            <a href="/nearbyfuels">
-                <div class="us">
-                    <h2>Nearby Fuel Stations</h2>
-                </div>
-            </a>
-            <a href="/farecomparision">
-                <div class="us">
-                    <h2>Compare Fares Across Platforms</h2>
-                </div>
-            </a>
-        </div>
-    </div>
+    </section>
+
     <div id="footer-container"></div>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-fadeInUp').forEach(el => observer.observe(el));
+    </script>
 </body>
 
 </html>

@@ -6,25 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
     <title>Fare Comparison & Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="header.js"></script>
     <script src="logout.js"></script>
     <style>
-        /* Global Styles */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f4f4f4;
+        * {
             margin: 0;
             padding: 0;
-            color: #333;
+            box-sizing: border-box;
+        }
+
+        /* Global Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            color: #fff;
         }
 
         /* Container holding both sections */
         .container {
             max-width: 1200px;
             margin: 50px auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
             display: flex;
             gap: 20px;
             padding: 20px;
@@ -34,40 +43,49 @@
         .search-section {
             width: 30%;
             padding: 20px;
-            border-right: 1px solid #ccc;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .search-section h2 {
             font-size: 20px;
-            color: #333;
+            color: #fff;
             margin-bottom: 20px;
             text-align: center;
         }
 
         .search-section input {
             width: 90%;
-            padding: 10px 15px;
+            padding: 12px 15px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             font-size: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-section input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .search-section button {
             width: 100%;
-            padding: 10px;
-            background: #ff4d6d;
+            padding: 12px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white;
             border: none;
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
         }
 
         .search-section button:hover {
-            background: #ff1e42;
-            transform: scale(1.05);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
         }
 
         /* Right side: Results */
@@ -82,21 +100,23 @@
             text-align: center;
             font-size: 20px;
             margin-bottom: 20px;
-            color: #333;
+            color: #fff;
         }
 
         .ride-card {
-            background: linear-gradient(135deg, #d8d8db, #a698dd);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-align: left;
         }
 
         .ride-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.2);
         }
 
         .ride-info {
@@ -109,7 +129,7 @@
         .ride-info h5 {
             margin: 0;
             font-size: 16px;
-            color: #333;
+            color: #fff;
             font-weight: 600;
         }
 
@@ -121,12 +141,13 @@
         .ride-card p {
             margin: 5px 0;
             font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         /* Default message styling */
         .default-message {
             font-size: 18px;
-            color: #666;
+            color: rgba(255, 255, 255, 0.6);
             margin-top: 40px;
         }
     </style>
@@ -136,7 +157,7 @@
     <div id="header-container"></div>
     <div class="container">
         <div class="search-section">
-            <h2>Compare Fares</h2>
+            <h2>💰 Compare Fares</h2>
             <input type="text" id="startPoint" placeholder="Enter starting point" />
             <input type="text" id="endPoint" placeholder="Enter destination" />
             <button onclick="searchFares()">Search</button>

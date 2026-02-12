@@ -6,28 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Multimodal Transport Routes - Coimbatore</title>
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="header.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
             margin: 0;
             padding: 20px;
+            color: #fff;
         }
 
         .container {
             width: 90%;
             max-width: 1200px;
             margin: auto;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 16px;
         }
 
         h1 {
             text-align: center;
-            color: #007bff;
+            color: #fff;
             margin-bottom: 20px;
+            font-size: 2rem;
         }
 
         .search-container {
@@ -39,25 +51,35 @@
 
         .search-container input {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .search-container button {
-            padding: 10px 15px;
+            padding: 12px 20px;
             font-size: 16px;
             border: none;
             cursor: pointer;
-            border-radius: 5px;
-            background: #796de4;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white;
-            transition: background 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
         }
 
         .search-container button:hover {
-            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
         }
 
         .card-container {
@@ -68,46 +90,48 @@
 
         .route-card {
             flex: 1 1 calc(33.33% - 15px);
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             padding: 15px;
-            box-sizing: border-box;
-            transition: transform 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .route-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.2);
         }
 
         .route-card h3 {
             margin: 0 0 10px;
-            color: #007bff;
+            color: #a855f7;
             font-size: 18px;
         }
 
         .route-card p {
             margin: 6px 0;
             font-size: 15px;
-            color: #333;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         .route-card .segment {
             margin-bottom: 8px;
             padding-left: 10px;
-            border-left: 2px solid #007bff;
+            border-left: 2px solid #a855f7;
         }
 
         .route-card .total-cost {
             margin-top: 10px;
             font-weight: bold;
-            color: #28a745;
+            color: #22c55e;
         }
     </style>
 </head>
 
 <body>
     <div id="header-container"></div><br>
-    <h1>Multimodal Transport Routes</h1>
+    <h1>🚌 Multimodal Transport Routes</h1>
     <div class="container">
         <div class="search-container">
             <input type="text" id="origin" placeholder="Enter Origin e.g : Coimbatore">

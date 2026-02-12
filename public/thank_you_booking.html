@@ -4,54 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title>Thank You</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, sans-serif;
+            font-family: 'Inter', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background: #f4f4f4;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
         }
 
         .thank-you-container {
             text-align: center;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 16px;
         }
 
         h2 {
-            color: #0056b3;
+            color: #fff;
+            margin-bottom: 15px;
         }
 
         p {
-            color: #333;
+            color: rgba(255, 255, 255, 0.8);
         }
 
         button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: #0056b3;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         button:hover {
-            background: #004494;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
         }
     </style>
 </head>
 <body>
 
     <div class="thank-you-container">
-        <h2>Thank You for Your Booking!</h2>
+        <h2>🎉 Thank You for Your Booking!</h2>
         <button onclick="redirectToHome()">Go to Home Page</button>
     </div>
 

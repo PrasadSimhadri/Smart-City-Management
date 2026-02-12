@@ -5,46 +5,70 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simple Guide on Traffic Rules</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="header.js"></script>
   <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
   <script src="footer.js"></script>
 
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body,
     html {
-      font-family: 'Segoe UI';
+      font-family: 'Inter', sans-serif;
       width: 100%;
-      height: 100%;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+      color: #fff;
     }
 
     .mainbody {
-      margin-top: -25px;
+      margin-top: 0;
+      padding-bottom: 50px;
     }
 
-    .pageheading {
-      margin-left: 3%;
-      line-height: 125%;
-      font-size: 150%;
-      margin-top: 40px;
+    .heading {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+      padding: 50px 30px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .pageheading h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a855f7, #ec4899, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
     }
 
     .mainsection {
-      margin-left: 200px;
-      height: 1000px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
     }
 
     .mainrow {
       display: flex;
-      /* Removed margin-left: 100px; to avoid horizontal shift */
-      margin-top: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 40px;
     }
 
     img {
       height: 150px;
       width: 200px;
-      background-color: brown;
       margin-top: 10px;
-      border-radius: 30px;
+      border-radius: 20px;
+      object-fit: contain;
+      background: transparent;
     }
 
     .sign1,
@@ -52,12 +76,25 @@
     .sign3,
     .sign4,
     .sign5 {
-      height: 240px;
-      width: 200px;
-      margin-right: 50px;
-      border-radius: 30px;
-      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+      height: 260px;
+      width: 220px;
+      border-radius: 20px;
       perspective: 1000px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .sign1:hover,
+    .sign2:hover,
+    .sign3:hover,
+    .sign4:hover,
+    .sign5:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(168, 85, 247, 0.2);
     }
 
     .sign1 .inner,
@@ -90,41 +127,34 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 30px;
+      border-radius: 20px;
     }
 
     .back {
-      background: linear-gradient(95deg, #6acce7, #ef51d2);
+      background: linear-gradient(135deg, #a855f7, #ec4899);
       color: white;
-      font-size: 20px;
-      font-weight: bold;
+      font-size: 16px;
+      font-weight: 500;
       text-align: center;
-      padding: 20px;
+      padding: 25px;
       transform: rotateY(180deg);
-      box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.2);
-      height: 200px;
-      width: 180px;
+      height: 220px;
+      width: 200px;
     }
 
-    .heading {
-      line-height: 125%;
-      background: linear-gradient(180deg, #5aa9d9, #a6ceda, #ffffff);
-      height: 200px;
-      padding: 30px;
-      /* Removed margin so that content starts right below header */
-    }
-
-    .page-heading {
-      color: rgb(19, 3, 59);
-      font-size: 70px;
+    .back h4 {
+      font-weight: 500;
+      line-height: 1.5;
     }
 
     footer {
       text-align: center;
-      background: #3b065a;
-      color: #fff;
-      padding: 20px 0;
-      margin-top: 350px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 30px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin-top: 50px;
     }
 
     footer p {
@@ -138,8 +168,8 @@
   <div id="header-container"></div>
   <div class="mainbody">
     <div class="heading">
-      <div class="pageheading" style="color:rgb(19, 3, 59);">
-        <h1>Know the Rules,</h1>
+      <div class="pageheading">
+        <h1>🚦 Know the Rules,</h1>
         <h1>Drive with Confidence!</h1>
       </div>
     </div>

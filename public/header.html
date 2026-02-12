@@ -6,152 +6,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smart City Management</title>
   <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
-  <style>
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI';
-    }
-
-    body {
-      padding-top: 80px;
-      /* Space for fixed header */
-    }
-
-    a {
-      text-decoration: none;
-      color: white;
-    }
-
-    @keyframes gradientBG {
-      0% {
-        background-position: 0% 50%;
-      }
-
-      50% {
-        background-position: 100% 50%;
-      }
-
-      100% {
-        background-position: 0% 50%;
-      }
-    }
-
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100px;
-      display: flex;
-      background: linear-gradient(-45deg, #01020a, #27049d, #694ccb, #cf3968);
-      background-size: 400% 400%;
-      animation: gradientBG 7s ease infinite;
-      padding-left: 20px;
-      font-size: 15px;
-      box-shadow: 0 0 0 2px #aba8a8;
-      z-index: 1000;
-    }
-
-    .scm {
-      margin-right: 500px;
-      width: 500px;
-      margin-top: 15px;
-      font-size: 15px;
-    }
-
-    .headercontent {
-      display: flex;
-      align-items: center;
-      position: relative;
-    }
-
-    h3 {
-      padding: 8px;
-      margin-right: 40px;
-      opacity: 0.6;
-      position: relative;
-    }
-
-    a h3:hover {
-      opacity: 1;
-      cursor: pointer;
-      background-color: #a698dd;
-      border-radius: 6px;
-    }
-
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: white;
-      min-width: 150px;
-      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-      z-index: 1;
-      border-radius: 5px;
-    }
-
-    .dropdown-content a {
-      color: black;
-      padding: 10px 15px;
-      display: block;
-    }
-
-    .dropdown-content a:hover {
-      background-color: #f1f1f1;
-      border-radius: 5px;
-    }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <div class="header">
-    <div class="scm">
-      <a href="/home">
-        <h2>Smart City Management</h2>
-      </a>
-    </div>
-    <div class="headercontent">
-      <a href="/bookmarks">
-        <h3>Bookmarks</h3>
-      </a>
+  <header class="header">
+    <a href="/home" class="logo">
+      <div class="logo-icon">🏙️</div>
+      <h2>Smart City</h2>
+    </a>
+    <nav class="nav-links">
+      <a href="/bookmarks" class="nav-link"><span>Bookmarks</span></a>
+      
       <div class="dropdown">
-        <h3 style="opacity: 0.6; color: white;">Education</h3>
-        <div class="dropdown-content">
-          <a href="/main_institutions">Recommending Institutions</a>
-          <a href="/online_learning">Online Learning</a>
+        <div class="nav-link dropdown-trigger">
+          <span>Education</span>
+        </div>
+        <div class="dropdown-menu">
+          <a href="/main_institutions" class="dropdown-item">🎓 Recommending Institutions</a>
+          <a href="/online_learning" class="dropdown-item">💻 Online Learning</a>
         </div>
       </div>
+      
       <div class="dropdown">
-        <h3 style="opacity: 0.6; color: white;">Transportation</h3>
-        <div class="dropdown-content">
-          <a href="/public_transport">Public Transport</a>
-          <a href="/private_transport">Private Transport</a>
-          <a href="/road_safety">Traffic and Road Safety</a>
+        <div class="nav-link dropdown-trigger">
+          <span>Transportation</span>
+        </div>
+        <div class="dropdown-menu">
+          <a href="/public_transport" class="dropdown-item">🚌 Public Transport</a>
+          <a href="/private_transport" class="dropdown-item">🚗 Private Transport</a>
+          <a href="/road_safety" class="dropdown-item">🚦 Traffic & Road Safety</a>
         </div>
       </div>
-      <a href="/about">
-        <h3>About</h3>
-      </a>
-      <!-- <a href="#">
-        <h3>Profile</h3>
-      </a> -->
-      <a href="/logout">
-        <h3>Logout</h3>
-      </a>
-    </div>
-  </div>
+      
+      <a href="/about" class="nav-link"><span>About</span></a>
+      <a href="/logout" class="nav-link"><span>Logout</span></a>
+    </nav>
+  </header>
   <script>
-    document.getElementById("logout").addEventListener("click", function (e) {
+    document.getElementById("logout")?.addEventListener("click", function (e) {
       e.preventDefault();
       alert("You have been logged out.");
       window.location.href = "/login";

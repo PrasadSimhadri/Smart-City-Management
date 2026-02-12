@@ -6,16 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Top Exams in India & Abroad</title>
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="header.js"></script>
     <script src="footer.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f4f9;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
             margin: 0;
             padding: 20px;
-            color: #333;
+            color: #fff;
         }
 
         #voice-button {
@@ -26,24 +34,28 @@
         }
 
         button {
-            background-color: #5069d8;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 12px 18px;
             font-size: 16px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
         }
 
         button:hover {
-            background-color: green;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
         }
 
         h1 {
             text-align: center;
-            color: #5069d8;
+            color: #fff;
             margin-bottom: 20px;
+            font-size: 2rem;
         }
 
         .cards-container {
@@ -55,16 +67,18 @@
         }
 
         .card {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
             padding: 20px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
         }
 
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.2);
         }
 
         .foreign-icon {
@@ -74,7 +88,7 @@
 
         #voice-button {
             margin-left: 10px;
-            background-color: #ff5733;
+            background: linear-gradient(135deg, #f97316, #ef4444);
         }
 
         #sort-button {
@@ -83,21 +97,29 @@
         }
 
         .card a {
-            color: #5069d8;
+            color: #a855f7;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .card a:hover {
-            color: #3b4fa3;
+            color: #ec4899;
             text-decoration: underline;
+        }
+
+        .card h3, .card p, .card strong {
+            color: #fff;
+        }
+
+        .card p {
+            color: rgba(255, 255, 255, 0.8);
         }
     </style>
 </head>
 
 <body>
     <div id="header-container"></div>
-    <h1>E-BOOKS AND REFERENCES</h1>
+    <h1>📚 E-BOOKS AND REFERENCES</h1>
     <button id="sort-button" onclick="sortByDifficulty()">Sort by Difficulty</button>
     <button id="voice-button" onclick="startVoiceRecognition()">Start Voice Navigation</button>
     <div class="cards-container" id="cardsContainer"></div>

@@ -1,13 +1,13 @@
 {
   "name": "se_db",
   "version": "1.0.0",
-  "main": "mainhome.js",
+  "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node mainhome.js",
+    "start": "node index.js",
     "build": "npm install && echo 'Build completed successfully'",
     "lint": "eslint . --fix",
-    "dev": "nodemon mainhome.js"
+    "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
