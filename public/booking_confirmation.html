@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ride Confirmation</title>
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -174,7 +176,10 @@
             <div id="reviewsList"></div>
         </div>
     </div>
-    <h1>✅ RIDE CONFIRMATION</h1>
+    <h1><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"
+            style="vertical-align: middle;">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+        </svg> RIDE CONFIRMATION</h1>
     <div class="card" id="rideDetails">
         <!-- Ride details will be populated here -->
     </div>
@@ -237,7 +242,7 @@
                 if (!response.ok) throw new Error("Network error");
 
                 const driver = await response.json();
-                console.log("Fetched driver object:", driver);
+                // console.log("Fetched driver object:", driver);
 
                 // Check if _id exists and convert it to string
                 if (driver._id) {
@@ -246,7 +251,7 @@
                     console.error("Driver _id is missing in the fetched object.");
                     currentDriverId = undefined;
                 }
-                console.log("Current Driver ID:", currentDriverId);
+                // console.log("Current Driver ID:", currentDriverId);
 
                 const driverDetailsDiv = document.getElementById("driverDetails");
                 const rating = parseFloat(driver.rating);

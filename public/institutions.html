@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Institution Rankings</title>
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="header.js"></script>
     <script src="footer.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="icons.js"></script>
 
     <style>
         body {
@@ -351,8 +353,8 @@
                 const isBookmarked = bookmarks.some(b => b.institution === inst.institution);
                 container.innerHTML += `
             <div class="card">
-                <i class="fas fa-bookmark bookmark-icon ${isBookmarked ? 'bookmarked' : ''}" 
-                   onclick="toggleBookmark('${inst.institution.replace(/'/g, "\\'")}')"></i>
+                <span class="bookmark-icon ${isBookmarked ? 'bookmarked' : ''}" 
+                   onclick="toggleBookmark('${inst.institution.replace(/'/g, "\\'")}')" style="cursor: pointer; display: inline-flex;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1.2em" height="1.2em"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg></span>
                 <h3>${inst.institution}</h3>
                 <p><strong>World Rank:</strong> ${inst.world_rank}</p>
                 <p><strong>National Rank:</strong> ${inst.national_rank}</p>

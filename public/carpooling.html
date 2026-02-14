@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ride Sharing Finder</title>
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="icons.js"></script>
     <script src="header.js"></script>
     <style>
         body {
@@ -133,6 +135,7 @@
             .search-container input {
                 width: 100%;
             }
+
             h1 {
                 font-size: 2rem;
             }
@@ -143,7 +146,11 @@
 <body>
     <div id="header-container"></div>
     <header>
-        <h1>🚗 Ride Sharing Finder</h1>
+        <h1><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"
+                style="vertical-align: middle;">
+                <path
+                    d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" />
+            </svg> Ride Sharing Finder</h1>
     </header>
 
     <div class="search-container">
@@ -188,7 +195,7 @@
                 const card = document.createElement("div");
                 card.className = "card";
                 card.innerHTML = `
-          <h3><i class="icon fas fa-user-circle"></i> ${ride.driver}</h3>
+          <h3><span class="icon" style="display: inline-flex; vertical-align: middle;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></span> ${ride.driver}</h3>
           <p><strong>From:</strong> ${ride.currentLocation}</p>
           <p><strong>To:</strong> ${ride.destination}</p>
           <p><strong>Price:</strong> ₹${ride.price}</p>

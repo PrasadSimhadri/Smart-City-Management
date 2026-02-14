@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Institution Alumni Reviews</title>
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="header.js"></script>
     <script src="footer.js"></script>
     <style>
@@ -221,7 +223,10 @@
 
 <body>
     <div id="header-container"></div>
-    <h1>🎓 INSTITUTIONS AND REVIEWS</h1>
+    <h1><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"
+            style="vertical-align: middle;">
+            <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z" />
+        </svg> INSTITUTIONS AND REVIEWS</h1>
 
     <!-- Compare Section -->
     <div class="compare-section" id="compareSection">
@@ -249,7 +254,7 @@
             try {
                 const response = await fetch("https://smart-city-management-y28e.onrender.com/api/allInstitutionReviews");
                 const data = await response.json();
-                console.log("Data received:", data);
+                // console.log("Data received:", data);
                 if (!Array.isArray(data)) {
                     throw new Error("Data is not an array");
                 }

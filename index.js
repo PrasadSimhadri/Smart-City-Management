@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 mongoose.connection.on("error", err => console.error("Connection error:", err));
-mongoose.connection.once("open", () => console.log("Connected to MongoDB"));
+// mongoose.connection.once("open", () => console.log("Connected to MongoDB"));
 
 // ----------------- Models -----------------
 
@@ -292,7 +292,7 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    console.log("User authenticated:", user);
+    // console.log("User authenticated:", user);
     res.json({ message: "Logged in successfully", user });
   } catch (err) {
     console.error("Error in login:", err);
@@ -315,7 +315,7 @@ app.post("/api/register", async (req, res) => {
     const newUser = new Login({ username, email, password });
     await newUser.save();
 
-    console.log("User registered:", newUser);
+    // console.log("User registered:", newUser);
     res.status(201).json({ message: "User registered successfully", user: newUser });
   } catch (err) {
     console.error("Error in registration:", err);
@@ -389,7 +389,7 @@ app.post("/api/accidents", async (req, res) => {
       if (error) {
         console.error("Error sending email:", error);
       } else {
-        console.log("Email sent:", info.response);
+        // console.log("Email sent:", info.response);
       }
     });
 
@@ -443,7 +443,7 @@ app.get("/api/randomDriver", async (req, res) => {
     if (drivers.length === 0) {
       return res.status(404).json({ error: "No drivers available" });
     }
-    console.log(drivers);
+    // console.log(drivers);
     const randomIndex = Math.floor(Math.random() * drivers.length);
     res.json(drivers[randomIndex]);
   } catch (err) {
@@ -514,14 +514,14 @@ app.put("/api/updateFeedback/:ticketid", async (req, res) => {
 app.get("/api/searchTickets", async (req, res) => {
   try {
     const { source, destination } = req.query;
-    console.log("Searching for bookings with:", { source, destination });
+    // console.log("Searching for bookings with:", { source, destination });
 
     const bookings = await Booking.find({
       source: { $regex: new RegExp("^" + source.trim() + "$", "i") },
       destination: { $regex: new RegExp("^" + destination.trim() + "$", "i") }
     });
 
-    console.log("Found bookings:", bookings);
+    // console.log("Found bookings:", bookings);
     res.json(bookings);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -538,7 +538,7 @@ app.post("/api/processPayment", async (req, res) => {
       return res.status(400).json({ error: "Missing required information (ticketId, paymentMethod, email)" });
     }
 
-    console.log("Received ticketId:", ticketId);
+    // console.log("Received ticketId:", ticketId);
     // Find the booking by matching route_id with the provided ticketId
     const ticket = await Booking.findById(ticketId);
     if (!ticket) {
@@ -555,13 +555,13 @@ app.post("/api/processPayment", async (req, res) => {
       if (!cardNumber || !cardExpiry || !cardCVV) {
         return res.status(400).json({ error: "Incomplete card details" });
       }
-      console.log("Processing card payment...");
+      // console.log("Processing card payment...");
       // Here, you would integrate with a real payment gateway.
     } else if (paymentMethod === "upi") {
       if (!upiId) {
         return res.status(400).json({ error: "UPI ID is required" });
       }
-      console.log("Processing UPI payment...");
+      // console.log("Processing UPI payment...");
       // Here, integrate with a UPI payment gateway.
     } else {
       return res.status(400).json({ error: "Invalid payment method" });
@@ -618,7 +618,7 @@ Smart City Booking Team`,
         console.error("Error sending email:", error);
         return res.status(500).json({ error: "Booking confirmed, but failed to send confirmation email" });
       }
-      console.log("Email sent: " + info.response);
+      // console.log("Email sent: " + info.response);
       res.json({ message: "Payment processed and confirmation email sent", ticketId: ticket.route_id });
     });
   } catch (err) {
@@ -819,7 +819,7 @@ Smart City Lost & Found Team`,
         // Even if email fails, report the lost item as successful.
         return res.status(500).json({ error: "Report saved, but failed to send confirmation email" });
       }
-      console.log("Email sent: " + info.response);
+      // console.log("Email sent: " + info.response);
       res.status(201).json({ message: "Lost item report submitted successfully", lostItem: newLostItem });
     });
   } catch (err) {
@@ -1156,5 +1156,5 @@ app.get('/api/rides', async (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000/home");
+  // console.log("Server is running on http://localhost:3000/home");
 });

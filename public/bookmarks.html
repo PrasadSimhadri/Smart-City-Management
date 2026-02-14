@@ -6,10 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bookmarked Content</title>
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <script src="header.js"></script>
     <script src="footer.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="icons.js"></script>
 
     <style>
         body {
@@ -143,6 +145,7 @@
             .cards-container {
                 grid-template-columns: 1fr;
             }
+
             .h2head {
                 font-size: 1.8rem;
             }
@@ -152,7 +155,10 @@
 
 <body>
     <div id="header-container"></div>
-    <h2 class="h2head">🔖 BOOKMARKED CONTENT</h2>
+    <h2 class="h2head"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em"
+            height="1em" style="vertical-align: middle;">
+            <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z" />
+        </svg> BOOKMARKED CONTENT</h2>
 
     <div class="cards-container" id="bookmarksContainer">
         <!-- Content loaded dynamically -->
@@ -167,7 +173,7 @@
             if (institutions.length + exams.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <i class="fas fa-bookmark fa-3x" style="color: #fbbf24;"></i>
+                        <span style="color: #fbbf24; font-size: 3em; display: inline-flex;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg></span>
                         <p>No bookmarks found. Start bookmarking content from other pages!</p>
                     </div>
                 `;
@@ -177,13 +183,13 @@
             const institutionsHTML = institutions.map(inst => `
                 <div class="card institution">
                     <span class="type-badge">Institution</span>
-                    <i class="fas fa-bookmark bookmark-icon"></i>
+                    <span class="bookmark-icon" style="display: inline-flex;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg></span>
                     <h3>${inst.institution}</h3>
                     <p><strong>National Rank:</strong> ${inst.national_rank}</p>
                     <p><strong>Specialization:</strong> ${inst.specialization}</p>
                     <div class="card-footer">
                         <button class="remove-btn" onclick="removeBookmark('institution', '${inst.institution}')">
-                            <i class="fas fa-trash-alt"></i> Remove
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em" style="vertical-align: middle;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg> Remove
                         </button>
                     </div>
                 </div>
@@ -192,14 +198,14 @@
             const examsHTML = exams.map(exam => `
                 <div class="card exam">
                     <span class="type-badge">Exam</span>
-                    <i class="fas fa-bookmark bookmark-icon"></i>
+                    <span class="bookmark-icon" style="display: inline-flex;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg></span>
                     <h3>${exam.ExamName}</h3>
                     <p><strong>Application Deadline:</strong> ${exam.LastApplicationDate}</p>
                     <p><strong>Exam Date:</strong> ${exam.ExaminationDate}</p>
                     <p><strong>Difficulty:</strong> ${exam.DifficultyLevel}</p>
                     <div class="card-footer">
                         <button class="remove-btn" onclick="removeBookmark('exam', '${exam.ExamName}')">
-                            <i class="fas fa-trash-alt"></i> Remove
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em" style="vertical-align: middle;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg> Remove
                         </button>
                     </div>
                 </div>

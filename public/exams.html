@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/jpeg" href="images/smart_city.jpg" />
     <title>Top Exams in India & Abroad</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="icons.js"></script>
     <script src="header.js"></script>
     <script src="footer.js"></script>
     <style>
@@ -143,7 +145,11 @@
 
 <body>
     <div id="header-container"></div>
-    <h1>📝 TOP EXAMS IN INDIA & ABROAD</h1>
+    <h1><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"
+            style="vertical-align: middle;">
+            <path
+                d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+        </svg> TOP EXAMS IN INDIA & ABROAD</h1>
     <button id="sort-button" onclick="sortByDifficulty()">Sort by Difficulty</button>
     <div class="cards-container" id="cardsContainer"></div>
     <div id="footer-container"></div>
@@ -303,7 +309,7 @@
         ];
 
         function getExamIcon(foreign) {
-            return foreign === "YES" ? '<i class="fas fa-globe foreign-icon"></i>' : "";
+            return foreign === "YES" ? '<span class="foreign-icon" style="display: inline-flex; vertical-align: middle;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="1em" height="1em"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></span>' : "";
         }
 
         function displayExams(data) {
