@@ -139,4 +139,10 @@ Follow these steps to contribute:
 ## Live Demo
 [Smart City Management](https://smart-city-management-y28e.onrender.com/login)
 
+### Demo Credentials
+| Field    | Value              |
+|----------|-------------------|
+| Email    | user1234@gmail.com |
+| Password | 1234               |
+
 ---
