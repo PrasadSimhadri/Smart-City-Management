@@ -137,7 +137,7 @@ Follow these steps to contribute:
 ---
 
 ## Live Demo
-[Smart City Management](https://smart-city-management-y28e.onrender.com/login)
+[Smart City Management](https://smart-city-management-y28e.onrender.com/home)
 
 ### Demo Credentials
 | Field    | Value              |
